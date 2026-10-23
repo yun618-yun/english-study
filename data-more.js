@@ -757,3 +757,37 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
       .replace(/^([A-Za-z]+)　/gm, (m, w) => SYL[w] ? `${w} {{say:${w}}}{{syl:${SYL[w]}}}　` : m);
   }
 }
+
+// ---------- 📚 長的單字表分 2～3 段（10/23 使用者覺得動物、職業等單字表太長）----------
+// 格式：'小標題=字,字,…|小標題=…'；最後一段寫 * 的話，沒列到的字都放這段
+{
+  const PARTS = {
+    animal: '寵物和農場=cat,dog,pig,rabbit,duck,horse,goose,sheep,goat,cow,donkey,hen,turkey,lamb,mouse|野生動物=tiger,fox,zebra,deer,elephant,eagle,beaver,snake,squirrel,kangaroo,monkey,panda,bear,lion,giraffe,bird,ant|海裡的動物=*',
+    fruit: '常見水果=apple,banana,orange,grape,strawberry,watermelon,pineapple,mango,peach,cherry,lemon,kiwi,pear|其他水果=apricot,plum,loquat,mulberry,fig,persimmon,date,coconut,sugarcane|堅果=*',
+    vegetable: '常見蔬菜=carrot,tomato,potato,onion,garlic,cabbage,broccoli,lettuce,spinach,cucumber,eggplant,bell pepper,pumpkin,mushroom|其他蔬菜=*',
+    meat: '肉的種類=beef,pork,chicken,lamb,turkey,duck,fish,goose,rabbit,veal,mutton,venison,liver|肉製品和料理=*',
+    transport: '路上的車=car,bus,taxi,truck,van,bicycle,bike,motorcycle,scooter,ambulance,fire engine,police car,jeep,lorry,coach,carriage,rickshaw,tractor,bulldozer,forklift|火車和飛機=train,subway,railway,express,cable car,airplane,plane,helicopter,hot air balloon|船=*',
+    tool: '敲、轉、切=hammer,screwdriver,wrench,pliers,scissors,utility knife,saw,drill,pipe wrench,spanner,axe,pickaxe,vice,lathe,plane,file,crank,lever|量、黏、固定=tape measure,ruler,level,square,compass,nail,screw,nut,bolt,brad,pin,clip,tape,glue|油漆、園藝、其他=*',
+    weather: '天氣怎麼樣=sunny,cloudy,rainy,snowy,windy,stormy,foggy,overcast,partly cloudy,fine,dull,hot,cold,warm,cool,humid,dry|天氣現象=rain,snow,wind,cloud,fog,mist,haze,shower,storm,breeze,sunshine,frost,dew,hail,sleet,rainbow,thunder,lightning|災害和其他=*',
+    place: '生活必去=hospital,clinic,pharmacy,police station,fire station,post office,bank,court,supermarket,convenience store,market,shopping mall,shop,store,bookshop,bookstore,cashier,fitting room,parking lot,station,airport,port,hotel,elevator|學校=school,kindergarten,college,university,institute,library|休閒娛樂=*',
+    family: '爸媽和兄弟姊妹=father,mother,parent,son,daughter,child,brother,sister,twin,twin brothers,twin sisters,husband,wife,couple,family|祖父母和親戚=grandfather,grandmother,grandpa,grandma,grandad,granny,grandson,granddaughter,uncle,aunt,cousin,nephew,niece,father-in-law,mother-in-law,son-in-law,daughter-in-law,stepfather,stepmother|其他相關的字=*',
+    home: '房間和空間=house,apartment,living room,bedroom,kitchen,bathroom,dining room,study,balcony,garden,garage|房子的構造=roof,door,window,stairs,elevator,floor,wall,ceiling|家具和用品=*',
+    job: '醫療、公家、學校=doctor,nurse,surgeon,chemist,police officer,policeman,firefighter,soldier,detective,judge,lawyer,attorney,teacher,headteacher,professor,student|餐飲、商店、交通=chef,cook,waiter,waitress,baker,butcher,farmer,fisherman,driver,pilot,flight attendant,sailor,seaman,shop assistant,salesman,salesperson,clerk,hairdresser,tailor,construction worker,worker|辦公室、藝術、媒體=*',
+    clothes: '衣服和褲子=shirt,T-shirt,blouse,sweater,jacket,coat,hoodie,raincoat,vest,dress,skirt,pants,trousers,shorts,jeans,suit,uniform,pajamas,underwear,apron,clothes,clothing|鞋子、襪子、帽子=socks,tights,stocking,shoes,boots,sneaker,sandal,slipper,cap,hat,sole,heel|配件和衣服的部位=*',
+    sport: '球類=soccer,football,basketball,tennis,table tennis,badminton,volleyball,baseball,golf,handball,hockey,ice hockey,cricket,polo,water polo|田徑和體操=running,race,dash,walk,marathon,high jump,long jump,pole vault,throwing,shot put,discus,hammer,javelin,gymnastics,rings,horizontal bar,parallel bars,weightlifting|水上、冰上、其他=*',
+    body: '頭和臉=head,face,eye,ear,nose,mouth,lip,tooth,denture,gum,tongue,tonsil,cheek,chin,forehead,temple,lid,brain,hair,mustache,whisker,sideburns,bald|身體和四肢=neck,shoulder,arm,elbow,armpit,hand,palm,finger,thumb,nail,fist,chest,abdomen,waist,navel,hip,buttock,leg,thigh,knee,calf,shank,foot,instep|皮膚上的=*'
+  };
+  const vocab = NOTES.find(c => c.id === 'vocab');
+  for (const [key, spec] of Object.entries(PARTS)) {
+    const it = vocab.items.find(i => i.id === 'vocab-' + key);
+    if (!it) continue;
+    const [rows, ...rest] = it.note.split('\n\n');   // 前面是單字，後面是總體提醒
+    const lines = rows.split('\n');
+    const parts = spec.split('|').map(s => { const [name, ws] = s.split('='); return { name, ws: ws.split(','), lines: [] }; });
+    for (const l of lines) {
+      const en = (l.match(/\{\{say:([^}]+)\}\}/) || [])[1];
+      (parts.find(p => p.ws.includes(en)) || parts.find(p => p.ws[0] === '*') || parts[parts.length - 1]).lines.push(l);
+    }
+    it.note = '{{nogrid}}' + [...parts.filter(p => p.lines.length).map(p => `【${p.name}（${p.lines.length} 個）】\n` + p.lines.join('\n')), ...rest].join('\n\n');
+  }
+}

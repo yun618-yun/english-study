@@ -359,6 +359,8 @@ img.pic.big { width: auto; max-width: 100%; height: auto; max-height: 200px; bor
 .page .nb:has(> .lbl) { padding-top: 34px; }
 .page .nb:has(> .lbl)::before { top: 36px; }
 .page .nb > .lbl { position: absolute; top: 4px; left: 4px; color: var(--teal); font-size: 16.5px; font-weight: 800; background: none; }
+.page .nb:has(img.pic) > .lbl { position: static; grid-column: 1 / -1; margin: 6px 0 -2px; font-size: 17px; }   /* 有圖的單字表分段：小標題自己一整排 */
+.page .nb:has(img.pic):has(> .lbl) { padding-top: 4px; }
 .page .nb .row { border-top: 0; padding: 3px 0; }
 /* 兩欄並排的框框也一樣 */
 .page .nbgrid { gap: 4px 10px; }
