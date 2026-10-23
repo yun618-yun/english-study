@@ -356,7 +356,9 @@ function renderNotes() {
       <div class="pager">
         <button data-act="prev" ${idx === 0 ? 'disabled' : ''}>‹ 上一則</button>
         <button data-act="next" ${idx === items.length - 1 ? 'disabled' : ''}>下一則 ›</button>
-      </div>`;
+      </div>
+      ${planRun === 'note' ? '<div class="empty">' + planBack('note') + '</div>' : ''}`;
+    markRead(it.id);   // 今日文法：打開過就算讀過
     return;
   }
   // 單字：每一類排成有封面插畫的格子（封面用這一類第一個有插畫的字）
@@ -971,13 +973,25 @@ function answerSrs(v) {
 }
 
 // ===== 📋 今日課表：卡片複習做完，接著照順序做這幾項（每天一次，記在 english-study-plan） =====
+// 每日小流程：詞彙（卡片複習）→ 文法（讀一則）→ 補弱點 → 聽 → 語法 → 自己想 → 說和交流
 const PLAN = [
+  { k: 'note', name: '📖 今日文法', unit: '讀一則筆記' },
   { k: 'wrong', name: '📕 錯題抽查', n: 5 },
   { k: 'listen', name: '🎧 聽力', n: 5 },
   { k: 'order', name: '🧩 句子重組', n: 3 },
   { k: 'type', name: '⌨️ 看中文打英文', n: 3 },
-  { k: 'shadow', name: '🗣️ 跟讀', n: 3 }
+  { k: 'dialog', name: '💬 情境對話', unit: '每天換一個' }
 ];
+// 📖 今日文法：照網站的分類順序，挑下一則還沒讀過的筆記（單字表、情境單字不算）
+const READ_KEY = 'english-study-read';
+let readNotes = [];
+try { readNotes = JSON.parse(localStorage.getItem(READ_KEY)) || []; } catch (e) {}
+function markRead(id) {
+  if (readNotes.includes(id)) return;
+  readNotes.push(id);
+  try { localStorage.setItem(READ_KEY, JSON.stringify(readNotes)); } catch (e) {}
+}
+const nextNote = () => ALL.find(it => it.note && !['vocab', 'scene'].includes(it.cat) && !readNotes.includes(it.id));
 const PLAN_KEY = 'english-study-plan';
 let planDone = { day: '', done: [] }, planRun = null;
 try { planDone = JSON.parse(localStorage.getItem(PLAN_KEY)) || planDone; } catch (e) {}
@@ -994,13 +1008,24 @@ function planHtml() {
   const next = PLAN.find(p => !done.includes(p.k));
   return PLAN.map((p, i) => {
     const ok = done.includes(p.k);
-    return `<div class="plan-step ${ok ? 'done' : ''}">${ok ? '✅' : '⬜'} ${i + 2}. ${p.name}（${p.n} 題）
+    return `<div class="plan-step ${ok ? 'done' : ''}">${ok ? '✅' : '⬜'} ${i + 2}. ${p.name}（${p.unit || p.n + ' 題'}）
       ${!ok && p === next ? `<button class="btn" data-act="plan-go" data-k="${p.k}">開始 ›</button>` : ''}</div>`;
   }).join('') + (next ? '' : '<div class="empty">🏆 今天的課表全部完成！明天見 👋</div>');
 }
 function startPlan(k) {
   const p = PLAN.find(x => x.k === k);
   planRun = k;
+  if (k === 'note') {
+    const it = nextNote();
+    if (!it) { finishPlan(k); return renderToday(); }   // 全部讀完了
+    return go('notes', it.cat, it.id);
+  }
+  if (k === 'dialog') {
+    if (typeof DIALOGS === 'undefined') { finishPlan(k); return renderToday(); }
+    go('listen');
+    startDialog(DIALOGS[today() % DIALOGS.length].id);   // 每天換一個
+    return renderDialog();
+  }
   if (k === 'wrong') {
     if (!ALL.some(it => status[it.id] === 'unknown' && isCard(it))) { finishPlan(k); return renderToday(); }   // 沒有錯題就跳過
     go('wrong');
@@ -1234,9 +1259,10 @@ function renderDialog() {
   };
   const done = dPos >= dlg.lines.length;
   const cur = dlg.lines[dPos];
+  const back = done && planBack('dialog');
   const btns = done
-    ? `<div class="empty">🎉 對話練完了！<br><br><button class="btn ghost" data-act="dlg-start" data-id="${dlg.id}">再練一次</button>
-        <button class="btn" data-act="listen-home">換一個對話</button></div>`
+    ? `<div class="empty">🎉 對話練完了！<br><br>${back || `<button class="btn ghost" data-act="dlg-start" data-id="${dlg.id}">再練一次</button>
+        <button class="btn" data-act="listen-home">換一個對話</button>`}</div>`
     : cur.me && !dShown
       ? `<div class="row-btns">${Rec ? '<button class="btn" id="rec-btn" data-act="dlg-rec">🎤 說說看</button>' : ''}
           <button class="btn ghost" data-act="dlg-show">👀 看答案</button></div>`
