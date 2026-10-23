@@ -484,3 +484,16 @@ img.pic.big { width: auto; max-width: 100%; height: auto; max-height: 200px; bor
 .stat .sl { font-size: 13px; color: var(--muted); }
 .sec-title { color: var(--head); margin: 4px 0 8px; }
 .deck-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; } .deck-head select { flex: 1; font-size: 16px; padding: 8px 10px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--head); font-family: inherit; }
+
+/* 分類格子改扁一點（使用者覺得太高、要一直滑）：圖示放名字左邊，說明只留一行 */
+.cat-grid { gap: 10px; }
+.cat:not(.wide) {
+  display: grid; grid-template-columns: 32px 1fr; column-gap: 8px; row-gap: 3px; align-items: center;
+  min-height: 0; padding: 10px 10px 10px 14px;
+}
+.cat:not(.wide) .ci { width: 32px; height: 32px; border-radius: 9px; font-size: 18px; margin: 0; }
+.cat:not(.wide) .cn { font-size: 16px; line-height: 1.25; }
+.cat:not(.wide) .cd, .cat:not(.wide) .cc { grid-column: 1 / -1; }
+.cat:not(.wide) .cd { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cat:not(.wide) .cc { margin-top: 0; }
+.cat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .cat { min-width: 0; }
