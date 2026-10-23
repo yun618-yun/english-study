@@ -515,7 +515,8 @@ NOTES.find(c => c.id === 'terms').items.unshift({
 // ===================== 🧠 背單字妙招（10/23 使用者想要「有記憶點的口訣」：重點放在字首字尾和諧音，難背的字用聯想和一家人） =====================
 // 格式：'英文=中文=口訣／拆法'。卡片正面是中文，背面是英文＋口訣
 {
-  const AFFIX = { un: 'un-', re: 're-', dis: 'dis-', im: 'im-／in-', pre: 'pre-', er: '-er／-or', ful: '-ful', less: '-less', ly: '-ly', able: '-able' };
+  const AFFIX = { un: 'un-', re: 're-', dis: 'dis-', im: 'im-／in-', pre: 'pre-', er: '-er／-or', ful: '-ful', less: '-less', ly: '-ly', able: '-able',
+    mis: 'mis-', over: 'over-', num: 'uni-／bi-／tri-', tion: '-tion', ness: '-ness', ment: '-ment' };
   const card = ([en, zh, hint], key, p) => ({
     id: `${p}-${key}-${slug(en)}`, front: AFFIX[key] ? `${zh}\n（用 ${AFFIX[key]}）` : zh,
     back: en + (hint && hint !== zh ? '\n💡 ' + hint : ''), say: en, group: `${p}-${key}`
@@ -579,6 +580,24 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
         ['able', '👍 -able = 可以…的', '動詞後面加 -able，變成「可以被…的」。',
           'washable=可以洗的=wash（洗）＋ able|drinkable=可以喝的=drink（喝）＋ able|readable=好讀的=read（讀）＋ able|enjoyable=令人愉快的=enjoy（享受）＋ able|comfortable=舒服的=comfort（舒適）＋ able|reusable=可以重複用的=re（再）＋ use（用）＋ able → 一次用了兩個',
           '💡 able 本身就是「能夠」：I am able to swim. 我會游泳。\n💡 comfortable 念 /ˈkʌmftəbl/，中間的 or 幾乎不念，按 🔊 聽聽看'],
+        ['mis', '❌ mis- = 錯誤地', '動詞前面加 mis-，就是「做錯了」。',
+          'misunderstand=誤會=mis（錯）＋ understand（了解）|mistake=錯誤=mis（錯）＋ take（拿）→ 拿錯了|misspell=拼錯=mis（錯）＋ spell（拼字）|misuse=誤用=mis（錯）＋ use（用）|mislead=誤導=mis（錯）＋ lead（帶領）→ 帶錯路|misplace=放錯地方=mis（錯）＋ place（放）',
+          '💡 misspell 有兩個 s：mis ＋ spell，兩個字直接黏起來\n💡 例句：Sorry, I misunderstood you. 抱歉，我誤會你了。'],
+        ['over', '⬆️ over- = 太多、超過', '動詞或名詞前面加 over-，就是「超過、太多」。',
+          'oversleep=睡過頭=over（超過）＋ sleep（睡）|overeat=吃太多=over（太多）＋ eat（吃）|overwork=工作過度=over（太多）＋ work（工作）|overtime=加班=over（超過）＋ time（時間）→ 超過下班時間|overweight=過重的=over（超過）＋ weight（重量）|overseas=海外的=over（越過）＋ seas（海）→ 越過大海',
+          '💡 over 本身是「在…上方、越過」，所以 over- 是「超過」\n💡 例句：I overslept this morning. 我今天早上睡過頭了。'],
+        ['num', '🔢 uni- = 1、bi- = 2、tri- = 3', '數字字首，看到就知道「有幾個」。',
+          'unicorn=獨角獸=uni（1）＋ corn（角）→ 一隻角|uniform=制服=uni（1）＋ form（樣子）→ 大家同一個樣子|bicycle=腳踏車=bi（2）＋ cycle（輪子）→ 兩個輪子|bilingual=雙語的=bi（2）＋ lingual（語言的）|triangle=三角形=tri（3）＋ angle（角）|tricycle=三輪車=tri（3）＋ cycle（輪子）',
+          '💡 bike 就是 bicycle 的簡稱\n💡 一個字學會，其他就猜得到：bicycle 兩輪 → tricycle 三輪'],
+        ['tion', '📦 -tion = 變名詞（動作 → 事情）', '動詞後面加 -tion（或 -ation），就變成名詞。',
+          'action=行動=act（行動）＋ ion|invitation=邀請（函）=invite（邀請）＋ ation，去掉 e|information=資訊=inform（通知）＋ ation|education=教育=educate（教育）＋ ion，去掉 e|celebration=慶祝=celebrate（慶祝）＋ ion，去掉 e|collection=收藏=collect（收集）＋ ion',
+          '💡 -tion 念 /ʃən/，像中文的「訓」：action 念「艾克訓」\n💡 重音通常在 -tion 前面那一節：inforMAtion、eduCAtion'],
+        ['ness', '💗 -ness = 變名詞（形容詞 → 狀態）', '形容詞後面加 -ness，就變成名詞「…的狀態」。',
+          'happiness=幸福=happy（開心）＋ ness，y 變 i|kindness=善良、好意=kind（善良）＋ ness|sadness=悲傷=sad（難過）＋ ness|darkness=黑暗=dark（暗）＋ ness|illness=疾病=ill（生病）＋ ness|weakness=弱點=weak（弱）＋ ness',
+          '💡 例句：Thank you for your kindness. 謝謝你的好意。'],
+        ['ment', '📄 -ment = 變名詞（動作 → 結果）', '動詞後面加 -ment，就變成名詞。',
+          'movement=動作=move（移動）＋ ment|payment=付款=pay（付錢）＋ ment|agreement=同意、協議=agree（同意）＋ ment|enjoyment=樂趣=enjoy（享受）＋ ment|government=政府=govern（治理）＋ ment|treatment=治療=treat（對待、治療）＋ ment',
+          '💡 government 中間有 n，很多人會漏掉：govern ＋ ment\n💡 -tion、-ness、-ment 看到這三個字尾，就知道是名詞'],
         ['loan', '🎵 諧音①：中文本來就是照發音翻的', '這些字的中文就是音譯，念出來幾乎一樣，最好記！',
           'sofa=沙發=沙發 → 發音幾乎一樣|humor=幽默=幽默|logic=邏輯=邏輯|guitar=吉他=吉他|salad=沙拉=沙拉|pudding=布丁=布丁|toast=吐司=吐司|cartoon=卡通=卡通|engine=引擎=引擎|hacker=駭客=駭客',
           '💡 生活中還有很多：bus 巴士、taxi 的士、cool 酷、typhoon 颱風（這個是英文跟中文借的）'],
@@ -587,7 +606,19 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
           '⚠️ 諧音只用來記「意思」！真正的發音一定要按 🔊 聽，照中文念會念錯\n💡 自己編的口訣最好記，想到好笑的可以寫在本子上'],
         ['link', '💭 聯想和拆字：難背的字', '有些字可以拆開，或用一個小故事記，拼字也不容易錯。',
           'familiar=熟悉的=裡面有 family（家人）→ 跟家人一樣熟|foreign=外國的=字源是「在門外」→ 門外來的，就是外國的|breakfast=早餐=break（打破）＋ fast（禁食）→ 睡一整晚沒吃，早餐把它打破|pineapple=鳳梨=pine（松樹）＋ apple（蘋果）→ 長得像松果的水果|butterfly=蝴蝶=butter（奶油）＋ fly（飛）→ 奶油色的會飛的蟲|eager=渴望的=像 eagle（老鷹）→ 老鷹渴望地盯著獵物|island=島=is ＋ land（陸地）→ 島也是陸地，s 不發音|Wednesday=星期三=拆成 Wed-nes-day 記拼字，念的時候是 /ˈwenzdeɪ/|friend=朋友=fri ＋ end → a friend to the end 朋友到最後都在|believe=相信=中間藏著 lie（謊言）→ 不要相信謊言|piece=一片=開頭藏著 pie（派）→ a piece of pie 一片派',
-          '💡 拆字最大的好處是「拼字不會錯」：friend 不會拼成 freind，因為 end 要在最後\n💡 一家人一起背：help → helpful → helpless → helper；care → careful → careless → carefully']
+          '💡 拆字最大的好處是「拼字不會錯」：friend 不會拼成 freind，因為 end 要在最後\n💡 一家人一起背：help → helpful → helpless → helper；care → careful → careless → carefully'],
+        ['loan2', '🎵 諧音③：音譯字第二組', '吃的、玩的，很多都是照英文發音翻的。',
+          'microphone=麥克風=麥克風|radar=雷達=雷達|lemon=檸檬=檸檬|mango=芒果=芒果|golf=高爾夫=高爾夫|yoga=瑜伽=瑜伽|marathon=馬拉松=馬拉松|cheese=起司=起司|chocolate=巧克力=巧克力|poker=撲克牌=撲克',
+          '💡 mic 是 microphone 的簡稱，念 /maɪk/「麥克」'],
+        ['sound2', '🎵 諧音④：老師編的口訣', '這組是老師自己編的，越好笑越好記。',
+          'hurry=匆忙=哈利 → 哈利快點，要遲到了！|lazy=懶惰的=累死 → 懶人一動就喊累死|honey=蜂蜜、親愛的=哈尼 → 甜得像蜂蜜的哈尼|money=錢=媽你 → 媽，你可以給我錢嗎？|tease=取笑、捉弄=踢死 → 再取笑我就踢死你|sigh=嘆氣=賽 → 今天好賽，嘆一口氣|doubt=懷疑=到底 → 到底是不是真的？好懷疑|mood=心情=木的 → 心情不好，整個人木木的|shy=害羞的=帥 → 長太帥被大家看，好害羞|admire=欽佩、欣賞=愛的媽 → 最欣賞愛我的媽媽',
+          '⚠️ 諧音只用來記「意思」！真正的發音一定要按 🔊 聽\n💡 doubt 的 b 不發音，念 /daʊt/'],
+        ['link2', '💭 聯想和拆字②', '把長的字拆成認識的短字，意思和拼字一起記住。',
+          'hear=聽=h ＋ ear（耳朵）→ 用耳朵聽|heart=心=藏著 ear（耳朵）→ 用心聽|together=一起=to ＋ get ＋ her → 去找她一起|airport=機場=air（空中）＋ port（港口）→ 空中的港口|passport=護照=pass（通過）＋ port（港口）→ 通過港口要用的|popcorn=爆米花=pop（砰！）＋ corn（玉米）→ 砰一聲爆開的玉米|rainbow=彩虹=rain（雨）＋ bow（弓）→ 下完雨出現的弓|strawberry=草莓=straw（稻草）＋ berry（莓果）|dessert=甜點=有兩個 s → 甜點想吃兩份|knowledge=知識=know（知道）＋ ledge → 知道的東西就是知識',
+          '⚠️ dessert（甜點，兩個 s）和 desert（沙漠，一個 s）很容易搞混：沙漠很乾，只有一個 s\n💡 knowledge 的 k 不發音，念 /ˈnɑːlɪdʒ/'],
+        ['family', '👨‍👩‍👧 一家人一起背', '同一個字的「家人」一起記，名詞、動詞、形容詞一次學會。',
+          'success=成功（名詞）=一家人：succeed 成功（動詞）、successful 成功的|decide=決定（動詞）=一家人：decision 決定（名詞）|choose=選擇（動詞）=一家人：choice 選擇（名詞）|beauty=美（名詞）=一家人：beautiful 美麗的、beautifully 美麗地|health=健康（名詞）=一家人：healthy 健康的|danger=危險（名詞）=一家人：dangerous 危險的|friend=朋友=一家人：friendly 友善的、friendship 友誼|music=音樂=一家人：musician 音樂家、musical 音樂的',
+          '💡 背一個字的時候，順便查它的「家人」，等於一次背 2～3 個字\n💡 字尾看詞性：-ful、-ous、-y 是形容詞；-tion、-ness、-ment、-ship 是名詞']
       ], { card })
     ]
   });
