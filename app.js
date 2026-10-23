@@ -348,7 +348,7 @@ function renderBlock(ls, i, blocks) {
       }).join('')}</div>`;
     }
     // 開頭的說明文字
-    if (i === 0 && blocks.length > 1 && !ls.some(isEnglish)) return `<p class="sub">${ls.map(l => inline(l.trim())).join('<br>')}</p>`;
+    if ((i === 0 || (blocks[i - 1] || [''])[0].trim().startsWith('▍')) && blocks.length > 1 && !ls.some(isEnglish)) return `<p class="sub">${ls.map(l => inline(l.trim())).join('<br>')}</p>`;
     return `<div class="nb${twoCol(ls)}">${ls.map(line).join('')}</div>`;
   }
 }

@@ -891,12 +891,16 @@ for (const it of NOTES.find(c => c.id === 'mistakes').items) if (it.note && !it.
 // 原本的筆記如果也是卡片，卡片留著（只拿掉筆記內容），練習紀錄不會不見
 function mergeNotes(catId, newId, title, ids, mode, intro) {
   const items = NOTES.find(c => c.id === catId).items;
-  const src = ids.map(id => items.find(i => i.id === id)).filter(Boolean);
+  const src = ids.map(id => items.find(i => i.id === id && i.note)).filter(Boolean);
+  if (src.length < 2) return;
+  // 原本開頭的 {{nogrid}} 拿掉（只能放在整則最前面）；有一則是 nogrid，合併後也 nogrid
+  const nogrid = src.some(it => it.note.startsWith('{{nogrid}}'));
+  const clean = n => n.replace(/^\{\{(no)?grid\}\}\n*/, '');
   const body = src.map(it => mode === 'box'
-    ? `【${it.title}】\n` + it.note.split('\n').filter(l => l.trim()).join('\n')
-    : `▍${it.title}\n\n${it.note}`).join('\n\n');
+    ? `【${it.title}】\n` + clean(it.note).split('\n').filter(l => l.trim()).join('\n')
+    : `▍${it.title}\n\n${clean(it.note)}`).join('\n\n');
   const at = items.indexOf(src[0]);
-  items.splice(at, 0, { id: newId, title, note: (mode === 'box' ? '{{grid}}' : '') + (intro ? intro + '\n\n' : '') + body });
+  items.splice(at, 0, { id: newId, title, note: (mode === 'box' ? '{{grid}}' : nogrid ? '{{nogrid}}' : '') + (intro ? intro + '\n\n' : '') + body });
   for (const it of src) {
     if (it.front) { delete it.note; delete it.title; }
     else items.splice(items.indexOf(it), 1);
@@ -910,3 +914,34 @@ mergeNotes('tenses', 't-group-perfect-cont', '完成進行時態：have been doi
 // ⏰ 時間標誌詞：8 格合成 2 格
 mergeNotes('signals', 's-group-present', '現在的時間標誌詞（一般、進行、完成）', ['s-simple-present', 's-present-cont', 's-present-perfect'], 'section');
 mergeNotes('signals', 's-group-past-future', '過去和將來的時間標誌詞', ['s-simple-past', 's-past-cont', 's-past-perfect', 's-simple-future', 's-past-future'], 'section');
+// 📖 文法類
+mergeNotes('terms', 'g-group-pos', '8 種詞性是什麼？（名詞、代名詞、動詞、形容詞…）', ['g-noun', 'g-pronoun', 'g-verb', 'g-adj', 'g-adv', 'g-article', 'g-prep', 'g-conj'], 'section');
+mergeNotes('terms', 'g-group-verb', '動詞的種類和 5 種形狀', ['g-transitive', 'g-verb-forms'], 'section');
+mergeNotes('terms', 'g-group-parts', '句子的成分和 5 大句型', ['g-subject-object', 'g-sentence-parts', 'g-sentence-patterns'], 'section');
+mergeNotes('terms', 'g-group-kinds', '句子的種類（用途、肯定否定問句、從句）', ['g-sentence-uses', 'g-sentence-types', 'g-clauses'], 'section');
+mergeNotes('terms', 'g-group-tips', '考試答題技巧（看位置猜詞性、填空、閱讀）', ['g-position', 'g-cloze-tips', 'g-reading-tips'], 'section');
+mergeNotes('basics', 'b-group-sentence', '否定句、問句、祈使句', ['b-neg-question', 'b-q-start', 'b-imperative-neg'], 'section');
+mergeNotes('basics', 'b-group-pronoun', '代名詞（I / me / my…、one / another…）', ['b-pronoun', 'b-one-other'], 'section');
+mergeNotes('basics', 'b-group-noun', '冠詞 a / an / the 和名詞單複數', ['b-article', 'b-plural'], 'section');
+mergeNotes('mnemonic', 'mn-group-plural', '名詞複數口訣（規律、特殊、f / fe）', ['mn-plural', 'mn-plural-special', 'mn-fe'], 'section');
+mergeNotes('mnemonic', 'mn-group-present', '一般現在時口訣（I、we… 和 he、she、it）', ['mn-present-1', 'mn-present-2'], 'section');
+mergeNotes('mnemonic', 'mn-group-choose', '這個還是那個？（no / not、Why not、Do / Can / Are you）', ['mn-no-not', 'mn-why-not', 'mn-do-can-are'], 'section');
+mergeNotes('to', 'to-group-overview', 'to 的總覽：三種用法、把 to 看成箭頭', ['to-overview', 'to-direction'], 'section');
+mergeNotes('to', 'to-group-reach', 'to 的「到」：地方、時間、結果、關係', ['to-endpoint', 'to-relation'], 'section');
+mergeNotes('to', 'to-group-who', '誰來做？to do 前面的人', ['to-who-does', 'to-for-of-wh'], 'section');
+mergeNotes('to', 'to-group-no', '不加 to 的結構（had better、would rather、help…）', ['no-to', 'no-to-more'], 'section');
+// 💬 生活類
+mergeNotes('daily', 'dl-group-food', '🍽️ 點餐和點飲料（22 個）', ['dl-food', 'dl-drink'], 'section');
+mergeNotes('daily', 'dl-group-way', '🚕 問路和交通（22 個）', ['dl-way', 'dl-taxi'], 'section');
+mergeNotes('daily', 'dl-group-plan', '📞 打電話、約時間、邀約（22 個）', ['dl-phone', 'dl-plan'], 'section');
+mergeNotes('daily', 'dl-group-social', '🙋 認識新朋友、約會、興趣（26 個）', ['dl-social', 'dl-hobby'], 'section');
+mergeNotes('daily', 'dl-group-talk', '🆘 聊天救命句和接話（26 個）', ['dl-rescue', 'dl-react'], 'section');
+mergeNotes('numbers', 'nm-group-num', '數字和價錢、電話（20 個）', ['nm-num', 'nm-price'], 'section');
+mergeNotes('numbers', 'nm-group-time', '說時間和日期（19 個）', ['nm-time', 'nm-date'], 'section');
+// 📝 單字類
+mergeNotes('phrase', 'ph-group-small', '動詞 + down／off／on／in（44 個）', ['ph-down', 'ph-off', 'ph-on', 'ph-in'], 'section');
+mergeNotes('phrase', 'ph-group-give-go', 'give 和 go 片語（28 個）', ['ph-give', 'ph-go'], 'section');
+mergeNotes('core', 'cw-group-verb', '常用動詞：每天、萬用、生活（61 個）', ['cw-verb-daily', 'cw-verb-common', 'cw-verb-more'], 'section');
+mergeNotes('core', 'cw-group-adj5', '5 個重要形容詞（eager、fair、familiar、firm、foreign）', ['cw-adj-eager', 'cw-adj-fair', 'cw-adj-familiar', 'cw-adj-firm', 'cw-adj-foreign'], 'section');
+mergeNotes('core', 'cw-group-family', '-er 變成人、單字家族', ['cw-er', 'cw-family'], 'section');
+mergeNotes('scene', 'sc-group-airport', '✈️ 機場：行李提領區、航廈和停機坪（19 個）', ['sc-baggage', 'sc-airport'], 'section');
