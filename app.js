@@ -95,6 +95,11 @@ function backBtn(text = '分類') {
   return `<button class="back" data-act="back">‹ ${esc(text)}</button>`;
 }
 function catHead() {
+  if (currentTab === 'cards') {
+    const opts = [['all', '🔀 全部混在一起'], ...NOTES.map(c => [c.id, `${c.icon || '📘'} ${c.name}`])]
+      .map(([id, name]) => `<option value="${esc(id)}" ${id === currentCat ? 'selected' : ''}>${esc(name)}</option>`).join('');
+    return `<div class="deck-head"><span class="muted">練習範圍</span><select id="deck-cat">${opts}</select></div>`;
+  }
   if (currentCat === 'wrong') {
     const n = itemsInCat().filter(isCard).length;
     return `<div class="today-head"><span>📕 錯題本 <b>${n}</b> 題</span><span class="muted">不同的兩天都答對 → 記住了</span></div>`;
@@ -1102,7 +1107,8 @@ function dialogRec() {
 const TABS = {
   today: { title: '每日複習', render: renderToday, start: startToday },
   notes: { title: '筆記', render: renderNotes },
-  cards: { title: '卡片練習', render: renderCards, start: startDeck },
+  // 卡片：點了直接開始練（全部混在一起），不要先出現分類按鈕；想專練一類用上面的下拉選單
+  cards: { title: '卡片練習', render: renderCards, start: () => { if (!currentCat) currentCat = 'all'; startDeck(); } },
   wrong: { title: '錯題本', render: renderCards, start: () => { currentCat = 'wrong'; startDeck(); } },
   quiz: { title: '小測驗', render: renderQuiz, start: startQuiz },
   listen: { title: '聽力和跟讀', render: renderListen, start: startListen },
@@ -1139,6 +1145,10 @@ function goUp() {
   go(currentTab, openItem ? currentCat : null, null, true);
 }
 window.addEventListener('popstate', route);
+// 卡片的「練習範圍」下拉選單
+document.addEventListener('change', e => {
+  if (e.target.id === 'deck-cat') go('cards', e.target.value === 'all' ? null : e.target.value, null, true);
+});
 
 document.querySelector('.tabs').addEventListener('click', e => {
   const b = e.target.closest('button[data-tab]');

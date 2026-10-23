@@ -483,3 +483,4 @@ img.pic.big { width: auto; max-width: 100%; height: auto; max-height: 200px; bor
 .stat .sv small { font-size: 14px; color: var(--muted); font-weight: 400; }
 .stat .sl { font-size: 13px; color: var(--muted); }
 .sec-title { color: var(--head); margin: 4px 0 8px; }
+.deck-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; } .deck-head select { flex: 1; font-size: 16px; padding: 8px 10px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--head); font-family: inherit; }
