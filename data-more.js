@@ -775,7 +775,27 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
     job: '醫療、公家、學校=doctor,nurse,surgeon,chemist,police officer,policeman,firefighter,soldier,detective,judge,lawyer,attorney,teacher,headteacher,professor,student|餐飲、商店、交通=chef,cook,waiter,waitress,baker,butcher,farmer,fisherman,driver,pilot,flight attendant,sailor,seaman,shop assistant,salesman,salesperson,clerk,hairdresser,tailor,construction worker,worker|辦公室、藝術、媒體=*',
     clothes: '衣服和褲子=shirt,T-shirt,blouse,sweater,jacket,coat,hoodie,raincoat,vest,dress,skirt,pants,trousers,shorts,jeans,suit,uniform,pajamas,underwear,apron,clothes,clothing|鞋子、襪子、帽子=socks,tights,stocking,shoes,boots,sneaker,sandal,slipper,cap,hat,sole,heel|配件和衣服的部位=*',
     sport: '球類=soccer,football,basketball,tennis,table tennis,badminton,volleyball,baseball,golf,handball,hockey,ice hockey,cricket,polo,water polo|田徑和體操=running,race,dash,walk,marathon,high jump,long jump,pole vault,throwing,shot put,discus,hammer,javelin,gymnastics,rings,horizontal bar,parallel bars,weightlifting|水上、冰上、其他=*',
-    body: '頭和臉=head,face,eye,ear,nose,mouth,lip,tooth,denture,gum,tongue,tonsil,cheek,chin,forehead,temple,lid,brain,hair,mustache,whisker,sideburns,bald|身體和四肢=neck,shoulder,arm,elbow,armpit,hand,palm,finger,thumb,nail,fist,chest,abdomen,waist,navel,hip,buttock,leg,thigh,knee,calf,shank,foot,instep|皮膚上的=*'
+    body: '頭和臉=head,face,eye,ear,nose,mouth,lip,tooth,denture,gum,tongue,tonsil,cheek,chin,forehead,temple,lid,brain,hair,mustache,whisker,sideburns,bald|身體和四肢=neck,shoulder,arm,elbow,armpit,hand,palm,finger,thumb,nail,fist,chest,abdomen,waist,navel,hip,buttock,leg,thigh,knee,calf,shank,foot,instep|皮膚上的=*',
+    // 使用者說「不喜歡全部長長一條」→ 12 個字以上的都分段
+    month: '上半年=January,February,March,April,May,June|下半年=*',
+    color: '常見顏色=blue,red,yellow,green,white,pink,purple|其他顏色=*',
+    staple: '米和麵=rice,noodles,pasta,dumpling,steamed bun|麵包、根莖、穀物=*',
+    tableware: '吃飯用的=plate,bowl,chopsticks,spoon,fork,knife,soup bowl,sauce dish,tray,table|喝東西用的=*',
+    drink: '不含酒精=water,milk,juice,tea,coffee,hot chocolate,soda,lemonade,smoothie,bubble tea,shake|含酒精=beer,wine,cider|「飲料」的說法=*',
+    flower: '常見的花=rose,tulip,sunflower,lily,cherry blossom,daisy,carnation,lotus|其他的花=*',
+    nature: '天空=air,moon,sun,sky,star|山和水=river,lake,stream,sea,mountain,forest,tree|路和建築=*',
+    room: '教室用品=desk,computer,board,teacher\'s desk,chart,picture,photo|房間用品=*',
+    meal: '三餐=breakfast,lunch,dinner,supper,meal|食物=egg,tofu,salad,soup,jam|速食和冰品=*',
+    bath: '洗澡和洗頭=soap,shampoo,conditioner,body wash,towel,shower,bathtub,sponge|刷牙和打理=toothbrush,toothpaste,comb,hair dryer,razor,tissue|廁所=*',
+    chore: '洗衣服和碗=do the laundry,do the dishes,iron the clothes,hang up the clothes,fold the clothes,washing machine|打掃=sweep the floor,mop the floor,vacuum,take out the trash,wipe the table,broom,mop,vacuum cleaner|其他家事=*',
+    cook: '廚具=pot,pan,kettle,cutting board,oven,microwave,stove,rice cooker|煮的方法=*',
+    taste: '調味料=salt,sugar,soy sauce,vinegar,pepper,ketchup,oil,honey,butter|味道=*',
+    feel: '開心的感覺=happy,excited,proud,relaxed,surprised|不開心的感覺=sad,angry,bored,nervous,scared,worried,lonely,embarrassed,confused,jealous|身體的感覺=*',
+    sick: '哪裡痛=headache,stomachache,toothache,sore throat,hurt,bruise|感冒、症狀和看病=*',
+    travel: '證件和行李=passport,visa,boarding pass,ticket,luggage,suitcase,backpack|在機場=flight,gate,seat,check in,connecting flight,delay,customs,departure,arrival|旅遊=*',
+    road: '路上看到的=traffic light,crosswalk,intersection,corner,sidewalk,bridge,tunnel,bus stop,gas station,highway,sign,traffic jam|問路常用=*',
+    money: '付錢=money,cash,credit card,coin,price,receipt,change|買東西=*',
+    country: '亞洲=Taiwan,Taiwanese,Japan,Japanese,Korea,Korean,Thailand,Thai,Vietnam,Vietnamese|歐美=*'
   };
   const vocab = NOTES.find(c => c.id === 'vocab');
   for (const [key, spec] of Object.entries(PARTS)) {
