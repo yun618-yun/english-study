@@ -1127,3 +1127,91 @@ How fast he runs!　他跑得好快！
       quiz: { q: '「天氣真好！」哪一句對？', options: ['What a beautiful day!', 'How a beautiful day!', 'What beautiful a day!', 'What a day beautiful!'], answer: 0 } }
   );
 }
+
+// ---------- 🔄 第二批：再加 10 項（10/23 使用者說「全加了吧」） ----------
+{
+  const items = NOTES.find(c => c.id === 'basics').items;
+  const it = items.find(i => i.id === 'b-group-order');
+  it.note += `
+
+【⑧ a cup of coffee／a coffee cup】
+a cup of coffee　一杯咖啡（裡面裝的是咖啡）
+a coffee cup　咖啡杯（杯子本身）
+a glass of water　一杯水
+a water bottle　水壺
+👉 兩個名詞放在一起，後面那個才是主角：a coffee cup 的主角是 cup
+
+【⑨ turn it on：it 要夾在中間】
+turn on the light　開燈
+turn the light on　開燈（也可以）
+turn it on　把它打開
+pick it up　把它撿起來
+👉 ⚠️ turn on it ✗：受詞是 it、them、him 時，一定要夾在中間
+
+【⑩ 形容詞的順序】
+a big red car　一台紅色的大車
+a beautiful old house　一間漂亮的老房子
+a small white dog　一隻白色的小狗
+👉 順序：感覺 → 大小 → 新舊 → 顏色 → 名詞
+👉 ⚠️ a red big car ✗ → a big red car ✓
+
+【⑪ Let's go／Let us go】
+Let's go.　我們走吧！（找對方一起）
+Let's not argue.　我們別吵了。
+Let us go.　讓我們走吧。（請對方放我們走）
+👉 找人一起做什麼，口語都用 Let's
+
+【⑫ the first two：first、last 放在數字前面】
+the first two pages　前兩頁
+the last three days　最後三天
+👉 ⚠️ the two first pages ✗ → the first two pages ✓
+
+【⑬ I don't think…：not 放在 think 這邊】
+I don't think he is right.　我覺得他不對。
+I don't think it will rain.　我覺得不會下雨。
+👉 I think he isn't right. 文法沒錯，但英文比較少這樣說
+
+【⑭ Do you mind…? 想說「可以」要回答 No】
+Do you mind if I sit here?　你介意我坐這裡嗎？
+No, not at all.　不介意，請坐。
+Sure, go ahead.　可以啊，請便。
+👉 ⚠️ mind 是「介意」，回答 Yes 是「我介意」（不行）
+
+【⑮ too／either：否定句的「也」用 either】
+I like it too.　我也喜歡。
+I don't like it either.　我也不喜歡。
+Me too.　我也是。
+Me neither.　我也不。
+👉 ⚠️ I don't like it too. ✗ → I don't like it either. ✓
+
+【⑯ so／such：後面有名詞用 such】
+It's so hot today.　今天好熱。
+It's such a hot day.　今天真是熱的一天。
+She is so kind.　她好善良。
+She is such a kind person.　她真是個善良的人。
+👉 so ＋ 形容詞；such a ＋ 形容詞 ＋ 名詞
+
+【⑰ How long／How often／How many times】
+How long did you stay?　你待了多久？
+For two weeks.　兩個禮拜。
+How often do you exercise?　你多常運動？
+Twice a week.　一週兩次。
+How many times have you been there?　你去過那裡幾次？
+Three times.　三次。
+👉 How long 問「多久」、How often 問「多常」、How many times 問「幾次」`;
+  const at = items.findIndex(i => i.id === 'b-ord-what') + 1;
+  const C = (id, front, back, q, options) => ({ id, front, back, quiz: { q, options, answer: 0 } });
+  items.splice(at, 0,
+    C('b-ord-cup', '「一杯咖啡」', 'a cup of coffee\na coffee cup 是「咖啡杯」', '「一杯咖啡」怎麼說？', ['a cup of coffee', 'a coffee cup', 'a coffee of cup', 'a cup coffee']),
+    C('b-ord-turnit', '「把它（電視）打開」', 'Turn it on.\nit 要夾在中間', '「把它打開」哪一句對？', ['Turn it on.', 'Turn on it.', 'On turn it.', 'Turn it.']),
+    C('b-ord-adj', '「一台紅色的大車」', 'a big red car\n大小在前、顏色在後', '「一台紅色的大車」哪一個對？', ['a big red car', 'a red big car', 'a car big red', 'a big car red']),
+    C('b-ord-lets', '「我們走吧！」（找朋友一起）', "Let's go!\n找人一起用 Let's", '「我們走吧！」哪一句對？', ["Let's go!", 'Let we go!', 'Lets us go!', 'Let go us!']),
+    C('b-ord-first', '「前兩頁」', 'the first two pages\nfirst 放在數字前面', '「前兩頁」哪一個對？', ['the first two pages', 'the two first pages', 'the first pages two', 'two the first pages']),
+    C('b-ord-think', '「我覺得不會下雨」（最常用的說法）', "I don't think it will rain.\nnot 放在 think 這邊", '「我覺得不會下雨」最常用的說法是？', ["I don't think it will rain.", 'I not think it will rain.', 'I think not it will rain.', "I don't think it won't rain."]),
+    C('b-ord-mind', 'Do you mind if I sit here?\n想說「可以，請坐」', 'No, not at all.\nmind 是「介意」，不介意就答 No', 'Do you mind if I sit here?（想說可以）', ['No, not at all.', 'Yes, I do.', 'Yes, I mind.', 'No, I do.']),
+    C('b-ord-either', '「我也不喜歡它」（完整句子）', "I don't like it either.\n否定句的「也」用 either", '「我也不喜歡它」哪一句對？', ["I don't like it either.", "I don't like it too.", 'I like it either.', "I don't either like it."]),
+    C('b-ord-such', '「今天真是熱的一天」', "It's such a hot day.\n後面有名詞用 such", '「今天真是熱的一天」哪一句對？', ["It's such a hot day.", "It's so a hot day.", "It's such hot day.", "It's a such hot day."]),
+    C('b-ord-how', '問「你多常運動？」', 'How often do you exercise?\nHow often 問「多常」', '「你多常運動？」哪一句對？', ['How often do you exercise?', 'How long do you exercise?', 'How many do you exercise?', 'How times do you exercise?'])
+  );
+  it.title = '🔄 位置或小字一換，意思就不一樣（17 項）';
+}
