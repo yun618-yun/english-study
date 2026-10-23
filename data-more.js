@@ -517,7 +517,8 @@ NOTES.find(c => c.id === 'terms').items.unshift({
 {
   const AFFIX = { un: 'un-', re: 're-', dis: 'dis-', im: 'im-／in-', pre: 'pre-', er: '-er／-or', ful: '-ful', less: '-less', ly: '-ly', able: '-able',
     mis: 'mis-', over: 'over-', num: 'uni-／bi-／tri-', tion: '-tion', ness: '-ness', ment: '-ment',
-    sub: 'sub-', inter: 'inter-', ous: '-ous', ship: '-ship', ist: '-ist', en: '-en', port: 'port', spect: 'spect', vis: 'vis／vid' };
+    sub: 'sub-', inter: 'inter-', ous: '-ous', ship: '-ship', ist: '-ist', en: '-en', port: 'port', spect: 'spect', vis: 'vis／vid',
+    tele: 'tele-', phon: 'phon', aud: 'aud', y: '-y', al: '-al', ive: '-ive' };
   const card = ([en, zh, hint], key, p) => ({
     id: `${p}-${key}-${slug(en)}`, front: AFFIX[key] ? `${zh}\n（用 ${AFFIX[key]}）` : zh,
     back: en + (hint && hint !== zh ? '\n💡 ' + hint : ''), say: en, group: `${p}-${key}`
@@ -626,6 +627,24 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
         ['vis', '👁️ 字根 vis／vid = 看', '另一個「看」的字根，在很多常用字裡。',
           'visit=拜訪、參觀=vis（看）→ 去看人、看地方|vision=視力=vis（看）＋ ion|visible=看得見的=vis（看）＋ ible（可以）|video=影片=vid（看）|television=電視=tele（遠）＋ vision（看）→ 看到遠方的東西|revise=修改=re（再）＋ vise（看）→ 再看一次',
           '💡 tele = 遠：telephone 電話（遠方的聲音）、telescope 望遠鏡\n💡 invisible 隱形的 = in（不）＋ visible（看得見）'],
+        ['tele', '📡 tele- = 遠', '放在字前面，表示「很遠的地方」。',
+          'telephone=電話=tele（遠）＋ phone（聲音）→ 聽到遠方的聲音|television=電視=tele（遠）＋ vision（看）→ 看到遠方的畫面|telescope=望遠鏡=tele（遠）＋ scope（看的工具）|telegram=電報=tele（遠）＋ gram（寫下來的）→ 傳到遠方的字|teleport=瞬間移動=tele（遠）＋ port（搬）→ 一下子搬到遠方',
+          '💡 TV 就是 television 的簡稱\n💡 teleport 的 port 就是前面學過的字根「搬」'],
+        ['phon', '🎧 字根 phon = 聲音', 'phone 不只是「電話」，它的字根意思是「聲音」。',
+          'microphone=麥克風=micro（小）＋ phone（聲音）→ 把小聲音變大|headphones=頭戴式耳機=head（頭）＋ phones（聲音）|earphones=耳機=ear（耳朵）＋ phones（聲音）|smartphone=智慧型手機=smart（聰明）＋ phone|phonics=自然發音法=phon（聲音）＋ ics（學問）→ 看字母就會念|saxophone=薩克斯風=Sax（發明的人）＋ phone（聲音）',
+          '💡 ph 念 /f/，跟 f 一樣：phone 念「佛恩」\n💡 耳機常用複數：headphones、earphones（因為有兩邊）'],
+        ['aud', '👂 字根 aud = 聽', 'aud 就是「聽」，跟聲音有關的字很多。',
+          'audio=聲音、音訊=aud（聽）|audience=觀眾、聽眾=aud（聽）＋ ience → 來聽的人|audition=試鏡、試唱=aud（聽）＋ ition → 唱給評審聽|audible=聽得見的=aud（聽）＋ ible（可以）|audiobook=有聲書=audio（聲音）＋ book（書）|auditorium=禮堂=aud（聽）＋ orium（地方）→ 大家聽演講的地方',
+          '💡 visible 看得見的 ↔ audible 聽得見的，一起記\n💡 aud 念 /ɔːd/，像中文的「喔的」'],
+        ['y', '☀️ -y = 變形容詞', '名詞後面加 -y，就變成形容詞「有…的、…多的」。',
+          'lucky=幸運的=luck（運氣）＋ y|noisy=吵鬧的=noise（噪音）＋ y，去掉 e|salty=鹹的=salt（鹽）＋ y|sleepy=想睡的=sleep（睡覺）＋ y|healthy=健康的=health（健康）＋ y|dirty=髒的=dirt（泥土）＋ y → 都是泥土',
+          '💡 天氣也一樣：sun → sunny（中間多一個 n）、rain → rainy、cloud → cloudy\n💡 例句：I feel sleepy. 我好想睡。'],
+        ['al', '🌿 -al = 變形容詞（…的）', '名詞後面加 -al，就變成形容詞。',
+          'natural=自然的=nature（自然）＋ al，去掉 e|musical=音樂的=music（音樂）＋ al|national=國家的=nation（國家）＋ al|personal=個人的=person（人）＋ al|traditional=傳統的=tradition（傳統）＋ al|cultural=文化的=culture（文化）＋ al，去掉 e',
+          '💡 national 和 international 是一家人：inter（之間）＋ national\n💡 例句：That is my personal opinion. 那是我個人的看法。'],
+        ['ive', '🔥 -ive = 變形容詞（有…性質的）', '動詞後面加 -ive，就變成形容詞。',
+          'active=活躍的=act（行動）＋ ive|creative=有創意的=create（創造）＋ ive，去掉 e|expensive=貴的=expense（花費）＋ ive，去掉 e|attractive=有吸引力的=attract（吸引）＋ ive|talkative=愛說話的=talk（說話）＋ ative|protective=保護的=protect（保護）＋ ive',
+          '💡 -ive 念 /ɪv/，像中文的「一夫」，很輕\n💡 expensive 貴的 ↔ cheap 便宜的'],
         ['loan', '🎵 諧音①：中文本來就是照發音翻的', '這些字的中文就是音譯，念出來幾乎一樣，最好記！',
           'sofa=沙發=沙發 → 發音幾乎一樣|humor=幽默=幽默|logic=邏輯=邏輯|guitar=吉他=吉他|salad=沙拉=沙拉|pudding=布丁=布丁|toast=吐司=吐司|cartoon=卡通=卡通|engine=引擎=引擎|hacker=駭客=駭客',
           '💡 生活中還有很多：bus 巴士、taxi 的士、cool 酷、typhoon 颱風（這個是英文跟中文借的）'],
@@ -649,7 +668,13 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
           '💡 背一個字的時候，順便查它的「家人」，等於一次背 2～3 個字\n💡 字尾看詞性：-ful、-ous、-y 是形容詞；-tion、-ness、-ment、-ship 是名詞'],
         ['confuse', '🤯 長得很像、很容易搞混的字', '兩兩一對，用小口訣分清楚。',
           'quiet=安靜的=qui-et 兩個音節，念得比較長、慢慢的，很安靜|quite=相當、很=一個音節，很快就念完，結尾是 te|lose=失去、輸=只有一個 o → 輸掉了一個 o|loose=鬆的=兩個 o → 太鬆了，多出一個 o|advice=建議（名詞）=c 是名詞：give me some advice|advise=建議（動詞）=s 是動詞：I advise you to rest.|borrow=（跟別人）借=借進來：Can I borrow your pen?|lend=借給（別人）=借出去：Can you lend me your pen?|then=然後、那時=e 跟時間有關：and then 然後|than=比=thAn 和 compAre（比較）都有 a：taller than me',
-          '💡 lose 念 /luːz/（尾音像 z），loose 念 /luːs/（尾音像 s），按 🔊 比較看看\n💡 borrow 是「拿進來」，lend 是「給出去」，方向相反']
+          '💡 lose 念 /luːz/（尾音像 z），loose 念 /luːs/（尾音像 s），按 🔊 比較看看\n💡 borrow 是「拿進來」，lend 是「給出去」，方向相反'],
+        ['homo', '👯 發音一樣、拼法不同的字', '這些字念起來完全一樣，聽的時候要看前後文，寫的時候要記拼法。',
+          'meet=見面=兩個 e 像兩個人面對面|meat=肉=裡面藏著 eat（吃）→ 肉是拿來吃的|see=看=兩個 e 像兩隻眼睛|sea=海=sea 的 a 像海浪|week=一週=跟 weekend（週末）一起記|weak=虛弱的=跟 weakness（弱點）一起記|write=寫=w 不發音：write a letter 寫信|right=對的、右邊=gh 不發音：turn right 右轉|flower=花=裡面有 low（低）→ 花長得低低的|flour=麵粉=裡面有 our（我們的）→ 我們的麵粉拿來做麵包',
+          '💡 聽到 /miːt/，要看前後文：Nice to meet you. 是見面；I don\'t eat meat. 是肉\n💡 還有：hear 聽／here 這裡、their 他們的／there 那裡'],
+        ['sound3', '🎵 諧音⑤：生活小字口訣', '老師編的第二組，都是生活中很常用的字。',
+          'busy=忙的=逼死 → 忙到快被逼死|cheap=便宜的=氣噗 → 賣這麼便宜，老闆氣噗噗|tip=小費=貼 → 貼一點小費給服務生|sour=酸的=餿 → 餿掉的東西是酸的|bite=咬=拜 → 拜託不要咬我|cry=哭=快 → 快哭了|cough=咳嗽=咳夫 → 一直咳|lie=說謊=賴 → 說謊又賴皮|sweat=汗=水的 → 流汗流得都是水',
+          '⚠️ 諧音只用來記「意思」！真正的發音一定要按 🔊 聽\n💡 cough 的 gh 念 /f/，跟 laugh（笑）一樣']
       ], { card })
     ]
   });
