@@ -787,7 +787,7 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
     room: '教室用品=desk,computer,board,teacher\'s desk,chart,picture,photo|房間用品=*',
     meal: '三餐=breakfast,lunch,dinner,supper,meal|食物=egg,tofu,salad,soup,jam|速食和冰品=*',
     bath: '洗澡和洗頭=soap,shampoo,conditioner,body wash,towel,shower,bathtub,sponge|刷牙和打理=toothbrush,toothpaste,comb,hair dryer,razor,tissue|廁所=*',
-    chore: '洗衣服和碗=do the laundry,do the dishes,iron the clothes,hang up the clothes,fold the clothes,washing machine|打掃=sweep the floor,mop the floor,vacuum,take out the trash,wipe the table,broom,mop,vacuum cleaner|其他家事=*',
+    chore: '洗衣服和碗=do the laundry,do the dishes,iron the clothes,hang out the laundry,fold the clothes,washing machine|打掃=sweep the floor,mop the floor,vacuum,take out the trash,wipe the table,broom,mop,vacuum cleaner|其他家事=*',
     cook: '廚具=pot,pan,kettle,cutting board,oven,microwave,stove,rice cooker|煮的方法=*',
     taste: '調味料=salt,sugar,soy sauce,vinegar,pepper,ketchup,oil,honey,butter|味道=*',
     feel: '開心的感覺=happy,excited,proud,relaxed,surprised|不開心的感覺=sad,angry,bored,nervous,scared,worried,lonely,embarrassed,confused,jealous|身體的感覺=*',
@@ -1083,7 +1083,7 @@ This room is big enough.　這個房間夠大。
 something cold　冰的東西
 someone special　特別的人
 nothing new　沒什麼新鮮事
-Do you want something to drink?　你想喝點東西嗎？
+I want to eat something sweet.　我想吃點甜的。
 👉 ⚠️ cold something ✗ → something cold ✓
 
 【④ a few／few：差一個 a，意思相反】

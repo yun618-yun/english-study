@@ -1452,7 +1452,7 @@ for (const [key, words] of [
 // 格式：[代號, 名稱, 分類圖示, '中文=英文=Emoji|…']（Emoji 可以空著，會顯示淡淡的分類圖示）
 const MORE_VOCAB = [
   ['bath', '浴室和日用品', '🧴', '牙刷=toothbrush=🪥|牙膏=toothpaste=🦷|毛巾=towel=|肥皂=soap=🧼|洗髮精=shampoo=🧴|潤髮乳=conditioner=|沐浴乳=body wash=|衛生紙=toilet paper=🧻|面紙=tissue=|梳子=comb=|吹風機=hair dryer=|刮鬍刀=razor=🪒|洗手台=sink=|馬桶=toilet=🚽|淋浴=shower=🚿|浴缸=bathtub=🛁|海綿=sponge=🧽'],
-  ['chore', '家事', '🧹', '洗衣服=do the laundry=🧺|洗碗=do the dishes=🍽️|掃地=sweep the floor=🧹|拖地=mop the floor=|吸地板=vacuum=|倒垃圾=take out the trash=🗑️|整理床鋪=make the bed=🛏️|煮晚餐=cook dinner=🍳|燙衣服=iron the clothes=|晾衣服=hang up the clothes=|摺衣服=fold the clothes=👕|擦桌子=wipe the table=|澆花=water the plants=🪴|餵寵物=feed the pet=🐶|洗衣機=washing machine=|掃把=broom=🧹|拖把=mop=|吸塵器=vacuum cleaner='],
+  ['chore', '家事', '🧹', '洗衣服=do the laundry=🧺|洗碗=do the dishes=🍽️|掃地=sweep the floor=🧹|拖地=mop the floor=|吸地板=vacuum=|倒垃圾=take out the trash=🗑️|整理床鋪=make the bed=🛏️|煮晚餐=cook dinner=🍳|燙衣服=iron the clothes=|晾衣服=hang out the laundry=|摺衣服=fold the clothes=👕|擦桌子=wipe the table=|澆花=water the plants=🪴|餵寵物=feed the pet=🐶|洗衣機=washing machine=|掃把=broom=🧹|拖把=mop=|吸塵器=vacuum cleaner='],
   ['cook', '廚房和煮飯', '🍳', '鍋子=pot=🍲|平底鍋=pan=🍳|水壺=kettle=🫖|砧板=cutting board=|烤箱=oven=|微波爐=microwave=|爐子=stove=|電鍋=rice cooker=🍚|煮（飯菜）=cook=🧑‍🍳|水煮=boil=|煎、炸=fry=🍳|炒=stir-fry=🥘|烤（麵包、蛋糕）=bake=🍞|烤（肉）=grill=🍖|蒸=steam=🥟|切=cut=🔪|削皮=peel=🥔|攪拌=mix=🥣'],
   ['taste', '調味料和味道', '🧂', '鹽=salt=🧂|糖=sugar=🍬|醬油=soy sauce=|醋=vinegar=|胡椒=pepper=|番茄醬=ketchup=🍅|油=oil=🫗|蜂蜜=honey=🍯|奶油=butter=🧈|甜的=sweet=🍭|酸的=sour=🍋|苦的=bitter=☕|辣的=spicy=🌶️|鹹的=salty=🧂|好吃的=delicious=😋|沒味道的、清淡的=bland='],
   ['feel', '情緒和感受', '😊', '開心的=happy=😊|難過的=sad=😢|生氣的=angry=😠|累的=tired=😫|無聊的=bored=😑|興奮的=excited=🤩|緊張的=nervous=😰|害怕的=scared=😨|驚訝的=surprised=😮|擔心的=worried=😟|寂寞的=lonely=😔|尷尬的=embarrassed=😳|驕傲的=proud=😤|放鬆的=relaxed=😌|困惑的=confused=😕|忌妒的=jealous=😒|餓的=hungry=🤤|渴的=thirsty=🥤|想睡的=sleepy=😴'],
@@ -1470,7 +1470,7 @@ for (const [key, name, icon, list] of MORE_VOCAB) {
 }
 Object.assign(VOCAB_TIPS, {
   bath: { tissue: '💡 tissue 是擦臉、擤鼻涕的面紙；toilet paper 是上廁所用的衛生紙', shower: '💡 shower 也是動詞「淋浴」：I take a shower every night. 我每天晚上洗澡' },
-  chore: { _do: '💡 家事常用 do：do the laundry、do the dishes、do housework（做家事）\n💡 問家事：Who does the dishes at your home? 你家誰洗碗？', vacuum: '💡 vacuum 當動詞是「用吸塵器吸」，吸塵器是 vacuum cleaner' },
+  chore: { 'hang out the laundry': '💡 晾衣服是 hang out the laundry；hang up the clothes 是「把衣服掛起來」（掛到衣架、衣櫃裡）', _do: '💡 家事常用 do：do the laundry、do the dishes、do housework（做家事）\n💡 問家事：Who does the dishes at your home? 你家誰洗碗？', vacuum: '💡 vacuum 當動詞是「用吸塵器吸」，吸塵器是 vacuum cleaner' },
   cook: { cook: '💡 cook 是動詞「煮」，也是名詞「廚師」；cooker 是「鍋具」，不是人！', bake: '💡 bake 用烤箱烤麵包、蛋糕；grill 是用火直接烤肉；roast 是大塊的肉放烤箱烤' },
   taste: { _taste: '💡 問味道：How does it taste? 味道怎麼樣？\n💡 回答：It tastes sweet. 吃起來甜甜的（taste 後面接形容詞）', spicy: '💡 spicy 是「辣」；hot 也可以說辣，但 hot 也有「燙」的意思', pepper: '💡 pepper 是胡椒；bell pepper 才是甜椒（在「蔬菜」那類）' },
   feel: { bored: '⚠️ bored（覺得無聊）和 boring（令人無聊）不一樣：\nI am bored. 我好無聊 ✓\nI am boring. 我是個無聊的人 ✗（意思差很多）', excited: '💡 一樣的規則：excited 我很興奮／exciting 這件事很刺激', _feel: '💡 說心情：I feel happy. 或 I am happy.\n💡 問心情：How do you feel? 你覺得怎麼樣？' },
