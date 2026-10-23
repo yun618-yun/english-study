@@ -511,3 +511,4 @@ img.pic.big { width: auto; max-width: 100%; height: auto; max-height: 200px; bor
 .cal-d.ok { background: var(--good); color: #fff; font-weight: 800; }
 .cal-d.today { outline: 2px solid var(--teal); }
 label.btn { display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+.backup-banner { background: var(--tip-bg); border: 1px solid #f0c85a; border-radius: 14px; padding: 10px 12px; margin-bottom: 10px; font-size: 15px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; } .backup-banner .btn { width: auto; padding: 6px 14px; margin-left: auto; }

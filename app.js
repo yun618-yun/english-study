@@ -837,13 +837,24 @@ function streak() {
   while (set.has(d)) { n++; d--; }
   return n;
 }
+// 🔔 每週備份提醒：有練習紀錄、而且超過 7 天沒備份，就在「今日」上面提醒（雲端保存做好以前先用這個）
+const BACKUP_KEY = 'english-study-lastbackup';
+function backupBanner() {
+  let last = 0;
+  try { last = Number(localStorage.getItem(BACKUP_KEY)) || 0; } catch (e) {}
+  if (!studyDays.length || Date.now() - last < 7 * 86400000) return '';
+  const days = last ? Math.floor((Date.now() - last) / 86400000) : 0;
+  return `<div class="backup-banner">💾 ${last ? `已經 ${days} 天沒備份了` : '還沒備份過練習紀錄'}，清除網站資料前記得備份！
+    <button class="btn" data-act="backup-copy">一鍵複製備份</button></div>`;
+}
+const markBackup = () => { try { localStorage.setItem(BACKUP_KEY, String(Date.now())); } catch (e) {} };
 function renderToday() {
   const s = streak();
-  const head = `<div class="today-head"><span>🔥 連續 <b>${s}</b> 天</span><span>今天剩 <b>${todayQueue.length - todayPos}</b> 張</span></div>`;
+  const head = backupBanner() + `<div class="today-head"><span>🔥 連續 <b>${s}</b> 天</span><span>今天剩 <b>${todayQueue.length - todayPos}</b> 張</span></div>`;
   if (todayPos >= todayQueue.length) {
     if (todayDone > 0 && !studyDays.includes(today())) { studyDays.push(today()); saveSrs(); }
     const upcoming = Object.values(srs).filter(r => r.due === today() + 1).length;
-    $view.innerHTML = `<div class="today-head"><span>🔥 連續 <b>${streak()}</b> 天</span></div>
+    $view.innerHTML = backupBanner() + `<div class="today-head"><span>🔥 連續 <b>${streak()}</b> 天</span></div>
       <div class="plan-step done">✅ 1. 卡片複習　<span class="muted">明天大約要複習 ${upcoming} 張</span></div>
       ${planHtml()}
       <div class="empty" style="padding-top:8px"><button class="btn ghost" data-act="more-new">還想學：再學 10 張新卡片</button></div>`;
@@ -1114,6 +1125,7 @@ function renderListen() {
   const counter = `<div class="counter">${LISTEN_SRC[listenSrc].name}　${lPos + 1} / ${lDeck.length}</div>`;
   if (listenMode === 'listen') {
     lQ = wordQuestion(it);
+    if (!lQ) { lPos++; return renderListen(); }   // 做不出選項的就跳過
     $view.innerHTML = head + counter + `
       <div class="word-card" id="card-top">
         <button class="big-say" data-act="listen-play">🔊</button>
@@ -1356,9 +1368,12 @@ $view.addEventListener('click', e => {
     case 'listen-home': listenMode = null; renderListen(); break;
     case 'cal': calOffset += Number(el.dataset.v); renderProgress(); break;
     case 'backup-copy':
+      markBackup();
       navigator.clipboard.writeText(backupText()).then(() => alert('✅ 已複製！貼到備忘錄或 LINE 傳給自己存起來'), () => prompt('請全選複製這串文字：', backupText()));
+      document.querySelectorAll('.backup-banner').forEach(b => b.remove());
       break;
     case 'backup-file': {
+      markBackup();
       const a = document.createElement('a');
       a.href = URL.createObjectURL(new Blob([backupText()], { type: 'application/json' }));
       a.download = `英文學習備份-${new Date().toISOString().slice(0, 10)}.json`;
