@@ -578,3 +578,9 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 [data-pics="off"] .page .nbgrid:has(img.pic) { display: block; column-count: 2; }
 .page .nbgrid > .nb:has(img.pic) { display: grid; }
 [data-pics="off"] .page .nbgrid > .nb:has(img.pic) { display: inline-block; }
+/* 兩欄框框（app.js masonry 分好兩欄） */
+.page .nbgrid.masonry { display: flex !important; gap: 10px; column-count: auto !important; align-items: flex-start; }
+.page .nbgrid.masonry > .mcol { flex: 1 1 0; min-width: 0; }
+.page .nbgrid.masonry > .mcol > .nb { display: block; width: 100%; margin-bottom: 10px; }
+.page .nbgrid.masonry > .mcol > .nb.two { display: grid; }
+[data-pics="off"] .page .nbgrid.masonry > .mcol > .nb:has(img.pic) { display: block; }

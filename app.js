@@ -378,6 +378,7 @@ function renderNotes() {
       </div>
       ${planRun === 'note' ? '<div class="empty">' + planBack('note') + '</div>' : ''}`;
     markRead(it.id);   // 今日文法：打開過就算讀過
+    masonry();
     fitLabels();
     return;
   }
@@ -849,6 +850,7 @@ document.addEventListener('click', e => {
   try { localStorage.setItem('english-study-pics', showPics ? 'on' : 'off'); } catch (e) {}
   applyPics();
   e.target.closest('#pic-toggle').outerHTML = picToggleBtn();
+  masonry();
 });
 applyPics();
 
@@ -1510,3 +1512,19 @@ function fitLabels() {
     if (h > 28) { l.parentElement.style.setProperty('--pt', (h + 10) + 'px'); l.parentElement.style.setProperty('--bt', (h + 12) + 'px'); }
   });
 }
+
+// 兩欄框框：照順序一個一個放進「目前比較矮的那一欄」→ 左右交錯、不留空白（10/23 使用者要的）
+// 有插畫的單字表在顯示圖片時維持一欄（圖卡本身就是兩欄）
+function masonry() {
+  document.querySelectorAll('.page .nbgrid').forEach(g => {
+    if (!g._items) g._items = [...g.children].filter(el => !el.classList.contains('mcol'));
+    const single = showPics && g.querySelector('img.pic');
+    g.innerHTML = '';
+    g.classList.toggle('masonry', !single);
+    if (single) { g._items.forEach(el => g.appendChild(el)); return; }
+    const cols = [0, 1].map(() => g.appendChild(Object.assign(document.createElement('div'), { className: 'mcol' })));
+    g._items.forEach(el => (cols[0].offsetHeight <= cols[1].offsetHeight ? cols[0] : cols[1]).appendChild(el));
+  });
+}
+let masonryTimer;
+window.addEventListener('resize', () => { clearTimeout(masonryTimer); masonryTimer = setTimeout(() => { masonry(); fitLabels(); }, 200); });
