@@ -391,6 +391,7 @@ function renderNotes() {
       ${planRun === 'note' ? '<div class="empty">' + planBack('note') + '</div>' : ''}`;
     markRead(it.id);   // 今日文法：打開過就算讀過
     masonry();
+    buildToc();
     fitLabels();
     return;
   }
@@ -784,6 +785,7 @@ function settingsHtml() {
   const voices = enVoices();
   const opts = voices.map(v => `<option value="${esc(v.name)}" ${enVoice && v.name === enVoice.name ? 'selected' : ''}>${esc(accentOf(v))}・${esc(v.name)}</option>`).join('');
   return `<h3 class="sec-title">⚙️ 設定</h3>
+    ${typeof cloudBoxHtml === 'function' ? cloudBoxHtml() : ''}
     <div class="box">
       <h3>🎙️ 英文語音</h3>
       ${voices.length ? `<select id="voice-sel" class="search">${opts}</select>` : '<p class="muted">這個瀏覽器沒有英文語音</p>'}
@@ -799,7 +801,7 @@ function settingsHtml() {
 // 備份：所有 english-study- 開頭的紀錄
 function backupText() {
   const data = {};
-  try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k.startsWith('english-study-')) data[k] = localStorage.getItem(k); } } catch (e) {}
+  try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k.startsWith('english-study-') && k !== 'english-study-cloud') data[k] = localStorage.getItem(k); } } catch (e) {}
   return JSON.stringify({ app: 'english-study', date: new Date().toISOString().slice(0, 10), data });
 }
 function restoreText(text) {
@@ -1574,3 +1576,38 @@ function masonry() {
 }
 let masonryTimer;
 window.addEventListener('resize', () => { clearTimeout(masonryTimer); masonryTimer = setTimeout(() => { masonry(); fitLabels(); }, 200); });
+
+// ===== 🔤 字的大小：小／中／大（10/23 使用者要的：改成兩欄後字比較小），記在手機裡 =====
+const FONT_KEY = 'english-study-font', FONTS = [['小', 0.9], ['中', 1], ['大', 1.15]];
+let fontIdx = 1;
+try { const v = Number(localStorage.getItem(FONT_KEY)); if (FONTS[v]) fontIdx = v; } catch (e) {}
+function applyFont() {
+  document.documentElement.style.setProperty('--fz', FONTS[fontIdx][1]);
+  document.getElementById('font-btn').textContent = '🔤 ' + FONTS[fontIdx][0];
+}
+document.getElementById('font-btn').addEventListener('click', () => {
+  fontIdx = (fontIdx + 1) % FONTS.length;
+  try { localStorage.setItem(FONT_KEY, fontIdx); } catch (e) {}
+  applyFont();
+  if (document.querySelector('.page')) { masonry(); fitLabels(); }   // 字變大小，兩欄要重排
+});
+applyFont();
+
+// ===== 📑 長筆記的小目錄：最上面一排按鈕，點一下跳到那一段（10/23 使用者要的） =====
+function buildToc() {
+  const page = document.querySelector('.page'); if (!page) return;
+  // 有 ▍小標題就用小標題；沒有的話，框框多（5 個以上）就用框框的標題
+  let marks = [...page.querySelectorAll('h3.msec')];
+  if (marks.length < 2) { marks = [...page.querySelectorAll('.nb > .lbl')]; if (marks.length < 5) return; }
+  const name = el => el.textContent.replace(/（\d+ 個）/, '').replace(/^[①-⑳]\s*/, '').trim();
+  const nav = document.createElement('nav');
+  nav.className = 'toc';
+  nav.innerHTML = '<span class="toc-t">📑 跳到：</span>' + marks.map((m, i) => `<button data-toc="${i}">${esc(name(m).slice(0, 18))}</button>`).join('');
+  page.querySelector('h2').after(nav);
+  nav.addEventListener('click', e => { const b = e.target.closest('[data-toc]'); if (b) marks[b.dataset.toc].scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+}
+// 往下滑很多的時候，右下角出現「⬆」回到最上面
+const topBtn = Object.assign(document.createElement('button'), { className: 'to-top', textContent: '⬆', title: '回到最上面' });
+topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+document.body.appendChild(topBtn);
+window.addEventListener('scroll', () => topBtn.classList.toggle('show', window.scrollY > 800 && !!document.querySelector('.page')), { passive: true });
