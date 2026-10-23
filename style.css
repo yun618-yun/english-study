@@ -600,3 +600,8 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .page .nbgrid.masonry > .nb.wide > :not(.row) { grid-column: 1 / -1; }
 .page .nbgrid.masonry > .nb.wide > .row { display: block; }
 [data-pics="off"] .page .nb .row span.pic, [data-pics="off"] .page .nb .row img.pic { display: none !important; }
+/* 框框裡分兩欄的句子、三四欄表格：每一項上下排 */
+.page .nb.two .row.sent .k { font-size: 16px; line-height: 1.4; }
+.page .nb.two .row.multi { display: block; }
+.page .nb.two .row.multi .v { display: block; text-align: left; font-size: 13.5px; }
+.page .nb.two > .takeaway { grid-column: 1 / -1; }
