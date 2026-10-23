@@ -811,3 +811,21 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
     it.note = '{{grid}}' + [...parts.filter(p => p.lines.length).map(p => `【${p.name}（${p.lines.length} 個）】\n` + p.lines.join('\n')), ...rest].join('\n\n');
   }
 }
+
+// ---------- ✈️ 生活常用句裡的「出國：…」3 格合成 1 格（10/23 使用者要的；卡片不動，id 不變） ----------
+{
+  const daily = NOTES.find(c => c.id === 'daily').items;
+  const groups = [['dl-airport', '🛫 機場、出入境'], ['dl-hotel', '🏨 飯店'], ['dl-help', '🆘 求助、突發狀況']];
+  let total = 0;
+  const boxes = groups.map(([id, name]) => {
+    const it = daily.find(i => i.id === id);
+    const parts = it.note.split('\n\n');
+    const rows = parts.find(p => p.includes('　'));
+    const n = rows.split('\n').length; total += n;
+    const tips = parts.filter(p => /^(💡|⚠️)/.test(p)).join('\n').replace(/^💡 ?/gm, '👉 ');
+    return `【${name}（${n} 個）】\n` + [rows, tips].filter(Boolean).join('\n');
+  });
+  const at = daily.findIndex(i => i.id === 'dl-airport');
+  daily[at] = { id: 'dl-abroad', title: `✈️ 出國：機場、飯店、求助（${total} 個）`, note: '{{nogrid}}出國旅遊一定會用到，海關問的問題通常很固定。\n\n' + boxes.join('\n\n') };
+  for (const id of ['dl-hotel', 'dl-help']) daily.splice(daily.findIndex(i => i.id === id), 1);
+}
