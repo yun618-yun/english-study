@@ -267,7 +267,8 @@ function formatNote(text) {
   // 筆記開頭寫 {{nogrid}}：框框都一整排，不自動並排（情境單字的英文比較長，並排會擠）
   // 筆記開頭寫 {{pair}}：每個框框都兩欄並排（就算是三欄的表格；框框裡會改成上下排）
   if (text.startsWith('{{pair}}')) return formatBlocks(text.replace(/^\{\{pair\}\}\n*/, ''), false, true);
-  if (text.startsWith('{{nogrid}}')) return formatBlocks(text.replace(/^\{\{nogrid\}\}\n*/, ''), true);
+  // {{nogrid}}：以前用來不讓框框並排；10/23 使用者要全部兩欄，現在當成一般筆記
+  if (text.startsWith('{{nogrid}}')) return formatBlocks(text.replace(/^\{\{nogrid\}\}\n*/, ''));
   return formatBlocks(text);
 }
 // 短的框框（每行都不長、行數不多）自動兩個一排；長句子的框框維持一整排
@@ -321,8 +322,15 @@ function formatBlocks(text, noGrid, pairAll) {
   // 連續兩個以上的短框框 → 包成兩欄
   let out = '', run = [];
   const flush = () => { out += run.length >= 2 ? `<div class="nbgrid">${run.join('')}</div>` : run.join(''); run = []; };
+  // 10/23 使用者要每個區塊都兩欄：所有框框都可以並排；裡面已經分兩欄的長表格自己一塊
+  // 只有一行的小框框：旁邊也是一行的就一起並排；夾在大框框旁邊的就自己一塊（不然一大一小排不平均）
+  const cand = blocks.map((ls, i) => html[i].startsWith('<div class="nb') && !html[i].startsWith('<div class="nb two'));
+  const one = blocks.map(ls => ls.length === 1);
+  const ok = i => cand[i] && (!one[i] || (cand[i - 1] && one[i - 1]) || (cand[i + 1] && one[i + 1]));
   blocks.forEach((ls, i) => {
-    if ((pairAll ? MARK.test(ls[0].trim()) : isShortBlock(ls)) && html[i].startsWith('<div class="nb')) run.push(html[i]);
+    // 一行的和多行的不放在同一組
+    if (ok(i) && run.length && one[i] !== one[i - 1]) flush();
+    if (ok(i)) run.push(html[i]);
     else { flush(); out += html[i]; }
   });
   flush();
