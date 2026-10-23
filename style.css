@@ -1,4 +1,4 @@
-/* 參考使用者喜歡的「郭老師」筆記：淺藍底、白色紙張、粉紅螢光筆標題、紅色英文、淺色色塊。
+/* 參考使用者喜歡的「郭老師」筆記：淺藍底、白色紙張、粉紅螢光筆標題、藍綠色英文（原本紅色，10/23 改：紅色只拿來警示）、淺色色塊。
    使用者不喜歡暗色，所以沒有深色模式，手機開深色模式也一樣是亮的 */
 :root {
   color-scheme: light;
@@ -8,7 +8,8 @@
   --head: #3d362f;
   --muted: #80776b;
   --line: #d8cdb9;
-  --teal: #c0485a;          /* 重點色：郭老師筆記的紅色 */
+  --teal: #2b6f80;          /* 重點色：藍綠色（使用者 10/23：紅色只拿來警示、特別注意） */
+  --warn: #c0485a;          /* ⚠️ 注意、警示用的紅色 */
   --brown: #b5654a;
   --marker: rgba(246, 160, 180, .55);   /* 粉紅螢光筆 */
   --pink: #f5e2df;
@@ -309,7 +310,7 @@ img.pic.big { width: auto; max-width: 100%; height: auto; max-height: 200px; bor
 .tip { position: relative; border: 0; border-left: 4px solid #f2c14e; background: var(--yellow); padding-top: 28px; }
 .tip .tag { position: absolute; top: 6px; left: 12px; font-size: 13px; font-weight: 800; color: #b8860b; }
 .tip.fix { border-left-color: #e57a8c; background: var(--pink); }
-.tip.fix .tag { color: var(--teal); }
+.tip.fix .tag { color: var(--warn); }
 .page .sub { display: block; margin-top: 12px; }
 .page > h2 + .nb, .page > h2 + .tip, .page > h2 + .card-grid { margin-top: 16px; }
 /* 單字卡片下面的小提醒 */
@@ -345,7 +346,7 @@ img.pic.big { width: auto; max-width: 100%; height: auto; max-height: 200px; bor
 }
 .ntile .nnum, .ntile .nsub { color: var(--c, var(--teal)); }
 .nb .poem { font-size: 16.5px; line-height: 1.85; color: var(--text); }
-.wtip.warn { background: var(--pink); border-left-color: #e57a8c; }
+.wtip.warn { background: var(--pink); border-left-color: #e57a8c; color: var(--warn); }
 
 /* ===== 郭老師的大括號 { 樣式：白底、紅標題、左邊一個粉紅大括號把同一組圈起來 ===== */
 .page .nb, .page .nb:nth-of-type(4n+2), .page .nb:nth-of-type(4n+3), .page .nb:nth-of-type(4n) {
@@ -353,7 +354,7 @@ img.pic.big { width: auto; max-width: 100%; height: auto; max-height: 200px; bor
 }
 .page .nb::before {
   content: ""; position: absolute; left: 4px; top: 6px; bottom: 6px; width: 16px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 100' preserveAspectRatio='none'%3E%3Cpath d='M14 1 C7 1 8 6 8 14 L8 42 C8 48 5 50 2 50 C5 50 8 52 8 58 L8 86 C8 94 7 99 14 99' fill='none' stroke='%23e8899b' stroke-width='2.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 100' preserveAspectRatio='none'%3E%3Cpath d='M14 1 C7 1 8 6 8 14 L8 42 C8 48 5 50 2 50 C5 50 8 52 8 58 L8 86 C8 94 7 99 14 99' fill='none' stroke='%2389b4c0' stroke-width='2.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
 }
 /* 有標題的：標題放在大括號上面，大括號只框住下面的內容 */
 .page .nb:has(> .lbl) { padding-top: 34px; }
@@ -520,7 +521,9 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 /* 🖼️ 單字表藏起圖片：變成一行一個字的精簡清單 */
 .pic-toggle { float: right; margin: 0 0 8px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--text); font-size: 14px; }
 [data-pics="off"] .page .nb img.pic, [data-pics="off"] .page .nb span.pic { display: none; }
-[data-pics="off"] .page .nb:has(img.pic) { display: block; }
+[data-pics="off"] .page .nb:has(img.pic) { display: block; padding: 34px 6px 6px 26px; margin-bottom: 16px; }
+[data-pics="off"] .page .nb:has(img.pic)::before { display: block; top: 36px; }   /* 清單模式也要有大括號 */
+[data-pics="off"] .page .nb:has(img.pic) > .lbl { position: absolute; top: 4px; left: 4px; margin: 0; }
 [data-pics="off"] .page .nb:has(img.pic) .row {
   flex-direction: row; align-items: center; justify-content: space-between; gap: 8px;
   background: none; border: 0; border-top: 1px solid var(--line); border-radius: 0; box-shadow: none; padding: 6px 2px;
