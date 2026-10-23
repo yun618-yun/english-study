@@ -3,7 +3,14 @@
 // CLOUD_CONFIG 是 Firebase 專案的「網頁應用程式設定」，不是密碼，可以放在公開的網站上；
 // 安全靠 Firestore 規則：每個人只能讀寫自己的 users/{uid}。
 // 還沒填 CLOUD_CONFIG 之前，設定頁會顯示「還沒開通」，網站其他功能照常。
-const CLOUD_CONFIG = null;
+const CLOUD_CONFIG = {
+  apiKey: 'AIzaSyCpow3INDB3unDUuDtNoicKG1QgNd7qW_Q',
+  authDomain: 'english-study-8f49b.firebaseapp.com',
+  projectId: 'english-study-8f49b',
+  storageBucket: 'english-study-8f49b.firebasestorage.app',
+  messagingSenderId: '171460058489',
+  appId: '1:171460058489:web:6621606905e1430120a3a8'
+};
 
 const CLOUD_KEY = 'english-study-cloud';   // 這台裝置的同步狀態：{ uid, synced（上次同步的時間）, mtime（本機最後修改時間） }
 let cloudUser = null, cloudReady = false, cloudMsg = '', cloudTimer = null;
