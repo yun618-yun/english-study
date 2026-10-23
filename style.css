@@ -584,3 +584,19 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .page .nbgrid.masonry > .mcol > .nb { display: block; width: 100%; margin-bottom: 10px; }
 .page .nbgrid.masonry > .mcol > .nb.two { display: grid; }
 [data-pics="off"] .page .nbgrid.masonry > .mcol > .nb:has(img.pic) { display: block; }
+/* 框框太少、兩欄排不平均時：每個框框一整排，框框裡的字分兩欄（app.js masonry 判斷） */
+.page .nbgrid.stack { display: block !important; column-count: auto !important; }
+.page .nbgrid.stack > .nb { display: grid !important; grid-template-columns: 1fr 1fr; column-gap: 14px; width: 100%; margin-bottom: 14px; align-items: start; }
+.page .nbgrid.stack > .nb > :not(.row) { grid-column: 1 / -1; }
+.page .nbgrid.stack > .nb > .row { display: block; }
+/* 瀑布流第二版：.mrow 裡兩欄；.wide 的框框一整排、裡面的字分兩欄 */
+.page .nbgrid.masonry { display: block !important; column-count: auto !important; }
+.page .nbgrid.masonry > .mrow { display: flex; gap: 10px; align-items: flex-start; }
+.page .nbgrid.masonry > .mrow:empty { display: none; }
+.page .nbgrid.masonry > .mrow > .mcol { flex: 1 1 0; min-width: 0; }
+.page .nbgrid.masonry > .mrow > .mcol > .nb { display: block; width: 100%; margin-bottom: 10px; }
+.page .nbgrid.masonry > .mrow > .mcol > .nb.two { display: grid; }
+.page .nbgrid.masonry > .nb.wide { display: grid !important; grid-template-columns: 1fr 1fr; column-gap: 14px; width: 100%; margin-bottom: 14px; align-items: start; }
+.page .nbgrid.masonry > .nb.wide > :not(.row) { grid-column: 1 / -1; }
+.page .nbgrid.masonry > .nb.wide > .row { display: block; }
+[data-pics="off"] .page .nb .row span.pic, [data-pics="off"] .page .nb .row img.pic { display: none !important; }

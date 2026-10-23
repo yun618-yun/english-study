@@ -1519,12 +1519,38 @@ function masonry() {
   document.querySelectorAll('.page .nbgrid').forEach(g => {
     if (!g._items) g._items = [...g.children].filter(el => !el.classList.contains('mcol'));
     const single = showPics && g.querySelector('img.pic');
+    const items = g._items;
     g.innerHTML = '';
-    g.classList.toggle('masonry', !single);
-    if (single) { g._items.forEach(el => g.appendChild(el)); return; }
-    const cols = [0, 1].map(() => g.appendChild(Object.assign(document.createElement('div'), { className: 'mcol' })));
-    g._items.forEach(el => (cols[0].offsetHeight <= cols[1].offsetHeight ? cols[0] : cols[1]).appendChild(el));
+    g.classList.remove('stack', 'masonry');
+    items.forEach(el => el.classList.remove('wide'));
+    if (single) { items.forEach(el => g.appendChild(el)); return; }
+    g.classList.add('masonry');
+    // 前 n 個框框排成兩欄（放進比較矮的那一欄），剩下的框框各佔一整排、裡面的字分兩欄
+    const layout = n => {
+      g.innerHTML = '';
+      const row = g.appendChild(Object.assign(document.createElement('div'), { className: 'mrow' }));
+      const cols = [0, 1].map(() => row.appendChild(Object.assign(document.createElement('div'), { className: 'mcol' })));
+      items.forEach((el, i) => {
+        el.classList.toggle('wide', i >= n);
+        if (i < n) (cols[0].offsetHeight <= cols[1].offsetHeight ? cols[0] : cols[1]).appendChild(el);
+        else g.appendChild(el);
+      });
+      const [a, b] = cols.map(c => c.offsetHeight);
+      return Math.abs(a - b) <= Math.max(250, (a + b) * 0.15);   // 兩欄差不多高 → OK
+    };
+    // 1. 全部兩欄 → 2. 最後一個拉到下面變寬（10/23 使用者的點子）→ 3. 每個都一整排
+    if (layout(items.length)) return;
+    if (items.length >= 3 && layout(items.length - 1)) return;
+    layout(0);
   });
+  // 字型、圖片載入完高度會變，再排一次
+  if (!masonry.waiting) {
+    masonry.waiting = true;
+    const again = () => { clearTimeout(masonryTimer); masonryTimer = setTimeout(() => { masonry.waiting = false; masonry(); fitLabels(); }, 150); };
+    if (document.fonts && document.fonts.status !== 'loaded') document.fonts.ready.then(again);
+    else document.querySelectorAll('.page img').forEach(img => { if (!img.complete) img.addEventListener('load', again, { once: true }); });
+    setTimeout(() => { masonry.waiting = false; }, 3000);
+  }
 }
 let masonryTimer;
 window.addEventListener('resize', () => { clearTimeout(masonryTimer); masonryTimer = setTimeout(() => { masonry(); fitLabels(); }, 200); });
