@@ -540,12 +540,13 @@ NOTES.find(c => c.id === 'terms').items.unshift({
     ['suffix5', '➡️ 字尾⑤：變成動詞、方向', 'en ize ward'],
     ['root', '🧩 字根①：看和聽', 'spect vis phon aud'],
     ['root2', '🧩 字根②：搬、說、建造、形狀', 'port dict struct form'],
-    ['sound', '🎵 諧音口訣', 'loan loan2 sound sound2 sound3'],
     ['link', '💭 聯想、拆字、一家人', 'link link2 family'],
     ['confuse', '🤯 容易搞混、同音字', 'confuse homo homo2']
   ];
   const mergeTricks = items => {
-    const cards = items.filter(it => !it.note), notes = items.filter(it => it.note);
+    // 諧音的卡片搬進單字庫了（10/24），這裡不要重複
+    const moved = ['mm-loan', 'mm-loan2', 'mm-sound', 'mm-sound2', 'mm-sound3'];
+    const cards = items.filter(it => !it.note && !moved.includes(it.group)), notes = items.filter(it => it.note);
     return [...SECTIONS.map(([key, title, groups]) => {
       const gs = groups.split(' ').map(g => notes.find(n => n.id === 'mm-' + g));
       const n = cards.filter(c => gs.some(g => c.group === g.id)).length;
@@ -574,6 +575,7 @@ un- = 不：unhappy 不開心的、unfair 不公平的
 ② 諧音口訣
 用中文的發音幫忙記「意思」。
 ambulance 救護車 →「俺不能死」
+👉 諧音字都放在各個單字分類裡，看字下面的「🎵 諧音」提示
 
 ③ 聯想小故事
 familiar 熟悉的 → 裡面有 family（家人），跟家人一樣熟
@@ -770,11 +772,11 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
 // 格式：'小標題=字,字,…|小標題=…'；最後一段寫 * 的話，沒列到的字都放這段
 {
   const PARTS = {
-    animal: '寵物和農場=cat,dog,pig,rabbit,duck,horse,goose,sheep,goat,cow,donkey,hen,turkey,lamb,mouse|野生動物=tiger,fox,zebra,deer,elephant,eagle,beaver,snake,squirrel,kangaroo,monkey,panda,bear,lion,giraffe,bird,ant|海裡的動物=*',
+    animal: '寵物和農場=cat,dog,pig,rabbit,duck,horse,goose,sheep,goat,cow,donkey,hen,turkey,lamb,mouse|野生動物=tiger,fox,zebra,deer,elephant,eagle,beaver,snake,squirrel,kangaroo,monkey,panda,bear,lion,giraffe,bird,ant|海裡的動物=fish,squid,lobster,shark,seal|蟲和動物的動作=*',
     fruit: '常見水果=apple,banana,orange,grape,strawberry,watermelon,pineapple,mango,peach,cherry,lemon,kiwi,pear|其他水果=apricot,plum,loquat,mulberry,fig,persimmon,date,coconut,sugarcane|堅果=*',
     vegetable: '常見蔬菜=carrot,tomato,potato,onion,garlic,cabbage,broccoli,lettuce,spinach,cucumber,eggplant,bell pepper,pumpkin,mushroom|其他蔬菜=*',
     meat: '肉的種類=beef,pork,chicken,lamb,turkey,duck,fish,goose,rabbit,veal,mutton,venison,liver|肉製品和料理=*',
-    transport: '路上的車=car,bus,taxi,truck,van,bicycle,bike,motorcycle,scooter,ambulance,fire engine,police car,jeep,lorry,coach,carriage,rickshaw,tractor,bulldozer,forklift|火車和飛機=train,subway,railway,express,cable car,airplane,plane,helicopter,hot air balloon|船=*',
+    transport: '路上的車=car,bus,taxi,truck,van,bicycle,bike,motorcycle,scooter,ambulance,fire engine,police car,jeep,lorry,coach,carriage,rickshaw,tractor,bulldozer,forklift|火車和飛機=train,subway,railway,express,cable car,airplane,plane,helicopter,hot air balloon|船=ship,boat,cruise ship,yacht,vessel|車子的零件、其他=*',
     tool: '敲、轉、切=hammer,screwdriver,wrench,pliers,scissors,utility knife,saw,drill,pipe wrench,spanner,axe,pickaxe,vice,lathe,plane,file,crank,lever|量、黏、固定=tape measure,ruler,level,square,compass,nail,screw,nut,bolt,brad,pin,clip,tape,glue|油漆、園藝、其他=*',
     weather: '天氣怎麼樣=sunny,cloudy,rainy,snowy,windy,stormy,foggy,overcast,partly cloudy,fine,dull,hot,cold,warm,cool,humid,dry|天氣現象=rain,snow,wind,cloud,fog,mist,haze,shower,storm,breeze,sunshine,frost,dew,hail,sleet,rainbow,thunder,lightning|災害和其他=*',
     place: '生活必去=hospital,clinic,pharmacy,police station,fire station,post office,bank,court,supermarket,convenience store,market,shopping mall,shop,store,bookshop,bookstore,cashier,fitting room,parking lot,station,airport,port,hotel,elevator|學校=school,kindergarten,college,university,institute,library|休閒娛樂=*',
@@ -783,7 +785,7 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
     job: '醫療、公家、學校=doctor,nurse,surgeon,chemist,police officer,policeman,firefighter,soldier,detective,judge,lawyer,attorney,teacher,headteacher,professor,student|餐飲、商店、交通=chef,cook,waiter,waitress,baker,butcher,farmer,fisherman,driver,pilot,flight attendant,sailor,seaman,shop assistant,salesman,salesperson,clerk,hairdresser,tailor,construction worker,worker|辦公室、藝術、媒體=*',
     clothes: '衣服和褲子=shirt,T-shirt,blouse,sweater,jacket,coat,hoodie,raincoat,vest,dress,skirt,pants,trousers,shorts,jeans,suit,uniform,pajamas,underwear,apron,clothes,clothing|鞋子、襪子、帽子=socks,tights,stocking,shoes,boots,sneaker,sandal,slipper,cap,hat,sole,heel|配件和衣服的部位=*',
     sport: '球類=soccer,football,basketball,tennis,table tennis,badminton,volleyball,baseball,golf,handball,hockey,ice hockey,cricket,polo,water polo|田徑和體操=running,race,dash,walk,marathon,high jump,long jump,pole vault,throwing,shot put,discus,hammer,javelin,gymnastics,rings,horizontal bar,parallel bars,weightlifting|水上、冰上、其他=*',
-    body: '頭和臉=head,face,eye,ear,nose,mouth,lip,tooth,denture,gum,tongue,tonsil,cheek,chin,forehead,temple,lid,brain,hair,mustache,whisker,sideburns,bald|身體和四肢=neck,shoulder,arm,elbow,armpit,hand,palm,finger,thumb,nail,fist,chest,abdomen,waist,navel,hip,buttock,leg,thigh,knee,calf,shank,foot,instep|皮膚上的=*',
+    body: '頭和臉=head,face,eye,ear,nose,mouth,lip,tooth,denture,gum,tongue,tonsil,cheek,chin,forehead,temple,lid,brain,hair,mustache,whisker,sideburns,bald|身體和四肢=neck,shoulder,arm,elbow,armpit,hand,palm,finger,thumb,nail,fist,chest,abdomen,waist,navel,hip,buttock,leg,thigh,knee,calf,shank,foot,instep|皮膚上的=wrinkle,mole,freckle,dimple,pimple|其他=*',
     // 使用者說「不喜歡全部長長一條」→ 12 個字以上的都分段
     month: '上半年=January,February,March,April,May,June|下半年=*',
     color: '常見顏色=blue,red,yellow,green,white,pink,purple|其他顏色=*',
@@ -798,13 +800,15 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
     chore: '洗衣服和碗=do the laundry,do the dishes,iron the clothes,hang out the laundry,fold the clothes,washing machine|打掃=sweep the floor,mop the floor,vacuum,take out the trash,wipe the table,broom,mop,vacuum cleaner|其他家事=*',
     cook: '廚具=pot,pan,kettle,cutting board,oven,microwave,stove,rice cooker|煮的方法=*',
     taste: '調味料=salt,sugar,soy sauce,vinegar,pepper,ketchup,oil,honey,butter|味道=*',
-    feel: '開心的感覺=happy,excited,proud,relaxed,surprised|不開心的感覺=sad,angry,bored,nervous,scared,worried,lonely,embarrassed,confused,jealous|身體的感覺=*',
+    feel: '開心的感覺=happy,excited,proud,relaxed,surprised|不開心的感覺=sad,angry,bored,nervous,scared,worried,lonely,embarrassed,confused,jealous|身體的感覺=tired,hungry,thirsty,sleepy|個性和心情的字=*',
     sick: '哪裡痛=headache,stomachache,toothache,sore throat,hurt,bruise|感冒、症狀和看病=*',
     travel: '證件和行李=passport,visa,boarding pass,ticket,luggage,suitcase,backpack|在機場=flight,gate,seat,check in,connecting flight,delay,customs,departure,arrival|旅遊=*',
     road: '路上看到的=traffic light,crosswalk,intersection,corner,sidewalk,bridge,tunnel,bus stop,gas station,highway,sign,traffic jam|問路常用=*',
     money: '付錢=money,cash,credit card,coin,price,receipt,change|買東西=*',
     country: '亞洲=Taiwan,Taiwanese,Japan,Japanese,Korea,Korean,Thailand,Thai,Vietnam,Vietnamese|歐美=*',
-    tech: '手機和電腦=cell phone,smartphone,laptop,tablet,camera|耳機和周邊=earphones,wireless earbuds,mouse,keyboard,screen|充電和電源=charger,charging cable,power bank,outlet,battery|網路和帳號=internet,Wi-Fi,signal,account,password|手機操作=*',
+    subject: '學科=Chinese,English,math,science,social studies,history,geography,logic|藝能科、才藝=*',
+    bakery: '麵包點心=loaf,biscuit,pizza,sandwich,crust,cake,cookie,moon cake,pie|甜點=*',
+    tech: '手機和電腦=cell phone,smartphone,laptop,tablet,camera|耳機和周邊=earphones,wireless earbuds,mouse,keyboard,screen|充電和電源=charger,charging cable,power bank,outlet,battery|網路和帳號=internet,Wi-Fi,signal,account,password|手機操作=app,download,update,screenshot|其他=*',
     festival: `台灣的節日=Chinese New Year,New Year's Eve,red envelope,Lantern Festival,Tomb-Sweeping Day,Dragon Boat Festival,rice dumpling,Moon Festival|西洋的節日=Christmas,Santa Claus,Halloween,Thanksgiving,Valentine's Day,Mother's Day,Father's Day,New Year's Day|其他=*`
   };
   const vocab = NOTES.find(c => c.id === 'vocab');

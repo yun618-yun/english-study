@@ -1520,6 +1520,66 @@ for (const [key, en, tip] of [
   VOCAB_TIPS[key] = VOCAB_TIPS[key] || {};
   VOCAB_TIPS[key][en] = VOCAB_TIPS[key][en] ? VOCAB_TIPS[key][en] + '\n' + tip : tip;
 }
+// ===================== 🎵 諧音字放進單字庫（10/24 使用者：不要另外一個分類，諧音放在單字下面當提示） =====================
+// 格式：[分類, 中文, 英文, 諧音口訣]；單字庫已經有的字只加提示
+for (const [key, zh, en, hint] of [
+  ['home', '沙發', 'sofa', '中文「沙發」就是照英文發音翻的'],
+  ['meal', '沙拉', 'salad', '中文「沙拉」就是照英文發音翻的'],
+  ['meal', '起司', 'cheese', '中文「起司」就是照英文發音翻的'],
+  ['bakery', '布丁', 'pudding', '中文「布丁」就是照英文發音翻的'],
+  ['bakery', '吐司', 'toast', '中文「吐司」就是照英文發音翻的'],
+  ['bakery', '巧克力', 'chocolate', '中文「巧克力」就是照英文發音翻的'],
+  ['fruit', '檸檬', 'lemon', '中文「檸檬」就是照英文發音翻的'],
+  ['fruit', '芒果', 'mango', '中文「芒果」就是照英文發音翻的'],
+  ['taste', '蜂蜜', 'honey', '哈尼 → 甜得像蜂蜜的哈尼（honey 也是「親愛的」）'],
+  ['taste', '酸的', 'sour', '餿 → 餿掉的東西是酸的'],
+  ['transport', '救護車', 'ambulance', '俺不能死 → 快叫救護車'],
+  ['transport', '引擎', 'engine', '中文「引擎」就是照英文發音翻的'],
+  ['transport', '雷達', 'radar', '中文「雷達」就是照英文發音翻的'],
+  ['tech', '麥克風', 'microphone', '中文「麥克風」就是照英文發音翻的；簡稱 mic'],
+  ['tech', '駭客', 'hacker', '中文「駭客」就是照英文發音翻的'],
+  ['tech', '卡通', 'cartoon', '中文「卡通」就是照英文發音翻的'],
+  ['sport', '高爾夫球', 'golf', '中文「高爾夫」就是照英文發音翻的'],
+  ['sport', '瑜伽', 'yoga', '中文「瑜伽」就是照英文發音翻的'],
+  ['sport', '馬拉松', 'marathon', '中文「馬拉松」就是照英文發音翻的'],
+  ['sport', '撲克牌', 'poker', '中文「撲克」就是照英文發音翻的'],
+  ['subject', '邏輯', 'logic', '中文「邏輯」就是照英文發音翻的'],
+  ['subject', '吉他', 'guitar', '中文「吉他」就是照英文發音翻的'],
+  ['animal', '害蟲', 'pest', '拍死它 → 看到害蟲就拍死它'],
+  ['animal', '螫、刺', 'sting', '死盯 → 蜜蜂死盯著你，然後螫你'],
+  ['animal', '咬', 'bite', '拜 → 拜託不要咬我'],
+  ['body', '強壯的', 'strong', '死壯 → 壯到不行'],
+  ['body', '汗', 'sweat', '水的 → 流汗流得都是水'],
+  ['feel', '幽默', 'humor', '中文「幽默」就是照英文發音翻的'],
+  ['feel', '膽小鬼', 'coward', '靠我的 → 什麼都要靠我'],
+  ['feel', '懶惰的', 'lazy', '累死 → 懶人一動就喊累死'],
+  ['feel', '害羞的', 'shy', '帥 → 長太帥被大家看，好害羞'],
+  ['feel', '心情', 'mood', '木的 → 心情不好，整個人木木的'],
+  ['feel', '取笑、捉弄', 'tease', '踢死 → 再取笑我就踢死你'],
+  ['feel', '嘆氣', 'sigh', '賽 → 今天好賽，嘆一口氣'],
+  ['feel', '懷疑', 'doubt', '到底 → 到底是不是真的？好懷疑（b 不發音）'],
+  ['feel', '欽佩、欣賞', 'admire', '愛的媽 → 最欣賞愛我的媽媽'],
+  ['feel', '忙的', 'busy', '逼死 → 忙到快被逼死'],
+  ['feel', '哭', 'cry', '快 → 快哭了'],
+  ['feel', '說謊', 'lie', '賴 → 說謊又賴皮'],
+  ['sick', '極大的痛苦', 'agony', '愛過你 → 愛過才知道有多痛'],
+  ['sick', '咳嗽', 'cough', '咳夫 → 一直咳（gh 念 /f/）'],
+  ['money', '錢', 'money', '媽你 → 媽，你可以給我錢嗎？'],
+  ['money', '便宜的', 'cheap', '氣噗 → 賣這麼便宜，老闆氣噗噗'],
+  ['money', '小費', 'tip', '貼 → 貼一點小費給服務生'],
+  ['money', '經濟', 'economy', '依靠農民 → 經濟要靠農民'],
+  ['travel', '匆忙', 'hurry', '哈利 → 哈利快點，要遲到了！'],
+  ['travel', '逃走', 'flee', '飛離 → 飛快地離開'],
+  ['family', '單身漢', 'bachelor', '白吃了 → 單身漢常常白吃白喝'],
+  ['job', '候選人', 'candidate', '看的累 → 候選人那麼多，看得好累']
+]) {
+  const v = VOCAB.find(x => x[0] === key);
+  if (!v[2].split('|').some(s => s.split('=')[1] === en)) v[2] += `|${zh}=${en}`;
+  VOCAB_TIPS[key] = VOCAB_TIPS[key] || {};
+  const t = '🎵 諧音：' + hint;
+  VOCAB_TIPS[key][en] = VOCAB_TIPS[key][en] ? VOCAB_TIPS[key][en] + '\n' + t : t;
+}
+VOCAB_TIPS.feel._sound = '⚠️ 🎵 諧音只用來記「意思」！真正的發音一定要按 🔊 聽，照中文念會念錯';
 const picOf = (key, en) => {
   const hit = (PICS[key] || '').split('|').reverse().find(p => p.split('=')[0] === en);   // 後面的優先
   return hit ? hit.split('=')[1] : '';
