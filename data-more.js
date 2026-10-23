@@ -970,3 +970,37 @@ moveCat('scene', 'vocab');
 moveCat('pron', 'vocab', { flag: 'pron' });
 // -er 變成人、單字家族：框框兩欄四宮格（10/23 使用者要的）
 { const it = NOTES.find(c => c.id === 'core').items.find(i => i.id === 'cw-group-family'); if (it) it.note = '{{pair}}' + it.note; }
+
+// ===================== 📚 單字：相似的分類合併（10/23 使用者要的，38 格 → 23 格） =====================
+// 每個原本的分類（或它的分段）變成一個【框框】，全部用兩欄瀑布流排；卡片 id 不變
+function mergeVocab(key, name, icon, keys) {
+  const items = NOTES.find(c => c.id === 'vocab').items;
+  const src = keys.map(k => items.find(i => i.id === 'vocab-' + k)).filter(Boolean);
+  if (src.length < 2) return;
+  const boxes = [], tail = [];
+  let total = 0;
+  for (const it of src) {
+    const [, sname, n] = it.title.match(/^\S+\s(.+?)（(\d+) 個）$/) || [, it.title, 0];
+    total += +n;
+    for (const part of it.note.replace(/^\{\{(no)?grid\}\}\n*/, '').split('\n\n')) {
+      if (part.startsWith('【')) boxes.push(part.replace(/^【/, `【${sname}・`));
+      else if (part.includes('{{say:')) boxes.push(`【${sname}（${n} 個）】\n` + part);
+      else tail.push(part);
+    }
+  }
+  const at = items.indexOf(src[0]);
+  items.splice(at, 0, { id: 'vocab-' + key, title: `${icon} ${name}（${total} 個）`, note: '{{grid}}' + [...boxes, ...tail].join('\n\n'), coverKey: keys[0] });
+  for (const it of src) items.splice(items.indexOf(it), 1);
+  VOCAB_ICON[key] = icon;
+}
+mergeVocab('g-time', '時間：月份、星期、季節', '📅', ['month', 'week', 'season', 'time']);
+mergeVocab('g-food', '主食、點心和三餐', '🍚', ['staple', 'bakery', 'meal']);
+mergeVocab('g-drink', '飲料和味道', '🥤', ['drink', 'taste']);
+mergeVocab('g-kitchen', '廚房：餐具和煮飯', '🍳', ['tableware', 'cook']);
+mergeVocab('g-home', '居家、浴室和家事', '🏠', ['home', 'bath', 'chore']);
+mergeVocab('g-school', '學校：教室和科目', '🏫', ['room', 'subject']);
+mergeVocab('g-nature', '大自然和鮮花', '🏞️', ['nature', 'flower']);
+mergeVocab('g-feel', '心情和生病', '😊', ['feel', 'sick']);
+mergeVocab('g-road', '交通工具和馬路', '🚗', ['transport', 'road']);
+mergeVocab('g-travel', '旅行、購物和國家', '✈️', ['travel', 'money', 'country']);
+{ const v = NOTES.find(c => c.id === 'vocab'); v.desc = v.desc.replace(/分 \d+ 類/, `分 ${v.items.filter(i => /^vocab-/.test(i.id)).length} 類`); }

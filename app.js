@@ -397,7 +397,7 @@ function renderNotes() {
       const key = it.id.replace(/^vocab-/, ''), word = it.id.startsWith('vocab-');
       const [, icon, name, n] = it.title.match(/^(\S+)\s(.+?)(?:（(\d+) 個）)?$/) || [, '📚', it.title, ''];
       return `<button class="vtile" data-open="${esc(it.id)}">
-        ${word ? coverHtml(cover(key), key) : `<span class="vicon">${esc(icon)}</span>`}
+        ${word ? coverHtml(cover(it.coverKey || key), key) : `<span class="vicon">${esc(icon)}</span>`}
         <span class="vname">${esc(name)}</span>${n ? `<span class="vcount">${n} 個</span>` : ''}</button>`;
     };
     // 背單字妙招（字首字尾、諧音）放在單字下面另一區
