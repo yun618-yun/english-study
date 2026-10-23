@@ -885,3 +885,28 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
 
 // ---------- 🚫 台灣人常犯的錯：每一條一個框框，兩欄四宮格（10/23 使用者覺得太長） ----------
 for (const it of NOTES.find(c => c.id === 'mistakes').items) if (it.note && !it.note.startsWith('{{')) it.note = '{{grid}}' + it.note;
+
+// ===================== 🧩 合併相似的格子，按鈕不要太多（10/23 使用者要的，先試時態類） =====================
+// mode 'box'：每一則變成一個【框框】，兩欄排；'section'：每一則前面加 ▍小標題，內容照原本的樣子
+// 原本的筆記如果也是卡片，卡片留著（只拿掉筆記內容），練習紀錄不會不見
+function mergeNotes(catId, newId, title, ids, mode, intro) {
+  const items = NOTES.find(c => c.id === catId).items;
+  const src = ids.map(id => items.find(i => i.id === id)).filter(Boolean);
+  const body = src.map(it => mode === 'box'
+    ? `【${it.title}】\n` + it.note.split('\n').filter(l => l.trim()).join('\n')
+    : `▍${it.title}\n\n${it.note}`).join('\n\n');
+  const at = items.indexOf(src[0]);
+  items.splice(at, 0, { id: newId, title, note: (mode === 'box' ? '{{grid}}' : '') + (intro ? intro + '\n\n' : '') + body });
+  for (const it of src) {
+    if (it.front) { delete it.note; delete it.title; }
+    else items.splice(items.indexOf(it), 1);
+  }
+}
+// ⏰ 16 大時態：16 個時態照「一般、進行、完成、完成進行」合成 4 格，每格裡面是現在、過去、將來、過去將來
+mergeNotes('tenses', 't-group-simple', '⭐ 一般時態：do／did／will do／would do', ['t-simple-present', 't-simple-past', 't-simple-future', 't-past-future'], 'box');
+mergeNotes('tenses', 't-group-cont', '⭐ 進行時態：be doing', ['t-present-cont', 't-past-cont', 't-future-cont', 't-past-future-cont'], 'box');
+mergeNotes('tenses', 't-group-perfect', '⭐ 完成時態：have done', ['t-present-perfect', 't-past-perfect', 't-future-perfect', 't-past-future-perfect'], 'box');
+mergeNotes('tenses', 't-group-perfect-cont', '完成進行時態：have been doing', ['t-present-perfect-cont', 't-past-perfect-cont', 't-future-perfect-cont', 't-past-future-perfect-cont'], 'box');
+// ⏰ 時間標誌詞：8 格合成 2 格
+mergeNotes('signals', 's-group-present', '現在的時間標誌詞（一般、進行、完成）', ['s-simple-present', 's-present-cont', 's-present-perfect'], 'section');
+mergeNotes('signals', 's-group-past-future', '過去和將來的時間標誌詞', ['s-simple-past', 's-past-cont', 's-past-perfect', 's-simple-future', 's-past-future'], 'section');

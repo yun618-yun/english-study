@@ -564,3 +564,6 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .page .nb.two .row .k { display: block; }
 .page .nb.two .row .v { display: block; text-align: left; font-size: 13.5px; padding: 0; }
 .page .nb.two > .wtip { grid-column: 1 / -1; }
+/* 合併後的筆記：每一段的小標題 */
+.page .msec { margin: 22px 0 10px; padding: 4px 10px; font-size: 18px; color: var(--head); border-left: 5px solid var(--teal); background: color-mix(in srgb, var(--teal) 8%, transparent); border-radius: 4px; }
+.page .msec:first-child { margin-top: 4px; }

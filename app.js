@@ -321,6 +321,8 @@ function formatBlocks(text, noGrid) {
 function renderBlock(ls, i, blocks) {
   {
     const first = ls[0].trim();
+    // ▍開頭：合併後的筆記，每一段的小標題
+    if (first.startsWith('▍') && ls.length === 1) return `<h3 class="msec">${inline(first.slice(1).trim())}</h3>`;
     if (first.startsWith('👉')) return `<div class="takeaway">${inline(ls.join(' ').replace('👉', '').trim())}</div>`;
     if (/^(💡|⚠️)/.test(first)) {
       const fix = first.startsWith('⚠️');
