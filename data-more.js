@@ -152,7 +152,7 @@ NOTES.find(c => c.id === 'core').items.push(
 // ---------- 💬 生活常用句：What do you…? ----------
 NOTES.find(c => c.id === 'daily').items.push(...buildGroups('dl', [
   ['what', 'What do you…? 常用問句', '用 What do you ＋ 動詞？就能問很多事情。',
-    "What do you think?=你覺得怎麼樣？|What do you want?=你想要什麼？|What do you need?=你需要什麼？|What do you mean?=你是什麼意思？|What do you like?=你喜歡什麼？|What do you prefer?=你比較喜歡什麼？|What do you believe?=你相信什麼？|What do you remember?=你記得什麼？|What do you expect?=你期待什麼？|What do you care about?=你在乎什麼？|What do you suggest?=你建議什麼？|What do you focus on?=你專注在什麼？|What do you do?=你做什麼工作？|What do you think about it?=你覺得這個怎麼樣？|What do you say?=你覺得呢？（要不要？）|What do you want to do?=你想做什麼？|What do you know?=你知道什麼？|What do you need right now?=你現在需要什麼？|What do you see?=你看到什麼？|What do you hear?=你聽到什麼？|What do you plan to do?=你打算做什麼？|What do you expect from me?=你對我有什麼期待？|How do you feel?=你感覺如何？|Which one do you choose?=你選哪一個？|What did you decide?=你決定好了嗎？|What are you looking for?=你在找什麼？|What are you worried about?=你在擔心什麼？|What are your plans?=你有什麼計畫？",
+    "What do you think?=你覺得怎麼樣？|What do you want?=你想要什麼？|What do you need?=你需要什麼？|What do you mean?=你是什麼意思？|What do you like?=你喜歡什麼？|What do you prefer?=你比較喜歡什麼？|What do you believe?=你相信什麼？|What do you remember?=你記得什麼？|What do you expect?=你期待什麼？|What do you care about?=你在乎什麼？|What do you suggest?=你建議什麼？|What do you focus on?=你專注在什麼？|What do you do?=你做什麼工作？|What do you think about it?=你覺得這個怎麼樣？|What do you say?=你覺得呢？（要不要？）|What do you want to do?=你想做什麼？|What do you know about it?=你對這件事知道多少？|What do you need right now?=你現在需要什麼？|What do you see?=你看到什麼？|What do you hear?=你聽到什麼？|What do you plan to do?=你打算做什麼？|What do you expect from me?=你對我有什麼期待？|How do you feel?=你感覺如何？|Which one do you choose?=你選哪一個？|What did you decide?=你決定了什麼？|What are you looking for?=你在找什麼？|What are you worried about?=你在擔心什麼？|What are your plans?=你有什麼計畫？",
     '💡 What do you do? 是問「你做什麼工作？」，不是問你現在在做什麼（那是 What are you doing?）\n💡 正在做的事要用 What are you ＋ V-ing：What are you looking for? 你在找什麼？\n💡 What do you say? 是「你覺得呢？要不要？」：Let\'s go for a walk. What do you say? 我們去散步，你覺得呢？\n💡 問「英文怎麼說」要用 How：How do you say this in English?\n💡 問感覺用 How，不用 What：How do you feel?\n⚠️ 收集的筆記有錯：What do you feel / choose / decide / consider / look for / plan / worry about 不自然，已經改成 How do you feel?、Which one do you choose?、What did you decide?、What are you looking for?、What are your plans?、What are you worried about?；What do you consider? 沒有放']
 ], {
   card: ([en, zh], key, p) => ({ id: `${p}-${key}-${slug(en)}`, front: zh, back: en, say: en, group: `${p}-${key}` })
@@ -479,7 +479,7 @@ Ben was made to wait. Ben 被要求等。
       "💡 頻率副詞放在一般動詞前面、be 動詞後面：I always get up early.／I am always busy.\n💡 例句：I usually take the bus to work. 我通常搭公車上班。\n💡 問頻率：How often do you exercise? 你多常運動？"],
     ['people', '😊 個性和外表', '介紹朋友、描述一個人。',
       "friendly=友善的|kind=善良的|funny=好笑的、幽默的|shy=害羞的|outgoing=外向的|smart=聰明的|patient=有耐心的|lazy=懶惰的|honest=誠實的|tall=高的|short=矮的|slim=苗條的|cute=可愛的|handsome=帥的|pretty=漂亮的|long hair=長頭髮|short hair=短頭髮|glasses=眼鏡",
-      "💡 描述外表：She has long hair. 她留長頭髮。He wears glasses. 他戴眼鏡。\n💡 問個性：What is he like? 他是個怎樣的人？（不是問他喜歡什麼）\n💡 fat（胖）不太禮貌，可以說 a little big 或不要提"]
+      "💡 描述外表：She has long hair. 她留長頭髮。He wears glasses. 他戴眼鏡。\n💡 問個性：What is he like? 他是個怎樣的人？（不是問他喜歡什麼）\n💡 fat（胖）不太禮貌，可以說 a bit heavy（有點壯）或乾脆不要提"]
   ], { card }));
 }
 

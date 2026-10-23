@@ -208,7 +208,7 @@ const NOTES = [
       {
         id: 'g-clauses',
         title: '從句和特殊句型（先認識名字就好）',
-        note: '這些是比較進階的文法，初學先知道「有這些東西」就好。\n\n【從句】一個句子裡面包著另一個小句子\n賓語從句（受詞子句）　He said [that he wanted to be a teacher].\n主語從句（主詞子句）　[That the earth is round] is true.\n狀語從句（副詞子句）　[When I was a boy], I swam in that river.\n定語從句（形容詞子句）　This is the book [that I bought].\n表語從句　The problem is [that I\'m tired].\n\n【特殊句型】\n倒裝句　把順序倒過來：Here comes the bus.\n強調句　It is … that …：It was Tom that broke the window.\n There be 句型　表示「某地方有某東西」\n省略句　省掉重複的部分：Me too.\n虛擬語氣　說假設、不是真的事：If I were you, I would go.\n\n💡 台灣課本常把「從句」叫「子句」',
+        note: '這些是比較進階的文法，初學先知道「有這些東西」就好。\n\n【從句】一個句子裡面包著另一個小句子\n賓語從句（受詞子句）　He said [that he wanted to be a teacher].\n主語從句（主詞子句）　[That the earth is round] is true.\n狀語從句（副詞子句）　[When I was a boy], I swam in that river.\n定語從句（形容詞子句）　This is the book [that I bought].\n表語從句　The problem is [that I\'m tired].\n\n【特殊句型】\n倒裝句　把順序倒過來：Here comes the bus.\n強調句　It is … that …：It was Tom that broke the window.\nThere be 句型　表示「某地方有某東西」\n省略句　省掉重複的部分：Me too.\n虛擬語氣　說假設、不是真的事：If I were you, I would go.\n\n💡 台灣課本常把「從句」叫「子句」',
         front: '「從句」是什麼？',
         back: '句子裡面包著的另一個小句子\nHe said [that he was tired].',
         quiz: { q: 'If I were you, I would go. 用了哪一種句型？', options: ['倒裝句', '強調句', '虛擬語氣', '省略句'], answer: 2 }
@@ -216,7 +216,7 @@ const NOTES = [
       {
         id: 'g-numbers',
         title: '數詞：數字、序數、分數',
-        note: '① 基數詞：幾個\none、two、twenty-one（21 中間加連字號）\n三位數要在百位和十位中間加 and：\n125 ＝ one hundred [and] twenty-five\n\n② 序數詞：第幾\n除了 first（第一）、second（第二）、third（第三），其他大多在後面加 th：\nfourth、sixth、tenth、twenty-first（第 21 還是用 first）\n⚠️ 特別：fifth、ninth、twelfth、twentieth\n\n③ 分數：分子用基數、分母用序數\n1/3 ＝ one third\n2/3 ＝ two thirds（分子大於 1，分母加 s）\n1/2 ＝ a half　1/4 ＝ a quarter',
+        note: '① 基數詞：幾個\none、two、twenty-one（21 中間加連字號）\n三位數要在百位和十位中間加 and（英式一定加；美式常常省略）：\n125 ＝ one hundred [and] twenty-five\n\n② 序數詞：第幾\n除了 first（第一）、second（第二）、third（第三），其他大多在後面加 th：\nfourth、sixth、tenth、twenty-first（第 21 還是用 first）\n⚠️ 特別：fifth、ninth、twelfth、twentieth\n\n③ 分數：分子用基數、分母用序數\n1/3 ＝ one third\n2/3 ＝ two thirds（分子大於 1，分母加 s）\n1/2 ＝ a half　1/4 ＝ a quarter',
         front: '125 英文怎麼念？',
         back: 'one hundred and twenty-five\n百位和十位中間加 and',
         quiz: { q: '2/3 英文怎麼說？', options: ['two three', 'two third', 'two thirds', 'second three'], answer: 2 }
@@ -450,7 +450,7 @@ const NOTES = [
       {
         id: 'b-plural',
         title: '名詞單複數、可數／不可數',
-        note: '① 可數名詞：可以一個一個數\n一個用 a / an：a cat\n兩個以上加 s：two cats\n\n② 加 s 的規則\n一般：加 s　book → books\ns, sh, ch, x, o 結尾：加 es　bus → buses、box → boxes、potato → potatoes\n子音 + y 結尾：y 變 i 加 es　baby → babies\nf / fe 結尾：變 ves　knife → knives\n\n【不規則，要背】\nman　men\nwoman　women\nchild　children\nfoot　feet\ntooth　teeth\nmouse　mice\nfish　fish（單複數一樣）\n\n③ 不可數名詞：不能直接數，不加 s，不用 a\nwater、milk、rice、money、bread、information、advice\n要數的話用單位：a glass of water、a piece of bread\n\n④ many 和 much\nmany + 可數：many books\nmuch + 不可數：much water\na lot of 兩種都可以',
+        note: '① 可數名詞：可以一個一個數\n一個用 a / an：a cat\n兩個以上加 s：two cats\n\n② 加 s 的規則\n一般：加 s　book → books\ns, sh, ch, x, o 結尾：加 es　bus → buses、box → boxes、potato → potatoes\n子音 + y 結尾：y 變 i 加 es　baby → babies\nf / fe 結尾：變 ves　knife → knives\n💡 o 結尾有例外：photo → photos、piano → pianos 只加 s\n\n【不規則，要背】\nman　men\nwoman　women\nchild　children\nfoot　feet\ntooth　teeth\nmouse　mice\nfish　fish（單複數一樣）\n\n③ 不可數名詞：不能直接數，不加 s，不用 a\nwater、milk、rice、money、bread、information、advice\n要數的話用單位：a glass of water、a piece of bread\n\n④ many 和 much\nmany + 可數：many books\nmuch + 不可數：much water\na lot of 兩種都可以',
         front: 'child、foot、tooth 的複數？',
         back: 'children、feet、teeth\n不規則複數，要背',
         quiz: { q: 'There are three ___ in the park.', options: ['child', 'childs', 'children', 'childrens'], answer: 2 }
@@ -755,7 +755,7 @@ const NOTES = [
       {
         id: 'to-plus-doing',
         title: '這些片語裡的 to，後面接 doing',
-        note: '這一組的 to 是介係詞，後面的動詞要用 doing。\n\n① object to：反對\n　I object to working on Sundays. 我反對週日工作。\n② stick to：堅持\n　She sticks to practising every morning. 她堅持每天早上練習。\n③ devote… to：把時間、精力投入\n　He devotes his time to helping older people. 他把時間投入幫助老人。\n④ contribute to：有助於、促成\n　Practice contributes to improving your skills. 練習有助於提高技能。\n⑤ pay attention to：注意\n　Pay attention to spelling these words correctly. 注意把這些單字拼對。\n⑥ the key to：…的關鍵\n　Practice is the key to improving pronunciation. 練習是改善發音的關鍵。\n\n（前面學過的 look forward to、be used to 也是這一類）',
+        note: '這一組的 to 是介係詞，後面的動詞要用 doing。\n\n① object to：反對\n　I object to working on Sundays. 我反對週日工作。\n② stick to：堅持\n　She sticks to practicing every morning. 她堅持每天早上練習。\n③ devote… to：把時間、精力投入\n　He devotes his time to helping older people. 他把時間投入幫助老人。\n④ contribute to：有助於、促成\n　Practice contributes to improving your skills. 練習有助於提高技能。\n⑤ pay attention to：注意\n　Pay attention to spelling these words correctly. 注意把這些單字拼對。\n⑥ the key to：…的關鍵\n　Practice is the key to improving pronunciation. 練習是改善發音的關鍵。\n\n（前面學過的 look forward to、be used to 也是這一類）',
         front: '哪些片語的 to 後面要接 doing？',
         back: 'object to、stick to、devote… to\ncontribute to、pay attention to、the key to\nlook forward to、be used to',
         quiz: { q: 'Practice is the key to ___ your English.', options: ['improve', 'improving', 'improved', 'improves'], answer: 1 }
@@ -1009,14 +1009,14 @@ const NOTES = [
         title: '將來完成進行時　will have been doing',
         note: '定義：動作從過去開始，持續到將來某個時刻，並且還會繼續\n例：Tomorrow we will have been using Xinjiang cotton for ten years.\n到明天，我們使用新疆棉花就滿十年了。',
         front: '將來完成進行時的結構？',
-        back: 'will have been doing\nTomorrow we will have been using Xinjiang cotton for ten years.'
+        back: 'will have been doing\nBy next year, I will have been learning English for ten years.'
       },
       {
         id: 't-past-future-perfect-cont',
         title: '過去將來完成進行時　would have been doing',
         note: '定義：站在過去，預測某動作會持續到將來，並且還會繼續\n例：They said tomorrow they would have been using Xinjiang cotton for ten years.\n他們當時說，到明天，他們使用新疆棉花就滿十年了。',
         front: '過去將來完成進行時的結構？',
-        back: 'would have been doing\nThey said tomorrow they would have been using Xinjiang cotton for ten years.'
+        back: 'would have been doing\nShe said that by June she would have been working there for five years.'
       }
     ]
   },
@@ -1078,7 +1078,7 @@ const NOTES = [
       {
         id: 's-past-perfect',
         title: '過去完成時（主詞 + had done）',
-        note: '① when、before、after + 過去時間\n② by + 過去的時間\n　by the time 到…的時候為止\n　by then 到那時候\n　by last time 到最後一次\n　by the end of last week 到上週末\n③ up till + 過去的時間\n　up until then 直到那時\n　up until last time 直到上次',
+        note: '① when、before、after + 過去時間\n② by + 過去的時間\n　by the time 到…的時候為止\n　by then 到那時候\n　by last Friday 到上週五為止\n　by the end of last week 到上週末\n③ up till + 過去的時間\n　up until then 直到那時\n　up until last year 直到去年',
         front: '看到 by the end of last week、by then\n要用什麼時態？',
         back: '過去完成時\n主詞 + had done',
         quiz: { q: 'By the end of last week, I ___ the book.', options: ['finish', 'have finished', 'had finished', 'will finish'], answer: 2 }
@@ -1142,7 +1142,7 @@ const VOCAB = [
   ['color', '顏色', '藍色；藍色的=blue|紅色；紅色的=red|紫色的=purple|粉紅色的=pink|褐色，棕色=brown|綠色的=green|白色的=white|灰色；灰色的=gray|黃色=yellow|金色=golden|橘色的=orange|銀白色=silver'],
   // 主食：換成使用者插畫上的 12 個（原本截圖的「主食」大多是點心，搬到下面的「麵包點心」）
   ['staple', '主食', '米飯=rice|麵包=bread|麵條=noodles|義大利麵=pasta|馬鈴薯=potato|地瓜=sweet potato|玉米=corn|燕麥粥、燕麥片=oatmeal|水餃=dumpling|饅頭=steamed bun|墨西哥餅皮=tortilla|藜麥=quinoa'],
-  ['bakery', '麵包點心', '長麵包=loaf|餅乾=biscuit|披薩=pizza|三明治=sandwich|麵包皮=crust|蛋糕=cake|甜餅乾=cookie|月餅=moon cake|餡餅、派=pie'],
+  ['bakery', '麵包點心', '一條（整條的）麵包=loaf|餅乾=biscuit|披薩=pizza|三明治=sandwich|麵包皮=crust|蛋糕=cake|甜餅乾=cookie|月餅=moon cake|餡餅、派=pie'],
   ['week', '星期', '週一=Monday|週二=Tuesday|週三=Wednesday|週四=Thursday|週五=Friday|週六=Saturday|星期天=Sunday|週末=weekend'],
   // 餐具：插畫上的 12 個 + 原本的 bottle、table（插畫裡沒有，用 Emoji）
   ['tableware', '餐具', '盤子=plate|碗=bowl|筷子=chopsticks|湯匙=spoon|叉子=fork|刀子=knife|杯子=cup|玻璃杯=glass|馬克杯=mug|湯碗=soup bowl|醬料碟=sauce dish|托盤=tray|瓶子=bottle|餐桌=table'],
@@ -1152,15 +1152,15 @@ const VOCAB = [
   ['flower', '鮮花', '玫瑰=rose|鬱金香=tulip|向日葵=sunflower|百合花=lily|櫻花=cherry blossom|繡球花=hydrangea|雛菊=daisy|康乃馨=carnation|蘭花=orchid|薰衣草=lavender|荷花、蓮花=lotus|山茶花=camellia|水仙花=narcissus|牡丹花=peony|紫羅蘭=violet'],
   // 水果、蔬菜：有插畫的 12 個排前面，後面是原本筆記的其他字
   ['fruit', '水果', '蘋果=apple|香蕉=banana|橘子，柳橙=orange|葡萄=grape|草莓=strawberry|西瓜=watermelon|鳳梨=pineapple|芒果=mango|桃子，水蜜桃=peach|櫻桃=cherry|檸檬=lemon|奇異果=kiwi|梨子=pear|杏子=apricot|李子=plum|枇杷=loquat|桑椹=mulberry|無花果=fig|柿子=persimmon|核桃=walnut|榛子=hazelnut|花生=peanut|棗子=date|栗子=chestnut|椰子=coconut|甘蔗=sugarcane'],
-  ['vegetable', '蔬菜', '紅蘿蔔=carrot|番茄=tomato|馬鈴薯=potato|洋蔥=onion|大蒜=garlic|高麗菜=cabbage|綠花椰菜（青花菜）=broccoli|萵苣／生菜=lettuce|菠菜=spinach|小黃瓜=cucumber|茄子=eggplant|甜椒=bell pepper|甜椒（英式）=capsicum|白花椰菜=cauliflower|蘆筍=asparagus|豆，菜豆=bean|甜菜根=beetroot|南瓜=pumpkin|紅辣椒=chilli|茴香=fennel|香瓜，甜瓜=melon|芹菜=celery|韭菜=leek|白蘿蔔=radish|蘑菇=mushroom|豌豆=pea'],
+  ['vegetable', '蔬菜', '紅蘿蔔=carrot|番茄=tomato|馬鈴薯=potato|洋蔥=onion|大蒜=garlic|高麗菜=cabbage|綠花椰菜（青花菜）=broccoli|萵苣／生菜=lettuce|菠菜=spinach|小黃瓜=cucumber|茄子=eggplant|甜椒=bell pepper|甜椒（英式）=capsicum|白花椰菜=cauliflower|蘆筍=asparagus|豆，菜豆=bean|甜菜根=beetroot|南瓜=pumpkin|紅辣椒=chilli|茴香=fennel|香瓜，甜瓜=melon|芹菜=celery|韭蔥（像大蔥）=leek|蘿蔔（小紅蘿蔔）=radish|蘑菇=mushroom|豌豆=pea'],
   // 肉類、交通工具：有插畫的排前面，後面是原本筆記的其他字
-  ['meat', '肉類', '牛肉=beef|豬肉=pork|雞肉=chicken|羔羊肉（小羊）=lamb|培根=bacon|火腿=ham|香腸=sausage|義大利臘腸=salami|肉=meat|小牛肉=veal|羊肉（成羊）=mutton|牛里脊肉=sirloin|牛排=steak|排骨=chop|肉排=cutlet|燉；燉肉=stew|烤肉=roast|火雞=turkey|鴨=duck|魚=fish|肉湯=broth|兔肉=rabbit|鵝=goose|肝臟=liver|鹿肉=venison'],
+  ['meat', '肉類', '牛肉=beef|豬肉=pork|雞肉=chicken|羔羊肉（小羊）=lamb|培根=bacon|火腿=ham|香腸=sausage|義大利臘腸=salami|肉=meat|小牛肉=veal|羊肉（成羊）=mutton|沙朗（牛腰肉）=sirloin|牛排=steak|豬排、帶骨肉排=chop|肉排=cutlet|燉；燉肉=stew|烤肉=roast|火雞=turkey|鴨=duck|魚=fish|肉湯=broth|兔肉=rabbit|鵝=goose|肝臟=liver|鹿肉=venison'],
   ['transport', '交通工具', '汽車=car|公車=bus|火車=train|地鐵、捷運=subway|腳踏車=bicycle|摩托車、重機=motorcycle|計程車=taxi|卡車=truck|飛機=airplane|船=ship|小船=boat|直升機=helicopter|機車、速克達=scooter|廂型車=van|救護車=ambulance|消防車=fire engine|警車=police car|拖拉機=tractor|推土機=bulldozer|堆高機=forklift|郵輪=cruise ship|熱氣球=hot air balloon|纜車=cable car|人力車=rickshaw|腳踏車（口語）=bike|飛機（口語）=plane|四輪馬車=carriage|吉普車=jeep|卡車（英式）=lorry|長途客運=coach|鐵路=railway|快車=express|遊艇=yacht|大船=vessel'],
   // 工具：有插畫的 24 個排前面，後面是原本筆記的其他字
   ['tool', '工具', '鎚子=hammer|螺絲起子=screwdriver|扳手=wrench|鉗子=pliers|剪刀=scissors|美工刀=utility knife|鋸子=saw|電鑽，鑽頭=drill|捲尺=tape measure|尺=ruler|水平儀=level|梯子=ladder|釘子=nail|螺絲釘=screw|螺母，螺帽=nut|螺栓=bolt|膠帶=tape|膠水=glue|油漆刷=paintbrush|滾筒刷=roller|水桶=bucket|水管鉗=pipe wrench|工具箱=toolbox|手套=gloves|工作台=bench|老虎鉗=vice|刨子=plane|銼刀=file|直角尺=square|平頭釘=brad|砂紙=sandpaper|扳手（英式）=spanner|大頭針，別針=pin|鐵鍬，鏟子=spade|叉子（農具）=fork|鐵鍬，鏟=shovel|耙子=rake|鐮刀=sickle|刷子，毛筆=brush|丁字鎬=pickaxe|斧頭=axe|槓桿=lever|曲柄，曲軸=crank|車床=lathe|迴紋針；夾子=clip|指南針=compass'],
   // 天氣、公共設施：有插畫的 24 個排前面，後面是原本筆記的其他字
-  ['weather', '天氣', '晴朗的=sunny|多雲的=cloudy|下雨的=rainy|下雪的=snowy|颳風的=windy|暴風雨的=stormy|有霧的=foggy|炎熱的=hot|寒冷的=cold|溫暖的=warm|涼爽的=cool|潮濕的=humid|乾燥的=dry|彩虹=rainbow|雷=thunder|閃電=lightning|冰雹=hail|雨夾雪=sleet|颱風=typhoon|龍捲風=tornado|颶風=hurricane|暴風雪=blizzard|陰天的=overcast|局部多雲=partly cloudy|天氣=weather|氣候=climate|大氣=atmosphere|晴天=fine|陰沉的=dull|雨=rain|雪=snow|風=wind|雲=cloud|濃霧=fog|薄霧=mist|陰霾=haze|陣雨=shower|暴風雨=storm|旋風=cyclone|大風=gale|微風=breeze|陽光=sunshine|霜=frost|露水=dew|濕度=humidity|結冰=freeze|乾旱=drought|洪水=flood|潮汐，潮水=tide|地震=earthquake'],
-  ['place', '公共設施', '醫院=hospital|診所=clinic|藥局=pharmacy|警察局=police station|消防局=fire station|郵局=post office|銀行=bank|圖書館=library|學校=school|大學=university|公園=park|兒童遊樂場=playground|體育場=stadium|游泳池=swimming pool|健身房=gym|博物館=museum|美術館=art gallery|劇院=theater|電影院=cinema|餐廳=restaurant|咖啡館=cafe|購物中心=shopping mall|超市=supermarket|便利商店=convenience store|停車場=parking lot|學院=college|酒吧=bar|法院=court|港口=port|商店（英）=shop|商店（美）=store|車站=station|俱樂部=club|動物園=zoo|教堂=church|機場=airport|書店（英）=bookshop|書店（美）=bookstore|學會=institute|市場=market|旅館，飯店=hotel|幼兒園=kindergarten|電梯=elevator|收銀台=cashier|試衣間=fitting room'],
+  ['weather', '天氣', '晴朗的=sunny|多雲的=cloudy|下雨的=rainy|下雪的=snowy|颳風的=windy|暴風雨的=stormy|有霧的=foggy|炎熱的=hot|寒冷的=cold|溫暖的=warm|涼爽的=cool|潮濕的=humid|乾燥的=dry|彩虹=rainbow|雷=thunder|閃電=lightning|冰雹=hail|雨夾雪=sleet|颱風=typhoon|龍捲風=tornado|颶風=hurricane|暴風雪=blizzard|陰天的=overcast|局部多雲=partly cloudy|天氣=weather|氣候=climate|大氣=atmosphere|晴天=fine|陰沉的=dull|雨=rain|雪=snow|風=wind|雲=cloud|濃霧=fog|薄霧=mist|陰霾=haze|陣雨=shower|暴風雨=storm|氣旋（熱帶風暴）=cyclone|大風=gale|微風=breeze|陽光=sunshine|霜=frost|露水=dew|濕度=humidity|結冰=freeze|乾旱=drought|洪水=flood|潮汐，潮水=tide|地震=earthquake'],
+  ['place', '公共設施', '醫院=hospital|診所=clinic|藥局=pharmacy|警察局=police station|消防局=fire station|郵局=post office|銀行=bank|圖書館=library|學校=school|大學=university|公園=park|兒童遊樂場=playground|體育場=stadium|游泳池=swimming pool|健身房=gym|博物館=museum|美術館=art gallery|劇院=theater|電影院=cinema|餐廳=restaurant|咖啡館=cafe|購物中心=shopping mall|超市=supermarket|便利商店=convenience store|停車場=parking lot|學院=college|酒吧=bar|法院=court|港口=port|商店（英）=shop|商店（美）=store|車站=station|俱樂部=club|動物園=zoo|教堂=church|機場=airport|書店（英）=bookshop|書店（美）=bookstore|學院、研究機構=institute|市場=market|旅館，飯店=hotel|幼兒園=kindergarten|電梯=elevator|收銀員=cashier|試衣間=fitting room'],
   // 家庭：有插畫的 23 個排前面（cousin 男女兩張圖合成一個字），後面是原本筆記的其他字
   ['family', '家庭', '爺爺，外公=grandfather|奶奶，外婆=grandmother|爸爸=father|媽媽=mother|兒子=son|女兒=daughter|兄弟=brother|姊妹=sister|雙胞胎兄弟=twin brothers|雙胞胎姊妹=twin sisters|叔叔，伯伯，舅舅=uncle|阿姨，姑姑，嬸嬸=aunt|堂／表兄弟姊妹=cousin|姪子，外甥=nephew|姪女，外甥女=niece|丈夫=husband|妻子=wife|孫子=grandson|孫女=granddaughter|岳父，公公=father-in-law|岳母，婆婆=mother-in-law|女婿=son-in-law|媳婦=daughter-in-law|家庭，家人=family|父母=parent|孩子，兒童=child|雙胞胎（的）=twin|爺爺（口語）=grandpa|奶奶（口語）=grandma|爺爺（英式口語）=grandad|奶奶（英式口語）=granny|夫婦，情侶=couple|婚姻，結婚=marriage|單身的=single|男性=male|女性=female|寄養的=foster|繼承人=heir|繼父=stepfather|繼母=stepmother|血統=descent'],
   // 居家：使用者的插畫原本標題寫「家庭」，但內容是房子和家具，所以另外做一類
@@ -1171,11 +1171,11 @@ const VOCAB = [
   ['clothes', '服飾', '襯衫=shirt|T恤=T-shirt|女用襯衫=blouse|毛衣=sweater|夾克=jacket|外套，大衣=coat|連帽上衣=hoodie|洋裝=dress|裙子=skirt|長褲=pants|短褲=shorts|牛仔褲=jeans|西裝=suit|制服=uniform|睡衣=pajamas|內衣褲=underwear|襪子=socks|褲襪=tights|帽子（鴨舌帽）=cap|圍巾=scarf|手套=gloves|皮帶=belt|鞋子=shoes|靴子=boots|帽子（有邊）=hat|衣服=clothes|服裝（總稱）=clothing|褲子（英式）=trousers|口袋=pocket|袖子=sleeve|鞋底=sole|鞋跟=heel|領帶=tie|棉花=cotton|戒指=ring|項鍊=necklace|香水=perfume|錢包（女用）=purse|圍巾（厚）=muffler|涼鞋=sandal|背心=vest|運動鞋=sneaker|長筒襪=stocking|圍裙=apron|拖鞋=slipper|耳環=earring|口紅=lipstick|雨衣=raincoat|鈕扣=button|衣領=collar|皮夾=wallet|披肩=shawl'],
   ['sport', '體育', '足球（美式說法）=soccer|籃球=basketball|網球=tennis|羽毛球=badminton|排球=volleyball|桌球=table tennis|棒球=baseball|高爾夫球=golf|游泳=swimming|跑步=running|騎自行車=cycling|健行，爬山=hiking|滑雪=skiing|滑板=skateboarding|溜冰，滑冰=ice skating|拳擊=boxing|武術=martial arts|體操=gymnastics|舉重=weightlifting|瑜伽=yoga|跳舞=dancing|衝浪=surfing|釣魚=fishing|射箭=archery|足球（英式說法）=football|游泳（動詞）=swim|跳水=diving|賽跑=race|短跑=dash|競走=walk|跳高=high jump|跳遠=long jump|投擲=throwing|吊環=rings|摔角=wrestling|西洋棋=chess|橋牌=bridge|馬拉松=marathon|撐竿跳=pole vault|推鉛球=shot put|鐵餅=discus|鏈球=hammer|標槍=javelin|柔道=judo|擊劍=fencing|滑冰（總稱）=skating|雪橇=bobsleigh|手球=handball|曲棍球=hockey|板球=cricket|獨木舟=canoe|自由式=freestyle|冰上曲棍球=ice hockey|馬球=polo|水球=water polo|帆船運動=sailing|汽車拉力賽=rally|單槓=horizontal bar|雙槓=parallel bars|花式滑冰=figure skating|划船=rowing'],
   // 身體：有插畫的 14 個排前面，後面是原本筆記的其他字
-  ['body', '身體', '頭=head|臉=face|眼睛=eye|耳朵=ear|鼻子=nose|嘴巴=mouth|脖子=neck|肩膀=shoulder|手臂=arm|手=hand|手指=finger|腿=leg|膝蓋=knee|腳=foot|頭髮=hair|臉頰=cheek|眼皮=lid|嘴唇=lip|扁桃腺=tonsil|牙齒=tooth|假牙=denture|牙齦=gum|舌頭=tongue|腦=brain|下巴=chin|手肘=elbow|腋下=armpit|大腿=thigh|小腿=shank|小腿肚=calf|腳背=instep|手掌=palm|指甲=nail|拳頭=fist|禿頭的=bald|皺紋=wrinkle|痣=mole|胸部=chest|肚臍=navel|臀部=hip|屁股=buttock|雀斑=freckle|酒窩=dimple|額頭=forehead|太陽穴=temple|小鬍子=mustache|絡腮鬍=whisker|鬢角=sideburns|粉刺，痘痘=pimple|腹部=abdomen|腰=waist|大拇指=thumb'],
+  ['body', '身體', '頭=head|臉=face|眼睛=eye|耳朵=ear|鼻子=nose|嘴巴=mouth|脖子=neck|肩膀=shoulder|手臂=arm|手=hand|手指=finger|腿=leg|膝蓋=knee|腳=foot|頭髮=hair|臉頰=cheek|眼皮=lid|嘴唇=lip|扁桃腺=tonsil|牙齒=tooth|假牙=denture|牙齦=gum|舌頭=tongue|腦=brain|下巴=chin|手肘=elbow|腋下=armpit|大腿=thigh|小腿=shank|小腿肚=calf|腳背=instep|手掌=palm|指甲=nail|拳頭=fist|禿頭的=bald|皺紋=wrinkle|痣=mole|胸部=chest|肚臍=navel|臀部=hip|屁股=buttock|雀斑=freckle|酒窩=dimple|額頭=forehead|太陽穴=temple|小鬍子=mustache|鬍鬚（臉頰兩邊、貓的鬍鬚）=whisker|鬢角=sideburns|粉刺，痘痘=pimple|腹部=abdomen|腰=waist|大拇指=thumb'],
   // ↓ 10/23 第六批：使用者的單字表（第 2、4 頁）。已經有的字不重複放；mountain、sky、sea、tree、star、music、art、history、geography 是 Claude 補的
   ['animal', '動物', '貓=cat|狗=dog|豬=pig|兔子=rabbit|鴨子=duck|老虎=tiger|狐狸=fox|斑馬=zebra|鹿=deer|馬=horse|大象=elephant|螞蟻=ant|魚=fish|鳥=bird|老鷹=eagle|河狸=beaver|蛇=snake|老鼠=mouse|松鼠=squirrel|袋鼠=kangaroo|猴子=monkey|熊貓=panda|熊=bear|獅子=lion|長頸鹿=giraffe|鵝=goose|綿羊=sheep|山羊=goat|母牛，乳牛=cow|驢子=donkey|魷魚=squid|龍蝦=lobster|母雞=hen|火雞=turkey|小羊=lamb|鯊魚=shark|海豹=seal'],
   ['nature', '自然景物', '河流=river|湖=lake|小溪=stream|森林=forest|小路=path|馬路，公路=road|建築物=building|空氣=air|月亮=moon|太陽=sun|山=mountain|天空=sky|海=sea|樹=tree|星星=star'],
-  ['room', '教室、房間用品', '書桌，課桌=desk|電腦=computer|黑板，白板=board|電風扇=fan|燈=light|講台=teacher\'s desk|圖畫，照片=picture|照片=photo|圖表=chart|垃圾桶=trash bin|床頭櫃=nightstand|沙發旁的小桌=end table|鑰匙=key|鎖=lock'],
+  ['room', '教室、房間用品', '書桌，課桌=desk|電腦=computer|黑板，白板=board|電風扇=fan|燈=light|講桌=teacher\'s desk|圖畫，照片=picture|照片=photo|圖表=chart|垃圾桶=trash bin|床頭櫃=nightstand|沙發旁的小桌=end table|鑰匙=key|鎖=lock'],
   ['meal', '三餐和速食', '早餐=breakfast|午餐=lunch|晚餐=dinner|晚餐（較少用）=supper|一餐=meal|蛋=egg|豆腐=tofu|冰=ice|冰淇淋=ice cream|可樂=Coke|熱狗=hot dog|漢堡=hamburger|薯條=French fries|果醬=jam|沙拉=salad|湯=soup'],
   ['subject', '學校科目', '國文（中文）=Chinese|英文=English|數學=math|體育課=PE|自然科學=science|社會課=social studies|音樂=music|美術=art|歷史=history|地理=geography'],
 ];
@@ -1480,6 +1480,24 @@ Object.assign(VOCAB_TIPS, {
   money: { change: '💡 change 當名詞是「找的零錢」：Keep the change. 不用找了', _pay: '💡 結帳：Can I pay by card? 可以刷卡嗎？\n💡 問價錢：How much is it? 這個多少錢？' },
   country: { _rule: '💡 國家、國籍、語言的第一個字母都要大寫：Japan、Japanese\n💡 說自己：I\'m from Taiwan. 我來自台灣。I speak Chinese. 我會說中文', 'the US': '💡 美國也可以說 the USA 或 America，前面記得加 the（the US、the UK）' }
 });
+// 10/23 全站內容檢查補的提醒：中文翻譯容易誤會、英美說法不同的字
+for (const [key, en, tip] of [
+  ['vegetable', 'leek', '💡 leek 是韭蔥（長得像大蔥）；台灣的韭菜是 Chinese chives'],
+  ['vegetable', 'radish', '💡 radish 常指小顆的紅皮蘿蔔；台灣的白蘿蔔叫 daikon 或 white radish'],
+  ['vegetable', 'chilli', '💡 chilli 是英式拼法，美式寫 chili'],
+  ['meat', 'sirloin', '💡 sirloin 是「沙朗」；最嫩的「里脊」是 tenderloin'],
+  ['meat', 'chop', '💡 pork chop 是帶骨的豬排，台灣的「排骨飯」就是 pork chop rice；一整排的肋排叫 spare ribs'],
+  ['bakery', 'loaf', '💡 a loaf of bread 是「一條麵包」，切下來的一片是 a slice of bread'],
+  ['place', 'cashier', '💡 cashier 是「收銀員」（人）；收銀台是 checkout 或 cash register'],
+  ['weather', 'cyclone', '💡 cyclone、typhoon、hurricane 都是熱帶風暴，只是地方不同：印度洋、澳洲叫 cyclone'],
+  ['job', 'chemist', '💡 英國的 chemist 也指「藥劑師、藥局」（美國叫 pharmacist、pharmacy）'],
+  ['clothes', 'purse', '💡 美國的 purse 是女生的「手提包」；英國的 purse 才是小錢包'],
+  ['clothes', 'muffler', '💡 美國的 muffler 也是汽車的「消音器」；圍巾一般說 scarf'],
+  ['body', 'whisker', '💡 whiskers 是臉頰兩邊的鬍鬚、貓的鬍鬚；絡腮鬍、下巴的鬍子是 beard']
+]) {
+  VOCAB_TIPS[key] = VOCAB_TIPS[key] || {};
+  VOCAB_TIPS[key][en] = VOCAB_TIPS[key][en] ? VOCAB_TIPS[key][en] + '\n' + tip : tip;
+}
 const picOf = (key, en) => {
   const hit = (PICS[key] || '').split('|').reverse().find(p => p.split('=')[0] === en);   // 後面的優先
   return hit ? hit.split('=')[1] : '';
