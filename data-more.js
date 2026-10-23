@@ -796,7 +796,7 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
     road: '路上看到的=traffic light,crosswalk,intersection,corner,sidewalk,bridge,tunnel,bus stop,gas station,highway,sign,traffic jam|問路常用=*',
     money: '付錢=money,cash,credit card,coin,price,receipt,change|買東西=*',
     country: '亞洲=Taiwan,Taiwanese,Japan,Japanese,Korea,Korean,Thailand,Thai,Vietnam,Vietnamese|歐美=*',
-    tech: '裝置=cell phone,smartphone,laptop,tablet,camera,earphones,wireless earbuds,mouse,keyboard,screen|充電和電源=charger,charging cable,power bank,outlet,battery|網路和操作=*',
+    tech: '手機和電腦=cell phone,smartphone,laptop,tablet,camera|耳機和周邊=earphones,wireless earbuds,mouse,keyboard,screen|充電和電源=charger,charging cable,power bank,outlet,battery|網路和帳號=internet,Wi-Fi,signal,account,password|手機操作=*',
     festival: `台灣的節日=Chinese New Year,New Year's Eve,red envelope,Lantern Festival,Tomb-Sweeping Day,Dragon Boat Festival,rice dumpling,Moon Festival|西洋的節日=Christmas,Santa Claus,Halloween,Thanksgiving,Valentine's Day,Mother's Day,Father's Day,New Year's Day|其他=*`
   };
   const vocab = NOTES.find(c => c.id === 'vocab');

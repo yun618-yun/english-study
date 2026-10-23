@@ -1545,21 +1545,35 @@ function masonry() {
     items.forEach(el => cols[0].appendChild(el));
     fitLabels();   // 標題換行會讓框框變高，先調好再量
     const h = items.map(el => el.offsetHeight);
-    const ok = (a, b) => Math.abs(a - b) <= Math.max(300, (a + b) * 0.2);   // 兩欄差不多高
-    // 分配：照順序放進比較矮的那一欄（order）或從最高的先放（tall），回傳每個框框放哪一欄
-    const split = (idx, tall) => {
-      const side = {}, sum = [0, 0];
-      (tall ? [...idx].sort((x, y) => h[y] - h[x]) : idx).forEach(i => { const c = sum[0] <= sum[1] ? 0 : 1; side[i] = c; sum[c] += h[i]; });
-      return { side, gap: ok(sum[0], sum[1]) };
+    // 10/23 使用者：一律兩欄、左右要平均。所有分法都試一遍，挑左右差最少的（同一欄裡照原本順序）
+    const best = idx => {
+      let bestSide = null, bestGap = Infinity;
+      const n = idx.length, tries = n <= 14 ? 1 << n : 0;
+      for (let m = 0; m < tries; m += 2) {   // 第一個框框一定放左邊
+        let a = 0, b = 0;
+        idx.forEach((i, k) => { if (m >> k & 1) b += h[i]; else a += h[i]; });
+        if (Math.abs(a - b) < bestGap) { bestGap = Math.abs(a - b); bestSide = m; }
+      }
+      if (bestSide === null) {   // 太多框框：從最高的開始放進比較矮的那邊
+        const sum = [0, 0], side = {};
+        [...idx].sort((x, y) => h[y] - h[x]).forEach(i => { const c = sum[0] <= sum[1] ? 0 : 1; side[i] = c; sum[c] += h[i]; });
+        return { side, gap: Math.abs(sum[0] - sum[1]) };
+      }
+      const side = {}; idx.forEach((i, k) => { side[i] = bestSide >> k & 1; });
+      return { side, gap: bestGap };
     };
     const all = items.map((_, i) => i);
-    const last = all.slice(0, -1);
-    const big = h.indexOf(Math.max(...h));
-    // 1. 照順序兩欄 → 2. 重新分配讓兩邊一樣高 → 3. 最後一個拉到下面變寬（使用者的點子）→ 4. 最長的那個變寬 → 5. 每個都一整排
-    const plans = [[all, false], [all, true], items.length >= 3 && [last, false], items.length >= 3 && [last, true],
-      items.length >= 3 && [all.filter(i => i !== big), true]].filter(Boolean);
-    let plan = plans.map(([idx, tall]) => ({ idx, ...split(idx, tall) })).find(p => p.gap);
-    if (!plan) plan = { idx: [], side: {} };
+    let plan = best(all);
+    // 還是差很多的話，試試把最後一個或最長的那個拉到下面變寬；明顯比較平均才換
+    if (items.length >= 3 && plan.gap > 200) {
+      for (const idx of [all.slice(0, -1)]) {   // 只拉最後一個，才不會打亂順序
+        const p = best(idx);
+        if (p.gap < plan.gap - 200) plan = p;
+      }
+    }
+    // 怎麼分都差很多（框框少、一個特別長）→ 每個框框一整排、裡面的字分兩欄，才不會空一大塊
+    const tot = h.reduce((s, x) => s + x, 0);
+    if (plan.gap > Math.max(300, tot * 0.35)) plan = { side: {} };   // 只有差到很誇張才變一整排（使用者比較想要兩欄）
     // 框框照原本的順序放回去（同一欄裡上下順序不變）
     items.forEach((el, i) => {
       const inCol = i in plan.side;
