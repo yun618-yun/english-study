@@ -829,3 +829,59 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
   daily[at] = { id: 'dl-abroad', title: `✈️ 出國：機場、飯店、求助（${total} 個）`, note: '{{nogrid}}出國旅遊一定會用到，海關問的問題通常很固定。\n\n' + boxes.join('\n\n') };
   for (const id of ['dl-hotel', 'dl-help']) daily.splice(daily.findIndex(i => i.id === id), 1);
 }
+
+// ---------- ⏰ 16 大時態：總表加例句（都可以按 🔊），每個時態多 1～2 個例句（10/23 使用者要「整區都有語音」） ----------
+{
+  const items = NOTES.find(c => c.id === 'tenses').items;
+  const add = (id, fn) => { const it = items.find(i => i.id === id); if (it) it.note = fn(it.note); };
+  // 總表：同一個動詞 play 換時態，比較好看出差別；四個框框排成兩欄
+  const EX = {
+    '【一般】': ['I play tennis every day. 我每天打網球。', 'I played tennis yesterday. 我昨天打了網球。', 'I will play tennis tomorrow. 我明天會打網球。', 'I said I would play tennis the next day. 我說過隔天會打網球。'],
+    '【進行】': ['I am playing tennis now. 我現在正在打網球。', 'I was playing tennis at 3 p.m. yesterday. 我昨天下午三點正在打網球。', 'I will be playing tennis at 3 p.m. tomorrow. 明天下午三點我會正在打網球。', 'I said I would be playing tennis at that time. 我說過那時我會正在打網球。'],
+    '【完成】': ['I have played tennis for ten years. 我打網球十年了。', 'I had played tennis before he came. 他來之前我已經打過網球了。', 'I will have played tennis for ten years by next year. 到明年我就打滿十年了。', 'I said I would have played three games by noon. 我說過中午前會打完三局。'],
+    '【完成進行】': ['I have been playing tennis for two hours. 我已經連續打兩小時了。', 'I had been playing for an hour when it started to rain. 開始下雨時，我已經打了一小時。', 'By 5 p.m., I will have been playing for three hours. 到五點，我就連續打三小時了。', 'He said he would have been playing for three hours by then. 他說到那時他就連續打三小時了。']
+  };
+  const PEX = {
+    '【一般】': ['The room is cleaned every day. 房間每天被打掃。', 'The room was cleaned yesterday. 房間昨天被打掃了。', 'The room will be cleaned tomorrow. 房間明天會被打掃。', 'He said the room would be cleaned the next day. 他說房間隔天會被打掃。'],
+    '【進行】': ['The room is being cleaned now. 房間現在正在被打掃。', 'The room was being cleaned at 3 p.m. 下午三點時房間正在被打掃。'],
+    '【完成】': ['The room has been cleaned. 房間已經打掃好了。', 'The room had been cleaned before I came. 我來之前房間就打掃好了。', 'The room will have been cleaned by noon. 中午前房間就會打掃好。']
+  };
+  // 每個「時間：公式」下面接一行「例：…」
+  const withEx = (note, ex) => '{{grid}}' + note.split('\n\n').map(box => {
+    const [head, ...ls] = box.split('\n');
+    const list = ex[head.trim()];
+    if (!list) return box;
+    let k = 0;
+    return [head, ...ls.flatMap(l => /^(現在|過去|將來|過去將來)：/.test(l) && !/沒有|很少用$/.test(l) && list[k] ? [l, '例：' + list[k++]] : [l])].join('\n');
+  }).join('\n\n');
+  add('tense-table', n => withEx(n, EX));
+  add('passive-table', n => withEx(n, PEX));
+  // 每個時態多加的例句
+  const MORE = {
+    't-simple-present': ['She drinks coffee every morning. 她每天早上喝咖啡。', 'Water boils at 100°C. 水在攝氏 100 度沸騰。'],
+    't-simple-past': ['We watched a movie last night. 我們昨晚看了一部電影。', 'She was tired yesterday. 她昨天很累。'],
+    't-simple-future': ['It will rain tomorrow. 明天會下雨。', "I'm going to visit my grandma this weekend. 我這週末要去看奶奶。"],
+    't-past-future': ['He told me he would call me. 他跟我說他會打給我。', 'She said she would come to the party. 她說她會來派對。'],
+    't-past-cont': ['I was cooking when you called. 你打來的時候我正在煮飯。', 'They were playing basketball at 5 p.m. yesterday. 他們昨天下午五點正在打籃球。'],
+    't-present-cont': ['She is talking on the phone. 她正在講電話。', 'Look! It is snowing. 你看！在下雪。'],
+    't-future-cont': ['This time tomorrow, I will be flying to Tokyo. 明天這個時候，我會正在飛往東京。', "Don't call me at 9. I will be sleeping. 九點別打給我，我會在睡覺。"],
+    't-past-future-cont': ['She said she would be waiting for me at the station. 她說她會在車站等我。'],
+    't-past-perfect': ['When I got to the station, the train had left. 我到車站時，火車已經開走了。', 'She had finished her homework before dinner. 她晚餐前就寫完作業了。'],
+    't-present-perfect': ['I have been to Japan twice. 我去過日本兩次。', 'Have you eaten yet? 你吃過了嗎？'],
+    't-future-perfect': ['I will have finished the report by Friday. 星期五前我就會寫完報告。'],
+    't-past-future-perfect': ['He said he would have left by 8 p.m. 他說晚上八點前他就會離開了。'],
+    't-past-perfect-cont': ['She had been waiting for an hour when the bus came. 公車來的時候，她已經等了一個小時。'],
+    't-present-perfect-cont': ['I have been studying English since 2020. 我從 2020 年開始一直在學英文。', 'It has been raining all day. 已經下了一整天的雨。'],
+    't-future-perfect-cont': ['By 6 p.m., she will have been working for ten hours. 到晚上六點，她就已經連續工作十個小時了。'],
+    't-past-future-perfect-cont': []
+  };
+  for (const [id, list] of Object.entries(MORE)) add(id, n => n + list.map(s => '\n例：' + s).join(''));
+  // 原本的「新疆棉花」例句不太自然，換成生活例句
+  add('t-future-perfect-cont', n => n.replace(/例：Tomorrow we will have been using Xinjiang cotton for ten years\.\n到明天，我們使用新疆棉花就滿十年了。/, '例：By next year, I will have been learning English for ten years.\n到明年，我學英文就滿十年了。'));
+  add('t-past-future-perfect-cont', n => n.replace(/例：They said tomorrow they would have been using Xinjiang cotton for ten years\.\n他們當時說，到明天，他們使用新疆棉花就滿十年了。/, '例：She said that by June she would have been working there for five years.\n她說到六月時，她在那裡工作就滿五年了。'));
+  // 8 大時態對照表：加主動 → 被動的例句
+  add('t-8-active-passive', n => n.replace('\n\n① 被動語態的公式', '\n\n【例句：主動 → 被動】\n例：She cleans the room every day. 她每天打掃房間。\n例：The room is cleaned every day. 房間每天被打掃。\n例：He wrote this letter. 他寫了這封信。\n例：This letter was written by him. 這封信是他寫的。\n例：They have built a new school. 他們蓋了一所新學校。\n例：A new school has been built. 一所新學校蓋好了。\n\n① 被動語態的公式'));
+}
+
+// ---------- 🚫 台灣人常犯的錯：每一條一個框框，兩欄四宮格（10/23 使用者覺得太長） ----------
+for (const it of NOTES.find(c => c.id === 'mistakes').items) if (it.note && !it.note.startsWith('{{')) it.note = '{{grid}}' + it.note;

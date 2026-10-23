@@ -357,8 +357,8 @@ img.pic.big { width: auto; max-width: 100%; height: auto; max-height: 200px; bor
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 100' preserveAspectRatio='none'%3E%3Cpath d='M14 1 C7 1 8 6 8 14 L8 42 C8 48 5 50 2 50 C5 50 8 52 8 58 L8 86 C8 94 7 99 14 99' fill='none' stroke='%2389b4c0' stroke-width='2.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
 }
 /* 有標題的：標題放在大括號上面，大括號只框住下面的內容 */
-.page .nb:has(> .lbl) { padding-top: 34px; }
-.page .nb:has(> .lbl)::before { top: 36px; }
+.page .nb:has(> .lbl) { padding-top: var(--pt, 34px); }
+.page .nb:has(> .lbl)::before { top: var(--bt, 36px); }   /* 標題換行時，app.js fitLabels 會把這兩個值調大 */
 .page .nb > .lbl { position: absolute; top: 4px; left: 4px; color: var(--teal); font-size: 16.5px; font-weight: 800; background: none; }
 .page .nb:has(img.pic) > .lbl { position: static; grid-column: 1 / -1; margin: 6px 0 -2px; font-size: 17px; }   /* 有圖的單字表分段：小標題自己一整排 */
 .page .nb:has(img.pic):has(> .lbl) { padding-top: 4px; }
@@ -553,3 +553,14 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 [data-pics="off"] .page .nbgrid:has(img.pic) .nb:has(img.pic) .row { display: block; padding: 5px 0; border-top: 1px dashed var(--line); }
 [data-pics="off"] .page .nbgrid:has(img.pic) .nb:has(img.pic) .row .k { font-size: 16px; }
 [data-pics="off"] .page .nbgrid:has(img.pic) .nb:has(img.pic) .row .v { text-align: left; }
+/* 兩欄框框裡的「標籤：內容」改成上下排，才不會擠成細細一條 */
+.page .nbgrid .kv { display: block; }
+.page .nbgrid .kv > span { display: inline; font-size: 12.5px; color: var(--muted); margin-right: 6px; }
+.page .nbgrid .kv > b { display: inline; }
+/* 很長的單字表：框框裡排成兩欄，英文在上、中文在下 */
+.page .nb.two { display: grid; grid-template-columns: 1fr 1fr; column-gap: 14px; align-items: start; }
+.page .nb.two > .lbl { grid-column: 1 / -1; }
+.page .nb.two .row { display: block; padding: 4px 0; }
+.page .nb.two .row .k { display: block; }
+.page .nb.two .row .v { display: block; text-align: left; font-size: 13.5px; padding: 0; }
+.page .nb.two > .wtip { grid-column: 1 / -1; }

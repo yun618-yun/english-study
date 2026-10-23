@@ -256,10 +256,10 @@ function splitBlocks(text) {
 function formatNote(text) {
   if (text.startsWith('{{grid}}')) {
     const parts = text.replace(/^\{\{grid\}\}\n*/, '').split('\n\n');
-    const boxes = parts.filter(p => p.trim().startsWith('【'));
+    const boxes = parts.filter(p => MARK.test(p.trim()));
     // 框框前面的說明放上面，框框後面的提醒放下面
-    const first = parts.findIndex(p => p.trim().startsWith('【'));
-    const isBox = p => p.trim().startsWith('【');
+    const first = parts.findIndex(p => MARK.test(p.trim()));
+    const isBox = p => MARK.test(p.trim());
     return parts.slice(0, Math.max(first, 0)).filter(p => !isBox(p)).map(formatBlocks).join('') +
       `<div class="nbgrid">${boxes.map(formatBlocks).join('')}</div>` +
       parts.slice(Math.max(first, 0)).filter(p => !isBox(p)).map(formatBlocks).join('');
@@ -269,12 +269,16 @@ function formatNote(text) {
   return formatBlocks(text);
 }
 // 短的框框（每行都不長、行數不多）自動兩個一排；長句子的框框維持一整排
+// 很長的單字表（8 行以上、每行都是「短英文　中文」）→ 框框裡排成兩欄，不用一直往下滑（10/23 使用者要的）
+const twoCol = ls => {
+  const rows = ls.filter(l => !l.trim().startsWith('{{tip:'));
+  return rows.length >= 8 && rows.every(l => { const p = l.replace(/{{tip:[^}]*}}/g, '').trim().split('　'); return p.length === 2 && !l.includes('{{pic:') && visibleLen(p[0]) <= 22 && visibleLen(p[1]) <= 14; }) ? ' two' : '';
+};
 const visibleLen = l => l.replace(/\{\{[^}]*\}\}/g, '').replace(/[\[\]]/g, '').trim().length;
-const isShortBlock = ls => ls.length >= 2 && ls.length <= 12 &&
+// 10/23 使用者希望多用兩欄四宮格、少往下滑：每行不長（26 字以內）的框框都並排，短的英文句子也可以
+const isShortBlock = ls => ls.length >= 2 && ls.length <= 16 &&
   (MARK.test(ls[0].trim()) || ls.every(l => /　/.test(l))) &&
-  ls.every(l => visibleLen(l) <= 26 && (l.trim().split('　').length <= 2)) &&
-  // 有英文例句（三個字以上）的框框不並排，太擠會不好讀
-  !ls.slice(1).some(l => isEnglish(l) && !/　/.test(l) && l.trim().split(/\s+/).length >= 3);
+  ls.every(l => visibleLen(l) <= 26 && (l.trim().split('　').length <= 2));
 // 小提醒搬到它在講的那一行下面：拿提醒裡的英文字，去前面的內容找最相符的一行
 const STOP = new Set(['the', 'and', 'for', 'you', 'are', 'not', 'can', 'his', 'her', 'its', 'this', 'that', 'with', 'one', 'two']);
 function attachTips(blocks) {
@@ -329,13 +333,13 @@ function renderBlock(ls, i, blocks) {
       const label = first.replace(/^【(.*)】$/, '$1');
       // 口訣：每一句都用一樣大小的字（不要因為英文開頭就變大）
       if (label === '口訣') return `<div class="nb"><div class="lbl">口訣</div>${ls.slice(1).map(l => `<div class="poem">${inline(l.trim())}</div>`).join('')}</div>`;
-      return `<div class="nb"><div class="lbl">${inline(label)}</div>${ls.slice(1).map(line).join('')}</div>`;
+      return `<div class="nb${twoCol(ls.slice(1))}"><div class="lbl">${inline(label)}</div>${ls.slice(1).map(line).join('')}</div>`;
     }
     // 一行一個的清單（單字表、發音規則）→ 左右兩欄
     const isTip = l => l.trim().startsWith('{{tip:');
     const isRow = l => /　/.test(l.trim()) || /^\d+\.\s/.test(l.trim()) || isTip(l);
     if (ls.filter(l => !isTip(l)).length >= 3 && ls.every(isRow)) {
-      return `<div class="nb">${ls.map(l => {
+      return `<div class="nb${twoCol(ls)}">${ls.map(l => {
         if (isTip(l)) return inline(l.trim());
         const t = l.trim().replace(/^\d+\.\s*/, '');
         return tableRow(t.includes('　') ? t : t.replace('：', '　'));
@@ -343,7 +347,7 @@ function renderBlock(ls, i, blocks) {
     }
     // 開頭的說明文字
     if (i === 0 && blocks.length > 1 && !ls.some(isEnglish)) return `<p class="sub">${ls.map(l => inline(l.trim())).join('<br>')}</p>`;
-    return `<div class="nb">${ls.map(line).join('')}</div>`;
+    return `<div class="nb${twoCol(ls)}">${ls.map(line).join('')}</div>`;
   }
 }
 
@@ -366,6 +370,7 @@ function renderNotes() {
       </div>
       ${planRun === 'note' ? '<div class="empty">' + planBack('note') + '</div>' : ''}`;
     markRead(it.id);   // 今日文法：打開過就算讀過
+    fitLabels();
     return;
   }
   // 單字：每一類排成有封面插畫的格子（封面用這一類第一個有插畫的字）
@@ -1481,4 +1486,13 @@ route();
 // 離線也能用（只有放到網路上 https 時才會啟用）
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
   navigator.serviceWorker.register('sw.js');
+}
+
+// 框框標題太長換成兩行時，把框框上面的空間和大括號往下移，才不會疊到內容
+function fitLabels() {
+  document.querySelectorAll('.page .nb > .lbl').forEach(l => {
+    if (getComputedStyle(l).position !== 'absolute') return;
+    const h = l.offsetHeight;
+    if (h > 28) { l.parentElement.style.setProperty('--pt', (h + 10) + 'px'); l.parentElement.style.setProperty('--bt', (h + 12) + 'px'); }
+  });
 }
