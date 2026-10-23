@@ -516,7 +516,8 @@ NOTES.find(c => c.id === 'terms').items.unshift({
 // 格式：'英文=中文=口訣／拆法'。卡片正面是中文，背面是英文＋口訣
 {
   const AFFIX = { un: 'un-', re: 're-', dis: 'dis-', im: 'im-／in-', pre: 'pre-', er: '-er／-or', ful: '-ful', less: '-less', ly: '-ly', able: '-able',
-    mis: 'mis-', over: 'over-', num: 'uni-／bi-／tri-', tion: '-tion', ness: '-ness', ment: '-ment' };
+    mis: 'mis-', over: 'over-', num: 'uni-／bi-／tri-', tion: '-tion', ness: '-ness', ment: '-ment',
+    sub: 'sub-', inter: 'inter-', ous: '-ous', ship: '-ship', ist: '-ist', en: '-en', port: 'port', spect: 'spect', vis: 'vis／vid' };
   const card = ([en, zh, hint], key, p) => ({
     id: `${p}-${key}-${slug(en)}`, front: AFFIX[key] ? `${zh}\n（用 ${AFFIX[key]}）` : zh,
     back: en + (hint && hint !== zh ? '\n💡 ' + hint : ''), say: en, group: `${p}-${key}`
@@ -598,6 +599,33 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
         ['ment', '📄 -ment = 變名詞（動作 → 結果）', '動詞後面加 -ment，就變成名詞。',
           'movement=動作=move（移動）＋ ment|payment=付款=pay（付錢）＋ ment|agreement=同意、協議=agree（同意）＋ ment|enjoyment=樂趣=enjoy（享受）＋ ment|government=政府=govern（治理）＋ ment|treatment=治療=treat（對待、治療）＋ ment',
           '💡 government 中間有 n，很多人會漏掉：govern ＋ ment\n💡 -tion、-ness、-ment 看到這三個字尾，就知道是名詞'],
+        ['sub', '⬇️ sub- = 下面、次一等', '放在字前面，表示「在下面」或「附屬的」。',
+          'subway=地鐵=sub（下面）＋ way（路）→ 地下的路|submarine=潛水艇=sub（下面）＋ marine（海的）→ 在海面下|subtitle=字幕=sub（下面）＋ title（標題）→ 畫面下面的字|subzero=零下的=sub（下面）＋ zero（零）|subtotal=小計=sub（次一等）＋ total（總計）|suburb=郊區=sub（附近）＋ urb（城市）→ 城市旁邊',
+          '💡 美國說 subway，英國說 underground 或 the Tube\n💡 看影片開字幕：Turn on the subtitles.'],
+        ['inter', '🔗 inter- = 在…之間、互相', '放在字前面，表示「在兩者之間」或「互相」。',
+          'international=國際的=inter（之間）＋ national（國家的）→ 國家和國家之間|internet=網際網路=inter（之間）＋ net（網）|interview=面試、採訪=inter（互相）＋ view（看）→ 面對面互相看|interact=互動=inter（互相）＋ act（行動）|interchange=交流道=inter（互相）＋ change（交換）|intersection=十字路口=inter（之間）＋ section（區塊）',
+          '💡 interview 念 /ˈɪntərvjuː/，重音在前面\n💡 例句：I have a job interview tomorrow. 我明天有工作面試。'],
+        ['ous', '✨ -ous = 變形容詞（充滿…的）', '名詞後面加 -ous，就變成形容詞。',
+          'dangerous=危險的=danger（危險）＋ ous|famous=有名的=fame（名聲）＋ ous，去掉 e|nervous=緊張的=nerve（神經）＋ ous，去掉 e → 神經繃很緊|humorous=幽默的=humor（幽默）＋ ous|adventurous=愛冒險的=adventure（冒險）＋ ous，去掉 e|poisonous=有毒的=poison（毒）＋ ous',
+          '💡 -ous 念 /əs/，像中文的「餓斯」，很輕\n💡 delicious（好吃的）、jealous（忌妒的）也是 -ous 結尾的形容詞'],
+        ['ship', '🤝 -ship = 關係、身分', '名詞後面加 -ship，變成「…的關係、資格」。',
+          'friendship=友誼=friend（朋友）＋ ship|relationship=關係、感情=relation（關係）＋ ship|membership=會員資格=member（會員）＋ ship|leadership=領導能力=leader（領導者）＋ ship|championship=冠軍賽=champion（冠軍）＋ ship|citizenship=公民身分、國籍=citizen（公民）＋ ship',
+          '⚠️ ship 單獨是「船」，但當字尾 -ship 跟船沒關係\n💡 in a relationship 是「有交往對象」：Are you in a relationship? 你有在交往嗎？'],
+        ['ist', '🎨 -ist = 專門做…的人', '跟 -er 一樣是「人」，但常是專業、專家。',
+          'artist=藝術家=art（藝術）＋ ist|pianist=鋼琴家=piano（鋼琴）＋ ist，去掉 o|scientist=科學家=science（科學）＋ ist|tourist=觀光客=tour（旅遊）＋ ist|dentist=牙醫=dent（牙齒，拉丁文）＋ ist|guitarist=吉他手=guitar（吉他）＋ ist',
+          '💡 dent 是拉丁文的「牙齒」，所以 dental 是「牙齒的」：dental clinic 牙科診所\n💡 -er 和 -ist 都是人：singer 歌手、pianist 鋼琴家'],
+        ['en', '🔧 -en = 讓…變得', '形容詞後面加 -en，變成動詞「使變得…」。',
+          'shorten=縮短=short（短）＋ en|sharpen=削尖、磨利=sharp（尖）＋ en|darken=變暗=dark（暗）＋ en|weaken=變弱=weak（弱）＋ en|soften=變軟=soft（軟）＋ en，t 不發音|fasten=繫緊=fast（牢固）＋ en，t 不發音',
+          '💡 搭飛機一定會聽到：Please fasten your seatbelt. 請繫好安全帶。\n💡 fasten、soften 的 t 都不念：/ˈfæsn/、/ˈsɔːfn/'],
+        ['port', '📦 字根 port = 搬、帶', '字根是一個字的「核心」，前後再加字首、字尾。port 就是「搬東西」。',
+          'transport=運輸=trans（從這到那）＋ port（搬）|import=進口=im（進來）＋ port（搬）|export=出口=ex（出去）＋ port（搬）|report=報告=re（回來）＋ port（帶）→ 把消息帶回來|portable=可攜帶的=port（搬）＋ able（可以）|porter=搬運工、行李員=port（搬）＋ er（人）',
+          '⚠️ airport、passport 的 port 是「港口」，是另一個意思\n💡 import ↔ export 是一對：im 進來、ex 出去（exit 出口也是 ex）'],
+        ['spect', '👀 字根 spect = 看', 'spect 就是「看」，加上不同字首，看的方式就不一樣。',
+          'inspect=檢查=in（往裡面）＋ spect（看）|respect=尊敬=re（再）＋ spect（看）→ 值得再看一眼|expect=期待=ex（往外）＋ spect（看）→ 往外看，等著|spectator=觀眾=spect（看）＋ ator（人）|suspect=懷疑=su（下面）＋ spect（看）→ 從下面偷偷看|spectacular=壯觀的=spect（看）→ 很值得看的',
+          '💡 expect 少了 s：ex ＋ spect 黏在一起時，s 合併了'],
+        ['vis', '👁️ 字根 vis／vid = 看', '另一個「看」的字根，在很多常用字裡。',
+          'visit=拜訪、參觀=vis（看）→ 去看人、看地方|vision=視力=vis（看）＋ ion|visible=看得見的=vis（看）＋ ible（可以）|video=影片=vid（看）|television=電視=tele（遠）＋ vision（看）→ 看到遠方的東西|revise=修改=re（再）＋ vise（看）→ 再看一次',
+          '💡 tele = 遠：telephone 電話（遠方的聲音）、telescope 望遠鏡\n💡 invisible 隱形的 = in（不）＋ visible（看得見）'],
         ['loan', '🎵 諧音①：中文本來就是照發音翻的', '這些字的中文就是音譯，念出來幾乎一樣，最好記！',
           'sofa=沙發=沙發 → 發音幾乎一樣|humor=幽默=幽默|logic=邏輯=邏輯|guitar=吉他=吉他|salad=沙拉=沙拉|pudding=布丁=布丁|toast=吐司=吐司|cartoon=卡通=卡通|engine=引擎=引擎|hacker=駭客=駭客',
           '💡 生活中還有很多：bus 巴士、taxi 的士、cool 酷、typhoon 颱風（這個是英文跟中文借的）'],
@@ -618,7 +646,10 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
           '⚠️ dessert（甜點，兩個 s）和 desert（沙漠，一個 s）很容易搞混：沙漠很乾，只有一個 s\n💡 knowledge 的 k 不發音，念 /ˈnɑːlɪdʒ/'],
         ['family', '👨‍👩‍👧 一家人一起背', '同一個字的「家人」一起記，名詞、動詞、形容詞一次學會。',
           'success=成功（名詞）=一家人：succeed 成功（動詞）、successful 成功的|decide=決定（動詞）=一家人：decision 決定（名詞）|choose=選擇（動詞）=一家人：choice 選擇（名詞）|beauty=美（名詞）=一家人：beautiful 美麗的、beautifully 美麗地|health=健康（名詞）=一家人：healthy 健康的|danger=危險（名詞）=一家人：dangerous 危險的|friend=朋友=一家人：friendly 友善的、friendship 友誼|music=音樂=一家人：musician 音樂家、musical 音樂的',
-          '💡 背一個字的時候，順便查它的「家人」，等於一次背 2～3 個字\n💡 字尾看詞性：-ful、-ous、-y 是形容詞；-tion、-ness、-ment、-ship 是名詞']
+          '💡 背一個字的時候，順便查它的「家人」，等於一次背 2～3 個字\n💡 字尾看詞性：-ful、-ous、-y 是形容詞；-tion、-ness、-ment、-ship 是名詞'],
+        ['confuse', '🤯 長得很像、很容易搞混的字', '兩兩一對，用小口訣分清楚。',
+          'quiet=安靜的=qui-et 兩個音節，念得比較長、慢慢的，很安靜|quite=相當、很=一個音節，很快就念完，結尾是 te|lose=失去、輸=只有一個 o → 輸掉了一個 o|loose=鬆的=兩個 o → 太鬆了，多出一個 o|advice=建議（名詞）=c 是名詞：give me some advice|advise=建議（動詞）=s 是動詞：I advise you to rest.|borrow=（跟別人）借=借進來：Can I borrow your pen?|lend=借給（別人）=借出去：Can you lend me your pen?|then=然後、那時=e 跟時間有關：and then 然後|than=比=thAn 和 compAre（比較）都有 a：taller than me',
+          '💡 lose 念 /luːz/（尾音像 z），loose 念 /luːs/（尾音像 s），按 🔊 比較看看\n💡 borrow 是「拿進來」，lend 是「給出去」，方向相反']
       ], { card })
     ]
   });
