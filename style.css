@@ -1,0 +1,485 @@
+/* 參考使用者喜歡的「郭老師」筆記：淺藍底、白色紙張、粉紅螢光筆標題、紅色英文、淺色色塊。
+   使用者不喜歡暗色，所以沒有深色模式，手機開深色模式也一樣是亮的 */
+:root {
+  color-scheme: light;
+  --bg: #e3dac9;          /* A 燕麥米色（使用者 10/23 選的，電腦上看不刺眼） */
+  --card: #efe8da;        /* 紙張不用白色 */
+  --text: #3b352e;
+  --head: #3d362f;
+  --muted: #80776b;
+  --line: #d8cdb9;
+  --teal: #c0485a;          /* 重點色：郭老師筆記的紅色 */
+  --brown: #b5654a;
+  --marker: rgba(246, 160, 180, .55);   /* 粉紅螢光筆 */
+  --pink: #f5e2df;
+  --yellow: #f6ebcc;
+  --blue: #e6e0d2;
+  --green: #e4ecda;
+  --tip-bg: #f6ebcc;
+  --accent: #2b6f80;
+  --good: #3a9a66;
+  --bad: #d4574d;
+  --good-bg: #e0ecdc;
+  --bad-bg: #f3dfd8;
+  --shadow: 0 2px 8px rgba(160, 130, 90, .08);
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; overflow-x: hidden; }
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: calc(70px + env(safe-area-inset-bottom));
+}
+button { font-family: inherit; cursor: pointer; }
+
+.top { padding: 14px 16px 6px; max-width: 640px; margin: 0 auto; }
+.top h1 { margin: 0; font-size: 28px; color: var(--head); letter-spacing: .5px; }
+
+main { padding: 0 16px 24px; max-width: 640px; margin: 0 auto; }
+
+/* 下方分頁列 */
+.tabs {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+  display: flex;
+  background: var(--card);
+  border-top: 1px solid var(--line);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.tabs button {
+  flex: 1; border: 0; background: none; color: var(--muted);
+  font-size: 12px; padding: 6px 0 8px;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+}
+.tabs .ico { font-size: 22px; line-height: 1.2; }
+.tabs button.active { color: var(--teal); font-weight: 700; }
+
+/* 返回列 */
+.back {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid var(--line); background: var(--card); color: var(--teal);
+  font-size: 16px; font-weight: 700; border-radius: 999px;
+  padding: 8px 16px 8px 12px; margin: 2px 0 10px; box-shadow: var(--shadow);
+}
+.back:active { opacity: .6; }
+
+/* ===== 首頁：大分類卡片 ===== */
+.intro { color: var(--muted); font-size: 15px; margin: 0 0 14px; }
+.cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.cat {
+  position: relative; text-align: left;
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+  padding: 14px 14px 12px; box-shadow: var(--shadow); color: var(--text);
+  display: flex; flex-direction: column; gap: 4px; min-height: 132px; overflow: hidden;
+}
+.cat::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: var(--c);
+}
+.cat .ci {
+  width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; font-size: 22px;
+  background: color-mix(in srgb, var(--c) 16%, transparent); margin-bottom: 4px;
+}
+.cat .cn { font-size: 18px; font-weight: 800; color: var(--head); line-height: 1.3; }
+.cat .cd { font-size: 13px; color: var(--muted); line-height: 1.4; }
+.cat .cc { font-size: 13px; font-weight: 700; color: var(--c); margin-top: auto; }
+.cat.wide { grid-column: 1 / -1; min-height: 0; flex-direction: row; align-items: center; gap: 12px; }
+.cat.wide .ci { margin: 0; flex: none; }
+.cat.wide .cbody { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+
+/* ===== 分類裡的筆記清單 ===== */
+.cat-head { display: flex; align-items: center; gap: 12px; margin: 4px 0 14px; }
+.cat-head .ci {
+  width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; font-size: 26px;
+  background: color-mix(in srgb, var(--c) 16%, transparent); flex: none;
+}
+.cat-head h2 { margin: 0; font-size: 24px; color: var(--head); }
+.cat-head p { margin: 0; color: var(--muted); font-size: 14px; }
+
+.list { background: var(--card); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); }
+.list button {
+  width: 100%; border: 0; background: none; color: var(--text); text-align: left;
+  display: flex; align-items: center; gap: 12px; padding: 13px 14px;
+  border-top: 1px solid var(--line); font-size: 16px; line-height: 1.45;
+}
+.list button:first-child { border-top: 0; }
+.list .num { font-weight: 800; color: var(--c, var(--teal)); font-size: 15px; width: 24px; flex: none; font-variant-numeric: tabular-nums; }
+.list .lt { flex: 1; font-weight: 600; }
+.list .arrow { color: var(--muted); flex: none; }
+
+.badge { font-size: 12px; padding: 2px 8px; border-radius: 999px; flex: none; font-weight: 600; }
+.badge.known { background: var(--good-bg); color: var(--good); }
+.badge.unknown { background: var(--bad-bg); color: var(--bad); }
+
+/* ===== 一則筆記（仿截圖排版） ===== */
+.page h2 { font-size: 27px; line-height: 1.35; color: var(--head); margin: 6px 0 10px; font-weight: 900; }
+.page .sub { color: var(--muted); font-size: 15px; margin: 0 0 16px; }
+.nb {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 12px 14px; margin-bottom: 10px; box-shadow: var(--shadow);
+}
+.nb .lbl { color: var(--teal); font-weight: 800; font-size: 15px; margin-bottom: 2px; }
+.nb .en { font-size: 18px; line-height: 1.5; margin: 2px 0; }
+.nb .zh { color: var(--muted); font-size: 14.5px; line-height: 1.55; }
+.nb .row { display: flex; gap: 10px; padding: 5px 0; border-top: 1px dashed var(--line); }
+.nb .row:first-child { border-top: 0; }
+.nb .row .k { font-weight: 700; color: var(--teal); min-width: 0; flex: 1; }
+.nb .row .v { color: var(--muted); flex: 1; text-align: right; }
+.nb .row.multi span { flex: 1; text-align: left; min-width: 0; overflow-wrap: anywhere; }
+.nb .row.multi .v { color: var(--text); }
+.nb .row.multi span:last-child { color: var(--muted); }
+.nb .kv { display: flex; gap: 10px; padding: 3px 0; align-items: baseline; }
+.nb .kv > span { color: var(--muted); font-size: 14px; flex: none; min-width: 4.5em; }
+.nb .kv b { font-weight: 600; font-size: 16px; }
+.hl { color: var(--teal); font-weight: 800; }
+.tip {
+  background: var(--tip-bg); border: 1px solid var(--line); border-radius: 12px;
+  padding: 12px 14px; margin-bottom: 10px; color: var(--text); font-size: 15px;
+}
+.takeaway { text-align: center; color: var(--brown); font-weight: 800; font-size: 15px; margin: 14px 0 6px; }
+
+.pager { display: flex; gap: 10px; margin-top: 12px; }
+.pager button {
+  flex: 1; border: 1px solid var(--line); background: var(--card); color: var(--teal);
+  border-radius: 12px; padding: 10px; font-size: 15px; font-weight: 600;
+}
+.pager button:disabled { opacity: .35; }
+
+/* 按鈕 */
+.btn {
+  border: 0; border-radius: 12px; padding: 12px 16px; font-size: 17px; font-weight: 700;
+  background: var(--teal); color: #fff; width: 100%;
+}
+.btn.ghost { background: var(--card); color: var(--text); border: 1px solid var(--line); }
+.btn.good { background: var(--good); color: #fff; }
+.btn.bad { background: var(--bad); color: #fff; }
+.row-btns { display: flex; gap: 10px; margin-top: 12px; }
+.row-btns .btn { flex: 1; }
+.small-btns { display: flex; gap: 8px; margin-top: 16px; }
+.small-btns button {
+  flex: 1; border: 1px solid var(--line); background: var(--card); color: var(--text);
+  border-radius: 12px; padding: 10px; font-size: 15px;
+}
+.small-btns button.on-known { background: var(--good-bg); color: var(--good); border-color: var(--good); font-weight: 700; }
+.small-btns button.on-unknown { background: var(--bad-bg); color: var(--bad); border-color: var(--bad); font-weight: 700; }
+
+/* 翻卡片 */
+.flip { perspective: 1000px; margin: 8px 0 4px; cursor: pointer; }
+.flip-inner {
+  position: relative; min-height: 280px;
+  transition: transform .45s; transform-style: preserve-3d;
+}
+.flip.flipped .flip-inner { transform: rotateY(180deg); }
+.face {
+  position: absolute; inset: 0;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 24px 20px; text-align: center; font-size: 21px; color: var(--head);
+}
+.face.back { transform: rotateY(180deg); }
+.face.back .pre::first-line { color: var(--teal); font-weight: 800; }
+.face .lbl { position: absolute; top: 12px; left: 16px; font-size: 13px; color: var(--muted); }
+.pre { white-space: pre-line; }
+.hint { text-align: center; color: var(--muted); font-size: 14px; margin: 6px 0 0; }
+.counter { text-align: center; color: var(--muted); font-size: 14px; }
+
+/* 測驗 */
+.opt {
+  display: block; width: 100%; text-align: left; margin-bottom: 10px;
+  background: var(--card); color: var(--text); border: 1px solid var(--line);
+  border-radius: 12px; padding: 13px 14px; font-size: 17px; box-shadow: var(--shadow);
+}
+.opt.right { background: var(--good-bg); border-color: var(--good); color: var(--good); font-weight: 700; }
+.opt.wrong { background: var(--bad-bg); border-color: var(--bad); color: var(--bad); }
+.q { font-size: 21px; font-weight: 800; color: var(--head); margin: 6px 0 16px; white-space: pre-line; }
+
+/* 進度 */
+.box {
+  background: var(--card); border-radius: 14px; padding: 14px 16px; margin-bottom: 12px;
+  border: 1px solid var(--line); box-shadow: var(--shadow);
+}
+.box h3 { margin: 0 0 6px; font-size: 18px; color: var(--head); }
+.bar { height: 10px; border-radius: 999px; background: var(--line); overflow: hidden; display: flex; margin: 8px 0 4px; }
+.bar .k { background: var(--good); }
+.bar .u { background: var(--bad); }
+.stat-row { display: flex; justify-content: space-between; font-size: 14px; color: var(--muted); }
+
+.empty { text-align: center; padding: 40px 0; color: var(--muted); }
+
+/* 單字的圖（Emoji 或圖片檔） */
+.pic { display: inline-block; width: 1.6em; text-align: center; font-size: 22px; line-height: 1; vertical-align: middle; margin-right: 6px; }
+img.pic { width: 28px; height: 28px; object-fit: contain; }
+.pic.faded { opacity: .25; filter: grayscale(1); }
+.pic.big { display: block; width: auto; margin: 0 auto 12px; font-size: 84px; }
+img.pic.big { width: auto; max-width: 100%; height: auto; max-height: 200px; border-radius: 14px; }
+
+/* 有插畫的單字表：排成兩欄的小卡片（圖在上，英文 + 🔊，下面中文） */
+.nb:has(img.pic) { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: none; border: 0; box-shadow: none; padding: 0; }
+.nb:has(img.pic) .row {
+  display: flex; flex-direction: column; align-items: stretch; gap: 4px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 8px 8px 10px; box-shadow: var(--shadow);
+}
+.nb:has(img.pic) .row:first-child { border-top: 1px solid var(--line); }
+.nb:has(img.pic) .row .k {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; font-size: 19px; line-height: 1.25;
+  hyphens: none; word-break: keep-all; overflow-wrap: normal;
+}
+.nb:has(img.pic) .row .v { font-size: 15px; color: var(--muted); text-align: left; padding-left: 2px; }
+.nb:has(img.pic) .row .pic { width: 100%; height: auto; aspect-ratio: 4 / 3; margin: 0 0 4px; flex: none; border-radius: 10px; object-fit: cover; }
+.nb:has(img.pic) .row img.pic, img.pic.big { border: 1px solid var(--line); }   /* 白色的圖才看得到邊 */
+.nb:has(img.pic) .row span.pic { display: grid; place-items: center; font-size: 48px; background: var(--bg); }
+.nb:has(img.pic) .row .say { font-size: 14px; padding: 5px 8px; margin-left: 0; }
+@media (min-width: 600px) { .nb:has(img.pic) { grid-template-columns: repeat(3, 1fr); } }
+
+/* 插畫圖卡：格子排列、點了放大 */
+.card-grid { columns: 3 140px; column-gap: 10px; margin-bottom: 12px; }
+.card-img { width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--line); box-shadow: var(--shadow); cursor: zoom-in; display: block; margin-bottom: 10px; break-inside: avoid; }
+.card-grid:has(> .card-img:only-child) { columns: 1; }   /* 只有一張圖（情境單字）就整排顯示 */
+.zoom {
+  position: fixed; inset: 0; z-index: 50; background: rgba(0, 0, 0, .82);
+  display: grid; place-items: center; padding: 20px; cursor: zoom-out;
+}
+.zoom img { max-width: 100%; max-height: 100%; border-radius: 16px; }
+.q-pic { text-align: center; margin-top: 6px; }
+
+/* 🔊 發音按鈕 */
+.say {
+  border: 0; background: color-mix(in srgb, var(--teal) 12%, transparent); color: var(--teal);
+  border-radius: 999px; font-size: 13px; line-height: 1; padding: 4px 7px; margin-left: 4px;
+  vertical-align: middle;
+}
+.say:active { transform: scale(.9); }
+.say-wrap { margin-top: 14px; }
+.say-wrap .say { font-size: 22px; padding: 10px 16px; }
+
+/* 單字分類：有封面插畫的格子 */
+.vgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+@media (min-width: 600px) { .vgrid { grid-template-columns: repeat(4, 1fr); } }
+.vtile {
+  display: flex; flex-direction: column; align-items: stretch; text-align: left; gap: 2px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 6px 6px 8px;
+  box-shadow: var(--shadow); color: var(--text);
+}
+.vtile img, .vtile .vicon { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 10px; margin-bottom: 4px; }
+.vtile .vicon { display: grid; place-items: center; font-size: 40px; background: var(--bg); }
+.vtile .vname { font-size: 15px; font-weight: 700; color: var(--head); padding: 0 2px; line-height: 1.3; }
+.vtile .vcount { font-size: 12px; color: var(--muted); padding: 0 2px; }
+.vtile:active { transform: scale(.97); }
+.vtile .vquad { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; aspect-ratio: 1 / 1; border-radius: 10px; overflow: hidden; margin-bottom: 4px; }
+.vtile .vquad img { width: 100%; height: 100%; aspect-ratio: auto; border-radius: 0; margin: 0; object-fit: cover; }
+
+/* ===== 郭老師風格：筆記頁 ===== */
+.page {
+  background-color: var(--card);
+  background-image:
+    linear-gradient(rgba(140, 115, 80, .12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(140, 115, 80, .12) 1px, transparent 1px);
+  background-size: 20px 20px;
+  border-radius: 18px; padding: 16px 14px 10px; box-shadow: 0 2px 10px rgba(110, 85, 50, .10);
+}
+.page h2 { color: var(--head); font-weight: 800; }
+/* 標題底下的粉紅螢光筆 */
+.page h2, .nb .lbl {
+  display: inline; background: linear-gradient(transparent 58%, var(--marker) 58%, var(--marker) 92%, transparent 92%);
+  -webkit-box-decoration-break: clone; box-decoration-break: clone; padding: 0 2px;
+}
+.page h2 { display: inline; }
+.page h2 + * { margin-top: 14px; }
+.nb .lbl { color: var(--teal); font-size: 16px; }
+.nb .lbl + * { margin-top: 6px; }
+/* 框框換成淺色色塊，輪流粉、黃、藍、綠 */
+.page .nb { border: 0; box-shadow: none; background: var(--pink); }
+.page .nb:nth-of-type(4n+2) { background: var(--yellow); }
+.page .nb:nth-of-type(4n+3) { background: var(--blue); }
+.page .nb:nth-of-type(4n) { background: var(--green); }
+.page .nb .row { border-top: 1px dashed rgba(0, 0, 0, .08); }
+.page .nb .row .k { color: var(--teal); }
+.page .nb .en { color: #2f3640; }
+.hl { color: var(--teal); }
+.page .sub { color: var(--muted); }
+.takeaway { color: var(--teal); }
+/* 小提醒、更正：分開的框，左上角有標籤 */
+.tip { position: relative; border: 0; border-left: 4px solid #f2c14e; background: var(--yellow); padding-top: 28px; }
+.tip .tag { position: absolute; top: 6px; left: 12px; font-size: 13px; font-weight: 800; color: #b8860b; }
+.tip.fix { border-left-color: #e57a8c; background: var(--pink); }
+.tip.fix .tag { color: var(--teal); }
+.page .sub { display: block; margin-top: 12px; }
+.page > h2 + .nb, .page > h2 + .tip, .page > h2 + .card-grid { margin-top: 16px; }
+/* 單字卡片下面的小提醒 */
+.wtip { display: block; margin-top: 6px; padding: 6px 8px; background: var(--yellow); border-left: 3px solid #f2c14e; border-radius: 8px; font-size: 12.5px; line-height: 1.5; color: var(--text); }
+/* 兩欄的小框（12 組字母組合） */
+.nbgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.nbgrid .nb { margin: 0; padding: 10px 10px 8px; }
+.nbgrid .nb .lbl { font-size: 15px; }
+.nbgrid .nb .row { padding: 3px 0; font-size: 14.5px; gap: 4px; }
+.nbgrid .nb .row .k { display: flex; align-items: center; gap: 2px; flex-wrap: wrap; }
+.nbgrid .nb .row .v { font-size: 13px; }
+.nbgrid .say { font-size: 11px; padding: 3px 5px; margin-left: 2px; }
+
+/* 分類裡的筆記清單：兩欄彩色小方塊 */
+.ngrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (min-width: 600px) { .ngrid { grid-template-columns: repeat(3, 1fr); } }
+.ntile {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 4px; text-align: left;
+  min-height: 96px; padding: 10px 12px 12px; border: 0; border-radius: 14px; color: var(--text);
+  background: var(--pink); box-shadow: 0 1px 4px rgba(110, 85, 50, .08);
+}
+.ntile:nth-child(4n+2) { background: var(--yellow); }
+.ntile:nth-child(4n+3) { background: var(--blue); }
+.ntile:nth-child(4n) { background: var(--green); }
+.ntile:active { transform: scale(.97); }
+.ntile .nnum { font-size: 12px; font-weight: 800; color: var(--teal); }
+.ntile .nmain { font-size: 15.5px; font-weight: 700; color: var(--head); line-height: 1.35; }
+.ntile .nsub { font-size: 13px; color: var(--teal); line-height: 1.35; }
+.ntile .badge { margin-top: auto; }
+/* 筆記方塊改白底 + 左邊分類色條（淺藍方塊會跟淺藍背景混在一起） */
+.ntile, .ntile:nth-child(4n+2), .ntile:nth-child(4n+3), .ntile:nth-child(4n) {
+  background: var(--card); border-left: 4px solid var(--c, var(--teal)); box-shadow: 0 1px 6px rgba(110, 85, 50, .12);
+}
+.ntile .nnum, .ntile .nsub { color: var(--c, var(--teal)); }
+.nb .poem { font-size: 16.5px; line-height: 1.85; color: var(--text); }
+.wtip.warn { background: var(--pink); border-left-color: #e57a8c; }
+
+/* ===== 郭老師的大括號 { 樣式：白底、紅標題、左邊一個粉紅大括號把同一組圈起來 ===== */
+.page .nb, .page .nb:nth-of-type(4n+2), .page .nb:nth-of-type(4n+3), .page .nb:nth-of-type(4n) {
+  background: transparent; position: relative; padding: 4px 6px 6px 26px; margin-bottom: 16px;
+}
+.page .nb::before {
+  content: ""; position: absolute; left: 4px; top: 6px; bottom: 6px; width: 16px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 100' preserveAspectRatio='none'%3E%3Cpath d='M14 1 C7 1 8 6 8 14 L8 42 C8 48 5 50 2 50 C5 50 8 52 8 58 L8 86 C8 94 7 99 14 99' fill='none' stroke='%23e8899b' stroke-width='2.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+}
+/* 有標題的：標題放在大括號上面，大括號只框住下面的內容 */
+.page .nb:has(> .lbl) { padding-top: 34px; }
+.page .nb:has(> .lbl)::before { top: 36px; }
+.page .nb > .lbl { position: absolute; top: 4px; left: 4px; color: var(--teal); font-size: 16.5px; font-weight: 800; background: none; }
+.page .nb .row { border-top: 0; padding: 3px 0; }
+/* 兩欄並排的框框也一樣 */
+.page .nbgrid { gap: 4px 10px; }
+.page .nbgrid .nb { padding-right: 2px; }
+.page .nbgrid { align-items: start; }   /* 短的那組不要被拉長 */
+/* 單字卡（有插圖）不用大括號 */
+.page .nb:has(img.pic) { padding: 0; margin-bottom: 12px; }
+.page .nb:has(img.pic)::before { display: none; }
+
+/* 🐢 語音速度按鈕（右上角） */
+.top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.speed-btn { border: 1px solid var(--line); background: var(--card); color: var(--muted); border-radius: 999px; padding: 6px 12px; font-size: 14px; font-weight: 700; box-shadow: var(--shadow); }
+.speed-btn.on { background: var(--yellow); color: #8a6a10; border-color: #f2c14e; }
+
+/* 📅 每日複習 */
+.today-head { display: flex; justify-content: space-between; align-items: center; background: var(--card); border-radius: 14px; padding: 10px 14px; margin-bottom: 10px; box-shadow: var(--shadow); font-size: 15px; }
+.today-head b { color: var(--teal); font-size: 18px; }
+.row-btns.three .btn { padding: 12px 6px; font-size: 15px; }
+.muted { color: var(--muted); font-size: 14px; }
+/* 每日複習：選完後的答案框 */
+.answer-box { border-radius: 14px; padding: 12px 14px; margin: 6px 0 12px; background: var(--card); border-left: 4px solid var(--good); box-shadow: var(--shadow); }
+.answer-box.ng { border-left-color: var(--bad); }
+.answer-box .ab-title { font-weight: 800; margin-bottom: 4px; color: var(--good); }
+.answer-box.ng .ab-title { color: var(--bad); }
+.answer-box .pre { font-size: 16px; }
+.answer-box .say-wrap { margin-top: 8px; }
+/* 句子表格：英文在上、中文在下，每句之間有間隔 */
+.page .nb .row.sent { flex-direction: column; align-items: flex-start; gap: 2px; padding: 10px 0; border-top: 1px dashed rgba(0, 0, 0, .08); }
+.page .nb .row.sent:first-of-type { border-top: 0; }
+.page .nb .row.sent .k { font-size: 18px; line-height: 1.45; }
+.page .nb .row.sent .v { text-align: left; font-size: 15px; color: var(--muted); }
+.page .nb .row.sent + .wtip { margin: -2px 0 6px; }
+/* ✍️ 打字複習 */
+.type-input { width: 100%; font-size: 20px; padding: 12px 14px; border: 2px solid var(--line); border-radius: 12px; background: var(--card); color: var(--text); font-family: inherit; }
+.type-input:focus { outline: none; border-color: var(--teal); }
+.type-input.right { border-color: var(--good); background: var(--good-bg); }
+.type-input.wrong { border-color: var(--bad); background: var(--bad-bg); }
+.type-hint { margin: 10px 2px; color: var(--muted); font-size: 15px; }
+.type-hint b { color: var(--teal); letter-spacing: 2px; font-size: 18px; }
+/* 所有表格都跟「句子表格」一樣寬鬆：列與列之間有間隔和虛線 */
+.page .nb .row { padding: 9px 0; border-top: 1px dashed rgba(0, 0, 0, .08); align-items: center; }
+.page .nb .lbl + .row, .page .nb > .row:first-child { border-top: 0; }
+.page .nb .row .k { font-size: 17.5px; }
+.page .nb .row .v { font-size: 15.5px; }
+.page .nbgrid .nb .row { padding: 6px 0; }   /* 兩欄並排的維持緊一點，不然會太長 */
+
+/* 🎨 配色：A 燕麥米色（預設）／D 奶茶色（右上角按鈕切換，記在 english-study-theme） */
+:root[data-theme="d"] {
+  --bg: #d8cbbb;
+  --card: #ebe2d5;
+  --text: #3a322b;
+  --muted: #7d7166;
+  --line: #cfc0ad;
+  --blue: #e0d5c6;
+  --tip-bg: #f3e6c6;
+  --yellow: #f3e6c6;
+}
+.top-btns { display: flex; gap: 6px; }
+
+/* 🃏 單字卡：英文大字 + A／B／C／D 選項（參考使用者給的 suffer 截圖） */
+.word-card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow);
+  padding: 26px 16px 18px; margin: 8px 0 14px; text-align: center;
+}
+.big-word { font-size: 44px; font-weight: 800; color: var(--head); line-height: 1.15; word-break: break-word; margin-bottom: 8px; }
+.opts { margin-bottom: 4px; }
+.opts.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.opts.grid2 .opt { margin-bottom: 0; }
+.opt { display: flex; align-items: center; gap: 10px; }
+.opt .letter {
+  flex: none; width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center;
+  background: var(--bg); color: var(--muted); font-size: 14px; font-weight: 800;
+}
+.opt .otext { flex: 1; }
+.opt .mark { flex: none; font-size: 20px; font-weight: 800; }
+.opt.right .letter { background: var(--good); color: #fff; }
+.opt.right .mark { color: var(--good); }
+.opt.wrong .mark, .opt.dim .mark { color: var(--bad); }
+.opt.dim { opacity: .7; }
+/* ✏️ 單字下面的句子填空 */
+.blank-q { border-top: 2px dashed var(--line); margin-top: 14px; padding-top: 12px; }
+.blank-title { font-weight: 800; color: var(--teal); margin-bottom: 4px; }
+.blank-q .q { margin-bottom: 2px; }
+.blank-zh { margin-bottom: 12px; }
+.big-word.zh { font-size: 34px; }
+/* 選完：大字卡變成「英文 🔊 ＋ 中文」（答對綠色、答錯紅色） */
+.word-card.done .big-zh { font-size: 26px; font-weight: 800; color: var(--good); margin-top: 6px; }
+.word-card.done.ng .big-zh { color: var(--bad); }
+.word-card.done.ok { border-color: var(--good); }
+.word-card.done.ng { border-color: var(--bad); }
+.word-card .muted.pre { margin-top: 6px; }
+
+/* 🎧 聽說 */
+.listen-box { background: var(--card); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); padding: 14px 16px; margin-bottom: 14px; }
+.listen-box h3 { margin: 0 0 2px; color: var(--head); }
+.listen-box .row-btns { flex-wrap: wrap; }
+.big-say { font-size: 54px; border: 0; background: none; padding: 6px 20px; cursor: pointer; }
+.shadow-en { font-size: 24px; font-weight: 700; color: var(--head); line-height: 1.4; margin-bottom: 6px; }
+.w-ok { color: var(--good); }
+.w-ng { color: var(--bad); text-decoration: underline; }
+.word-card .row-btns { justify-content: center; margin-top: 12px; }
+/* 🧩 句子重組 */
+.order-answer { min-height: 58px; border: 2px dashed var(--line); border-radius: 14px; padding: 8px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 12px; }
+.order-pool { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 12px; }
+.tile { border: 1px solid var(--line); background: var(--card); color: var(--head); border-radius: 10px; padding: 8px 12px; font-size: 18px; box-shadow: var(--shadow); }
+.tile.on { background: var(--blue); }
+.tile:disabled { opacity: .25; }
+/* 💬 情境對話：左邊對方、右邊你 */
+.chat { display: flex; flex-direction: column; gap: 10px; margin: 10px 0 14px; }
+.bubble { max-width: 85%; align-self: flex-start; background: var(--card); border: 1px solid var(--line); border-radius: 16px 16px 16px 4px; padding: 8px 12px; box-shadow: var(--shadow); }
+.bubble.me { align-self: flex-end; background: var(--blue); border-radius: 16px 16px 4px 16px; }
+.bubble .who { font-size: 13px; color: var(--muted); }
+.bubble .en { font-size: 18px; color: var(--head); font-weight: 600; }
+.bubble .zh { font-size: 14px; color: var(--muted); }
+/* 📋 今日課表 */
+.plan-step { display: flex; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; margin-bottom: 10px; font-size: 17px; box-shadow: var(--shadow); flex-wrap: wrap; }
+.plan-step.done { opacity: .65; }
+.plan-step .btn { width: auto; margin-left: auto; padding: 8px 18px; }
+.dlg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; } .dlg-grid .btn { margin: 0; text-align: left; }
+/* 📊 進度總覽 */
+.stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+.stat { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 10px 6px; text-align: center; box-shadow: var(--shadow); }
+.stat .sv { font-size: 26px; font-weight: 800; color: var(--teal); }
+.stat .sv small { font-size: 14px; color: var(--muted); font-weight: 400; }
+.stat .sl { font-size: 13px; color: var(--muted); }
+.sec-title { color: var(--head); margin: 4px 0 8px; }

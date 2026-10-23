@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>英文文法複習</title>
+  <meta name="theme-color" content="#e3dac9">
+  <meta name="color-scheme" content="light">
+  <!-- iPhone 加入主畫面用 -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="文法複習">
+  <link rel="apple-touch-icon" href="icon-180.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <h1 id="page-title">每日複習</h1>
+    <div class="top-btns">
+      <button id="theme-btn" class="speed-btn" aria-label="切換背景顏色">🎨 米色</button>
+      <button id="speed-btn" class="speed-btn" aria-label="切換語音速度">🐇 正常</button>
+    </div>
+  </header>
+
+  <main id="view"></main>
+
+  <nav class="tabs">
+    <button data-tab="today" class="active"><span class="ico">📅</span>今日</button>
+    <button data-tab="notes"><span class="ico">📖</span>筆記</button>
+    <button data-tab="cards"><span class="ico">🃏</span>卡片</button>
+    <button data-tab="wrong"><span class="ico">📕</span>錯題</button>
+    <button data-tab="listen"><span class="ico">🎧</span>聽說</button>
+    <button data-tab="progress"><span class="ico">📊</span>進度</button>
+  </nav>
+
+  <script src="data.js"></script>
+  <script src="data-extra.js"></script>
+  <script src="data-more.js"></script>
+  <script src="data-sentences.js"></script>
+  <script src="data-dialogs.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
