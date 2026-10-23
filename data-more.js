@@ -511,3 +511,84 @@ NOTES.find(c => c.id === 'terms').items.unshift({
 💡 建議的學習順序：📖 文法用語 → ⭐ 基礎文法 → 💬 生活常用句的「🆘 救命句」「💬 接話回應」→ 其他
 💡 「今日文法」會照這個順序，每天自動挑下一則還沒讀過的筆記`
 });
+
+// ===================== 🧠 背單字妙招（10/23 使用者想要「有記憶點的口訣」：重點放在字首字尾和諧音，難背的字用聯想和一家人） =====================
+// 格式：'英文=中文=口訣／拆法'。卡片正面是中文，背面是英文＋口訣
+{
+  const AFFIX = { un: 'un-', re: 're-', dis: 'dis-', im: 'im-／in-', pre: 'pre-', er: '-er／-or', ful: '-ful', less: '-less', ly: '-ly', able: '-able' };
+  const card = ([en, zh, hint], key, p) => ({
+    id: `${p}-${key}-${slug(en)}`, front: AFFIX[key] ? `${zh}\n（用 ${AFFIX[key]}）` : zh,
+    back: en + (hint && hint !== zh ? '\n💡 ' + hint : ''), say: en, group: `${p}-${key}`
+  });
+  const at = NOTES.findIndex(c => c.id === 'vocab');
+  NOTES.splice(at, 0, {
+    id: 'memo', name: '背單字妙招', icon: '🧠', color: '#8a5cb8', desc: '字首字尾、諧音口訣，一次記一串',
+    items: [
+      {
+        id: 'mm-how',
+        title: '4 種背單字的方法（先看這則）',
+        note: `單字硬背很容易忘，有「記憶點」才記得久。這裡用 4 種方法：
+
+① 拆字首、字尾（最推薦）
+學一個字首，就能看懂一大串字。
+un- = 不：unhappy 不開心的、unfair 不公平的
+-ful = 充滿：careful 小心的、helpful 有幫助的
+
+② 諧音口訣
+用中文的發音幫忙記「意思」。
+ambulance 救護車 →「俺不能死」
+
+③ 聯想小故事
+familiar 熟悉的 → 裡面有 family（家人），跟家人一樣熟
+
+④ 一家人一起背
+help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
+
+⚠️ 諧音只能用來記「意思」，發音一定要按 🔊 聽真人念。中文的音跟英文差很多，照諧音念會念錯
+💡 foreign（外國的）可以聯想「門外的」：它真正的字源就是拉丁文的「在門外」。之前說的「foreign 裡面有 reign（統治）」只是拼字剛好像，不是真的字源，用來幫忙記可以，但不要當成規則
+💡 背的時候：先看口訣 → 按 🔊 念三次 → 閉上眼睛拼一次`
+      },
+      ...buildGroups('mm', [
+        ['un', '🚫 un- = 不、相反', '放在形容詞前面 → 「不…的」；放在動詞前面 → 「把動作反過來」。',
+          'unhappy=不開心的=un（不）＋ happy（開心）|unfair=不公平的=un（不）＋ fair（公平）|unkind=不友善的=un（不）＋ kind（友善）|unfamiliar=不熟悉的=un（不）＋ familiar（熟悉）|unhealthy=不健康的=un（不）＋ healthy（健康）|unlock=開鎖=un（反過來）＋ lock（鎖上）',
+          '💡 un- 是最常見的「不」，看到 un 開頭先猜「不…」'],
+        ['re', '🔁 re- = 再一次、回來', '動詞前面加 re-，就是「再做一次」或「回到原本」。',
+          'redo=重做=re（再）＋ do（做）|rewrite=重寫=re（再）＋ write（寫）|reread=重讀=re（再）＋ read（讀）|reuse=重複使用=re（再）＋ use（用）|replay=重播=re（再）＋ play（播放）|return=回來、歸還=re（回）＋ turn（轉）',
+          '💡 re 念 /ri/，像中文的「瑞」'],
+        ['dis', '🙅 dis- = 不、拿掉', '跟 un- 很像，但大多放在動詞前面。',
+          'dislike=不喜歡=dis（不）＋ like（喜歡）|disagree=不同意=dis（不）＋ agree（同意）|dishonest=不誠實的=dis（不）＋ honest（誠實）|disappear=消失=dis（不）＋ appear（出現）|disconnect=斷線=dis（不）＋ connect（連接）|discover=發現=dis（拿掉）＋ cover（蓋子）→ 把蓋子掀開就「發現」了',
+          '💡 discover 很好記：掀開蓋子，就發現裡面的東西'],
+        ['im', '⛔ im-／in- = 不', '也是「不」的意思。p、b、m 開頭的字前面用 im-，其他大多用 in-。',
+          'impossible=不可能的=im（不）＋ possible（可能）|impolite=不禮貌的=im（不）＋ polite（禮貌）|impatient=沒耐心的=im（不）＋ patient（有耐心）|incorrect=不正確的=in（不）＋ correct（正確）|informal=非正式的=in（不）＋ formal（正式）|invisible=看不見的=in（不）＋ visible（看得見）',
+          '💡 p、b、m 都是要「閉嘴巴」才念得出來的音，所以前面用 im-（m 也要閉嘴）\n⚠️ 不是每個 in 開頭的字都是「不」：inside 是「裡面」、invite 是「邀請」'],
+        ['pre', '⏪ pre- = 事先、在…之前', '動作還沒發生之前先做。',
+          'preview=預習、預覽=pre（事先）＋ view（看）|prepay=預付=pre（事先）＋ pay（付錢）|preheat=預熱=pre（事先）＋ heat（加熱）|preschool=幼兒園=pre（之前）＋ school（學校）→ 上小學之前|predict=預測=pre（事先）＋ dict（說）→ 事先說出來|prefix=字首=pre（前面）＋ fix（固定）→ 固定在前面的',
+          '💡 prefix 這個字本身就是「字首」，un-、re-、pre- 都是 prefix'],
+        ['er', '👩‍🏫 -er／-or = 做這件事的人', '動詞後面加 -er，就變成「做這件事的人」。',
+          'teacher=老師=teach（教）＋ er → 教書的人|driver=司機=drive（開車）＋ r → 開車的人|singer=歌手=sing（唱）＋ er → 唱歌的人|player=球員、玩家=play（玩）＋ er|actor=演員=act（演）＋ or|visitor=訪客=visit（拜訪）＋ or',
+          '💡 字尾已經有 e 的，只加 r：drive → driver、write → writer\n💡 -or 比較少，常見的有 actor、visitor、doctor、sailor，遇到就記起來'],
+        ['ful', '😊 -ful = 充滿…的', '名詞後面加 -ful，變成形容詞「充滿…的」。',
+          'careful=小心的=care（小心）＋ ful → 充滿小心|helpful=有幫助的=help（幫助）＋ ful|useful=有用的=use（用處）＋ ful|beautiful=美麗的=beauty（美）＋ ful，y 變 i|colorful=色彩繽紛的=color（顏色）＋ ful|painful=疼痛的=pain（痛）＋ ful',
+          '💡 full（滿的）有兩個 l，當字尾 -ful 只有一個 l\n💡 -ful 和 -less 常常是一對：careful 小心 ↔ careless 粗心'],
+        ['less', '🕳️ -less = 沒有…的', '名詞後面加 -less，變成「沒有…的」，剛好跟 -ful 相反。',
+          'careless=粗心的=care（小心）＋ less（沒有）|useless=沒用的=use（用處）＋ less|homeless=無家可歸的=home（家）＋ less|endless=沒完沒了的=end（結束）＋ less|helpless=無助的=help（幫助）＋ less|hopeless=沒希望的=hope（希望）＋ less',
+          '💡 less 本身就是「比較少」的意思，所以 -less 是「沒有」'],
+        ['ly', '🏃 -ly = 變副詞（…地）', '形容詞後面加 -ly，就變成副詞，用來形容「怎麼做」。',
+          'quickly=快速地=quick（快）＋ ly|slowly=慢慢地=slow（慢）＋ ly|happily=開心地=happy（開心）＋ ly，y 變 i|carefully=小心地=careful（小心的）＋ ly|easily=容易地=easy（容易）＋ ly，y 變 i|friendly=友善的=friend（朋友）＋ ly → 像朋友一樣的',
+          '⚠️ friendly 是形容詞（友善的），不是副詞！名詞＋ly 會變形容詞：friendly、lovely 可愛的、weekly 每週的\n💡 例句：She speaks slowly. 她說話很慢。'],
+        ['able', '👍 -able = 可以…的', '動詞後面加 -able，變成「可以被…的」。',
+          'washable=可以洗的=wash（洗）＋ able|drinkable=可以喝的=drink（喝）＋ able|readable=好讀的=read（讀）＋ able|enjoyable=令人愉快的=enjoy（享受）＋ able|comfortable=舒服的=comfort（舒適）＋ able|reusable=可以重複用的=re（再）＋ use（用）＋ able → 一次用了兩個',
+          '💡 able 本身就是「能夠」：I am able to swim. 我會游泳。\n💡 comfortable 念 /ˈkʌmftəbl/，中間的 or 幾乎不念，按 🔊 聽聽看'],
+        ['loan', '🎵 諧音①：中文本來就是照發音翻的', '這些字的中文就是音譯，念出來幾乎一樣，最好記！',
+          'sofa=沙發=沙發 → 發音幾乎一樣|humor=幽默=幽默|logic=邏輯=邏輯|guitar=吉他=吉他|salad=沙拉=沙拉|pudding=布丁=布丁|toast=吐司=吐司|cartoon=卡通=卡通|engine=引擎=引擎|hacker=駭客=駭客',
+          '💡 生活中還有很多：bus 巴士、taxi 的士、cool 酷、typhoon 颱風（這個是英文跟中文借的）'],
+        ['sound', '🎵 諧音②：中文口訣', '用好笑的中文句子記意思，越好笑越記得住。',
+          'ambulance=救護車=俺不能死 → 快叫救護車|pest=害蟲=拍死它|agony=極大的痛苦=愛過你 → 愛過才知道有多痛|economy=經濟=依靠農民 → 經濟要靠農民|strong=強壯的=死壯 → 壯到不行|flee=逃走=飛離 → 飛快地離開|coward=膽小鬼=靠我的 → 什麼都要靠我|bachelor=單身漢=白吃了 → 單身漢常常白吃白喝|candidate=候選人=看的累 → 候選人那麼多，看得好累|sting=螫、刺=死盯 → 蜜蜂死盯著你，然後螫你',
+          '⚠️ 諧音只用來記「意思」！真正的發音一定要按 🔊 聽，照中文念會念錯\n💡 自己編的口訣最好記，想到好笑的可以寫在本子上'],
+        ['link', '💭 聯想和拆字：難背的字', '有些字可以拆開，或用一個小故事記，拼字也不容易錯。',
+          'familiar=熟悉的=裡面有 family（家人）→ 跟家人一樣熟|foreign=外國的=字源是「在門外」→ 門外來的，就是外國的|breakfast=早餐=break（打破）＋ fast（禁食）→ 睡一整晚沒吃，早餐把它打破|pineapple=鳳梨=pine（松樹）＋ apple（蘋果）→ 長得像松果的水果|butterfly=蝴蝶=butter（奶油）＋ fly（飛）→ 奶油色的會飛的蟲|eager=渴望的=像 eagle（老鷹）→ 老鷹渴望地盯著獵物|island=島=is ＋ land（陸地）→ 島也是陸地，s 不發音|Wednesday=星期三=拆成 Wed-nes-day 記拼字，念的時候是 /ˈwenzdeɪ/|friend=朋友=fri ＋ end → a friend to the end 朋友到最後都在|believe=相信=中間藏著 lie（謊言）→ 不要相信謊言|piece=一片=開頭藏著 pie（派）→ a piece of pie 一片派',
+          '💡 拆字最大的好處是「拼字不會錯」：friend 不會拼成 freind，因為 end 要在最後\n💡 一家人一起背：help → helpful → helpless → helper；care → careful → careless → carefully']
+      ], { card })
+    ]
+  });
+}
