@@ -273,7 +273,8 @@ function formatNote(text) {
 // 短的框框（每行都不長、行數不多）自動兩個一排；長句子的框框維持一整排
 // 很長的單字表（8 行以上、每行都是「短英文　中文」）→ 框框裡排成兩欄，不用一直往下滑（10/23 使用者要的）
 const twoCol = ls => {
-  const rows = ls.filter(l => !l.trim().startsWith('{{tip:') && !l.trim().startsWith('👉'));
+  // 框框裡前面有一兩行說明（例如例句）也可以：只看有「　」的表格列，說明行最多 3 行
+  const rows = ls.filter(l => !l.trim().startsWith('{{tip:') && !l.trim().startsWith('👉') && (l.includes('　') || ls.filter(x => !x.includes('　')).length > 3));
   // 放寬（10/23 使用者要每個區塊都兩欄）：短句子（英文 60 字、中文 30 字內）、三四欄的表格（每欄 24 字內）也可以
   return rows.length >= 6 && rows.every(l => { const p = l.replace(/{{tip:[^}]*}}/g, '').trim().split('　'); if (l.includes('{{pic:') || p.length > 4) return false; return p.length === 2 ? visibleLen(p[0]) <= 60 && visibleLen(p[1]) <= 30 : p.every(x => visibleLen(x) <= 24); }) ? ' two' : '';
 };

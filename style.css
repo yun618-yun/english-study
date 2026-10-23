@@ -605,3 +605,4 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .page .nb.two .row.multi { display: block; }
 .page .nb.two .row.multi .v { display: block; text-align: left; font-size: 13.5px; }
 .page .nb.two > .takeaway { grid-column: 1 / -1; }
+.page .nb.two > :not(.row):not(.lbl) { grid-column: 1 / -1; }

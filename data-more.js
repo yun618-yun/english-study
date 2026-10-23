@@ -1215,3 +1215,91 @@ Three times.　三次。
   );
   it.title = '🔄 位置或小字一換，意思就不一樣（17 項）';
 }
+
+// ---------- 🧩 看例句拆句子成分（10/23 使用者給的圖「秒懂英語句子成分」第 1 頁，原文簡體已改繁體） ----------
+// 截圖收在 原始素材/筆記截圖/第九批（10-23）/。第 ⑦ 句原圖有錯（play the ball、I and my dogs），已改正
+{
+  const it = NOTES.find(c => c.id === 'terms').items.find(i => i.id === 'g-group-parts');
+  const add = `▍看例句拆句子成分（一句一句變長）
+
+同一個句子慢慢加東西，看每個字在句子裡做什麼工作。
+
+【① 最簡單：主語＋謂語＋賓語】
+I saw a cat.
+我看見了一隻貓。
+I　主語：我（做動作的人）
+saw　謂語：看見了（動作）
+a cat　賓語：一隻貓（動作的對象）
+
+【② 加上形容詞：定語】
+I saw a cute cat.
+我看見了一隻可愛的小貓。
+I　主語：我
+saw　謂語：看見了
+cute　定語：可愛的（修飾 cat）
+cat　賓語：小貓
+
+【③ 再加上「在做什麼、在哪裡」】
+I saw a cute cat running in the park.
+我看見一隻可愛的小貓在公園裡跑。
+I　主語：我
+saw　謂語：看見
+cute　定語：可愛的
+cat　賓語：小貓
+running　賓語補語：正在跑（說明貓在做什麼）
+in the park　狀語：在公園裡（地點）
+
+【④ 兩個賓語：給誰、給什麼】
+The father gave his lovely daughter a present at Christmas.
+這位父親在聖誕節給了他可愛的女兒一份禮物。
+The father　主語：這位父親
+gave　謂語：給了
+his lovely　定語：他可愛的
+daughter　間接賓語：女兒（給誰）
+a present　直接賓語：一份禮物（給什麼）
+at Christmas　狀語：在聖誕節（時間）
+
+【⑤ 同位語：換個說法說同一個東西】
+Tom saw the white cat Bingo playing in the park, and it was naughty.
+湯姆看到那隻白色的小貓 Bingo 在公園裡玩，牠很頑皮。
+Tom　主語：湯姆
+saw　謂語：看到
+the white　定語：那隻白色的
+cat　賓語：小貓
+Bingo　同位語：就是那隻貓的名字
+playing　賓語補語：在玩
+in the park　狀語：在公園裡
+it　主語：牠（後面是第二個句子）
+was　連綴動詞（系動詞）
+naughty　表語：很頑皮
+
+【⑥ 兩個句子用 and 連起來】
+He saw his son Tom singing in the yard, and he was happy.
+他看見他的兒子湯姆在院子裡唱歌，他很開心。
+He　主語：他
+saw　謂語：看見
+his　定語：他的
+son　賓語：兒子
+Tom　同位語：湯姆（就是他的兒子）
+singing　賓語補語：在唱歌
+in the yard　狀語：在院子裡（地點）
+and　連接詞：並且
+he　主語：他
+was　連綴動詞（系動詞）
+happy　表語：很開心
+
+【⑦ 兩個主語、副詞當狀語】
+My two cute dogs and I play with the ball happily at home.
+我和我的兩隻可愛小狗在家裡開心地玩球。
+My two cute　定語：我的、兩隻、可愛的
+dogs and I　主語：小狗和我（兩個主語用 and 連起來）
+play with　謂語：玩
+the ball　賓語：球
+happily　狀語：開心地（怎麼玩，副詞）
+at home　狀語：在家裡（地點，介係詞＋名詞）
+
+⚠️ 常見錯誤：I and my dogs play the ball. ✗　→　My dogs and I play with the ball. ✓（玩球要說 play with；自己放最後面比較禮貌）
+
+💡 拆句子的順序：先找動詞（謂語）→ 問「誰做？」找主語 → 問「做什麼？」找賓語 → 剩下修飾名詞的是定語、說明時間地點方式的是狀語`;
+  if (it) it.note = it.note.replace('▍5 大基本句型', add + '\n\n▍5 大基本句型');
+}
