@@ -533,3 +533,9 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .page .nb:has(img.pic) > .row-tips { display: none; }
 [data-pics="off"] .page .nb:has(img.pic) > .row-tips { display: block; }
 [data-pics="off"] .page .nb:has(img.pic) .row .wtip { display: none; }
+/* 背單字妙招：一組一個框框，兩欄四宮格排；框框裡每個字改成上下排（英文 → 中文 → 拆法） */
+.page .nbgrid .nb .row.multi { display: block; padding: 5px 0; }
+.page .nbgrid .nb .row.multi .k { font-size: 16px; }
+.page .nbgrid .nb .row.multi .v { display: block; text-align: left; font-size: 13px; line-height: 1.45; padding: 0; }
+.page .nbgrid .nb .row.multi .v + .v { color: var(--muted); }
+.page .nbgrid .nb .row .k .syl { flex: 0 0 100%; order: 9; margin-top: -2px; }

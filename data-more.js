@@ -544,7 +544,7 @@ NOTES.find(c => c.id === 'terms').items.unshift({
       return {
         id: 'mm-' + key, title: `${title}（${n} 個）`,
         // 每一組一個框框：【標題】、說明、單字表；小提醒接在框框下面
-        note: '{{nogrid}}' + gs.map(g => {
+        note: '{{grid}}' + gs.map(g => {
           const [intro, rows, tip] = g.note.split('\n\n');
           // 小提醒改成 👉 開頭，才會留在自己那一組的框框裡（💡 開頭的會被搬到別的地方）
           return `【${g.title.replace(/（\d+ 個）$/, '')}】\n${intro}\n${rows}` + (tip ? '\n' + tip.replace(/^💡 ?/gm, '👉 ').replace(/^⚠️ ?/gm, '👉 ⚠️ ') : '');
