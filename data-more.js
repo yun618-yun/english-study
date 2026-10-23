@@ -518,7 +518,8 @@ NOTES.find(c => c.id === 'terms').items.unshift({
   const AFFIX = { un: 'un-', re: 're-', dis: 'dis-', im: 'im-／in-', pre: 'pre-', er: '-er／-or', ful: '-ful', less: '-less', ly: '-ly', able: '-able',
     mis: 'mis-', over: 'over-', num: 'uni-／bi-／tri-', tion: '-tion', ness: '-ness', ment: '-ment',
     sub: 'sub-', inter: 'inter-', ous: '-ous', ship: '-ship', ist: '-ist', en: '-en', port: 'port', spect: 'spect', vis: 'vis／vid',
-    tele: 'tele-', phon: 'phon', aud: 'aud', y: '-y', al: '-al', ive: '-ive' };
+    tele: 'tele-', phon: 'phon', aud: 'aud', y: '-y', al: '-al', ive: '-ive',
+    dict: 'dict', struct: 'struct', form: 'form', ize: '-ize', ward: '-ward' };
   const card = ([en, zh, hint], key, p) => ({
     id: `${p}-${key}-${slug(en)}`, front: AFFIX[key] ? `${zh}\n（用 ${AFFIX[key]}）` : zh,
     back: en + (hint && hint !== zh ? '\n💡 ' + hint : ''), say: en, group: `${p}-${key}`
@@ -645,6 +646,21 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
         ['ive', '🔥 -ive = 變形容詞（有…性質的）', '動詞後面加 -ive，就變成形容詞。',
           'active=活躍的=act（行動）＋ ive|creative=有創意的=create（創造）＋ ive，去掉 e|expensive=貴的=expense（花費）＋ ive，去掉 e|attractive=有吸引力的=attract（吸引）＋ ive|talkative=愛說話的=talk（說話）＋ ative|protective=保護的=protect（保護）＋ ive',
           '💡 -ive 念 /ɪv/，像中文的「一夫」，很輕\n💡 expensive 貴的 ↔ cheap 便宜的'],
+        ['dict', '🗣️ 字根 dict = 說', 'dict 就是「說」，跟說話、文字有關。',
+          'dictionary=字典=dict（說）＋ ion ＋ ary → 收集所有說法的書|dictation=聽寫=dict（說）＋ ation → 老師說、你寫|prediction=預測（名詞）=pre（事先）＋ dict（說）＋ ion|contradict=反駁、矛盾=contra（相反）＋ dict（說）→ 說相反的話|verdict=判決=ver（真的）＋ dict（說）→ 說出真相',
+          '💡 predict（動詞）→ prediction（名詞），加 -ion 變名詞'],
+        ['struct', '🏗️ 字根 struct = 建造', 'struct 就是「蓋、建造」。',
+          'structure=結構=struct（建造）＋ ure → 蓋起來的樣子|construct=建造=con（一起）＋ struct（建造）|construction=工程、建設=construct（建造）＋ ion|instruct=指導=in（進去）＋ struct（建造）→ 把知識蓋進腦袋|instruction=說明、指示=instruct（指導）＋ ion',
+          '💡 工地常看到：Under construction 施工中\n💡 說明書：instructions（常用複數）'],
+        ['form', '🔷 字根 form = 形狀', 'form 就是「形狀、樣子」。',
+          'transform=變形=trans（改變）＋ form（形狀）|inform=通知=in（進去）＋ form（形狀）→ 把消息放進你腦中|format=格式=form（形狀）＋ at|formal=正式的=form（形狀）＋ al → 有固定樣子的|reform=改革=re（再）＋ form（形狀）→ 重新塑造',
+          '💡 form 單獨用也是「表格」：fill in the form 填表格\n💡 formal 正式的 ↔ informal 非正式的'],
+        ['ize', '⚙️ -ize = 使…化（變動詞）', '名詞或形容詞後面加 -ize，就變成動詞。',
+          'memorize=背起來=memory（記憶）＋ ize → 放進記憶|realize=了解到、發覺=real（真的）＋ ize → 發現是真的|apologize=道歉=apology（道歉，名詞）＋ ize|organize=整理、籌辦=organ（組織）＋ ize|modernize=現代化=modern（現代的）＋ ize',
+          '💡 英式拼法常寫成 -ise：realise、organise，意思一樣\n💡 背單字就是 memorize words！'],
+        ['ward', '🧭 -ward = 往…方向', '加在方向字後面，表示「往…」。',
+          'forward=向前=for（前）＋ ward|backward=向後=back（後）＋ ward|upward=向上=up（上）＋ ward|downward=向下=down（下）＋ ward|toward=朝向=to（到）＋ ward|homeward=回家的=home（家）＋ ward',
+          '💡 寫信常用：I look forward to seeing you. 期待見到你（to 後面加 V-ing）\n💡 英式常寫 towards、backwards，加 s 也對'],
         ['loan', '🎵 諧音①：中文本來就是照發音翻的', '這些字的中文就是音譯，念出來幾乎一樣，最好記！',
           'sofa=沙發=沙發 → 發音幾乎一樣|humor=幽默=幽默|logic=邏輯=邏輯|guitar=吉他=吉他|salad=沙拉=沙拉|pudding=布丁=布丁|toast=吐司=吐司|cartoon=卡通=卡通|engine=引擎=引擎|hacker=駭客=駭客',
           '💡 生活中還有很多：bus 巴士、taxi 的士、cool 酷、typhoon 颱風（這個是英文跟中文借的）'],
@@ -674,7 +690,10 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
           '💡 聽到 /miːt/，要看前後文：Nice to meet you. 是見面；I don\'t eat meat. 是肉\n💡 還有：hear 聽／here 這裡、their 他們的／there 那裡'],
         ['sound3', '🎵 諧音⑤：生活小字口訣', '老師編的第二組，都是生活中很常用的字。',
           'busy=忙的=逼死 → 忙到快被逼死|cheap=便宜的=氣噗 → 賣這麼便宜，老闆氣噗噗|tip=小費=貼 → 貼一點小費給服務生|sour=酸的=餿 → 餿掉的東西是酸的|bite=咬=拜 → 拜託不要咬我|cry=哭=快 → 快哭了|cough=咳嗽=咳夫 → 一直咳|lie=說謊=賴 → 說謊又賴皮|sweat=汗=水的 → 流汗流得都是水',
-          '⚠️ 諧音只用來記「意思」！真正的發音一定要按 🔊 聽\n💡 cough 的 gh 念 /f/，跟 laugh（笑）一樣']
+          '⚠️ 諧音只用來記「意思」！真正的發音一定要按 🔊 聽\n💡 cough 的 gh 念 /f/，跟 laugh（笑）一樣'],
+        ['homo2', '👯 發音一樣的字②', '再一組念起來一樣的字，寫作文最容易寫錯。',
+          'hear=聽=裡面有 ear（耳朵）|here=這裡=跟 there、where 一家人，都是地點|their=他們的=有 i，像「人」→ 屬於人的|there=那裡=裡面藏著 here（這裡）→ 也是地點|son=兒子=o 跟 boy 的 o 一樣|sun=太陽=跟 sunny（晴天）一起記|buy=買=有 u → you buy 你買|by=搭、透過=最短的那個：by bus 搭公車|eight=八=gh 不發音|ate=吃了=eat 的過去式：I ate lunch.',
+          '💡 there、their、they\'re 三個都念 /ðer/：There is a cat. 那裡有貓／their cat 他們的貓／They\'re happy. 他們很開心']
       ], { card })
     ]
   });

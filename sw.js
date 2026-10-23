@@ -1,6 +1,6 @@
 // 讓 App 沒網路也能打開。
 // 更新筆記或程式後，把 VERSION 的數字加 1，手機才會抓到新版。
-const VERSION = 'v12';
+const VERSION = 'v13';
 const FILES = ['./', 'index.html', 'style.css', 'app.js', 'data.js', 'data-extra.js', 'data-more.js', 'data-sentences.js', 'data-dialogs.js', 'manifest.json', 'icon-180.png', 'icon-512.png'];
 
 self.addEventListener('install', e => {
