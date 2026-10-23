@@ -570,3 +570,11 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 /* 兩欄框框裡的表格：每一列都改成上下排（英文在上、說明在下），才不會被切掉 */
 .page .nbgrid .nb .row { display: block; }
 .page .nbgrid .nb .row .v { display: block; text-align: left; padding: 0; }
+/* 兩欄框框改成瀑布流：左右兩欄各自往下排，短的框框下面直接接下一個，不會空一大塊（10/23 使用者） */
+.page .nbgrid { display: block; column-count: 2; column-gap: 10px; }
+.page .nbgrid > .nb { display: inline-block; width: 100%; break-inside: avoid; -webkit-column-break-inside: avoid; vertical-align: top; }
+.page .nbgrid > .nb.two { display: grid; break-inside: avoid; }
+.page .nbgrid:has(img.pic) { column-count: 1; }
+[data-pics="off"] .page .nbgrid:has(img.pic) { display: block; column-count: 2; }
+.page .nbgrid > .nb:has(img.pic) { display: grid; }
+[data-pics="off"] .page .nbgrid > .nb:has(img.pic) { display: inline-block; }

@@ -285,7 +285,7 @@ const isShortBlock = ls => ls.length >= 2 && ls.length <= 16 &&
 const STOP = new Set(['the', 'and', 'for', 'you', 'are', 'not', 'can', 'his', 'her', 'its', 'this', 'that', 'with', 'one', 'two']);
 function attachTips(blocks) {
   const body = blocks.filter(ls => !/^(💡|⚠️)/.test(ls[0].trim()));
-  const rest = [];
+  const moved = new Set();
   // 更正（收集的筆記哪裡寫錯）不顯示；⚠️ 注意事項和 💡 小提醒一樣，放到相關的那一行下面
   const isCorrection = ls => /收集的筆記|原本筆記|原本的筆記|原本寫|插畫上|截圖|口訣把|不是正確的說|→ 正確是|→ 比較正確|→ 常用意思|→ 最常用的意思|筆記寫/.test(ls.join(''));
   for (const ls of blocks) {
@@ -294,17 +294,21 @@ function attachTips(blocks) {
     const words = [...new Set((text.match(/[A-Za-z][A-Za-z'.-]*[A-Za-z]/g) || []).map(w => w.toLowerCase()))].filter(w => !STOP.has(w));
     let best = null, bestScore = 0;
     body.forEach(b => b.forEach((l, i) => {
-      if (l.trim().startsWith('{{tip:')) return;   // 不要對到別的提醒
+      if (l.trim().startsWith('{{tip:') || l.trim().startsWith('▍')) return;   // 不要對到別的提醒、合併筆記的小標題
       const low = l.toLowerCase();
-      const score = words.filter(w => new RegExp(`(^|[^a-z])${w.replace(/[.']/g, '\\$&')}([^a-z]|$)`).test(low)).length;
+      const has = w => new RegExp(`(^|[^a-z])${w.replace(/[.']/g, '\\$&')}([^a-z]|$)`).test(low);
+      // 對不到的話，試試去掉字尾（foreigner → foreign），分數算一半
+      const stem = w => w.length > 6 ? w.replace(/(ers|er|s|ed|ing)$/, '') : w;
+      const score = words.filter(has).length || words.filter(w => stem(w) !== w && has(stem(w))).length * 0.5;
       if (score > bestScore) { bestScore = score; best = [b, i]; }
     }));
     const tip = `{{tip:${ls.map(l => l.trim()).join('¶').replace(/　/g, ' ').replace(/[{}]/g, '')}}}`;
-    if (!best) rest.push(ls);
-    else if (/　/.test(best[0][best[1]])) best[0][best[1]] += tip;   // 表格的一列（例如單字卡）：提醒放進同一格裡
+    if (!best) continue;   // 對不到的提醒留在原本的位置（合併的筆記才不會全部擠到最下面）
+    moved.add(ls);
+    if (/　/.test(best[0][best[1]])) best[0][best[1]] += tip;   // 表格的一列（例如單字卡）：提醒放進同一格裡
     else best[0].splice(best[1] + 1, 0, tip);
   }
-  return [...body, ...rest];   // 找不到對應的提醒，才放在最下面；⚠️ 更正不顯示
+  return blocks.filter(ls => !moved.has(ls) && !(/^(💡|⚠️)/.test(ls[0].trim()) && isCorrection(ls)));   // ⚠️ 更正不顯示
 }
 function formatBlocks(text, noGrid, pairAll) {
   const blocks = attachTips(splitBlocks(text));
