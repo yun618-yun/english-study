@@ -529,8 +529,12 @@ NOTES.find(c => c.id === 'terms').items.unshift({
   vocab.desc += '，還有字首字尾、諧音口訣';
   // 使用者覺得小格太多 → 每一組的筆記合併成 6 大格（卡片還是一組一組，id 不變）
   const SECTIONS = [
-    ['prefix', '⬅️ 字首：放在前面', 'un re dis im pre mis over num sub inter tele'],
-    ['suffix', '➡️ 字尾：放在後面', 'er ist ful less ly able tion ness ment ous ship en y al ive ize ward'],
+    // 10/23 使用者覺得太長，字首分 2 塊、字尾分 3 塊（照意思分）
+    ['prefix', '⬅️ 字首①：不、相反、錯', 'un dis im mis'],
+    ['prefix2', '⬅️ 字首②：時間、位置、數量', 're pre over sub inter tele num'],
+    ['suffix', '➡️ 字尾①：變成「人」', 'er ist'],
+    ['suffix2', '➡️ 字尾②：變成形容詞、副詞', 'ful less able ous y al ive ly'],
+    ['suffix3', '➡️ 字尾③：變成名詞、動詞', 'tion ness ment ship en ize ward'],
     ['root', '🧩 字根：單字的核心', 'port spect vis phon aud dict struct form'],
     ['sound', '🎵 諧音口訣', 'loan loan2 sound sound2 sound3'],
     ['link', '💭 聯想、拆字、一家人', 'link link2 family'],
