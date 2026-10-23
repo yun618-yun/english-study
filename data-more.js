@@ -1009,3 +1009,121 @@ for (const id of ['sc-restaurant', 'sc-group-airport', 'ipa-48', 'letter-combos'
   const it = NOTES.find(c => c.id === 'vocab').items.find(i => i.id === id);
   if (it) it.note = '{{pair}}' + it.note.replace(/^\{\{(no)?grid\}\}\n*/, '');
 }
+
+// ---------- 🔄 倒裝：Can I…? 和 I can…（10/23 使用者問的），放進「否定句、問句、祈使句」第三段 ----------
+{
+  const items = NOTES.find(c => c.id === 'basics').items;
+  const it = items.find(i => i.id === 'b-group-sentence');
+  const add = `▍字的位置換了，意思就變了（Can I…? 和 I can…）
+
+英文問句最重要的規則：把 be 動詞、助動詞、情態動詞「搬到主詞前面」。同樣幾個字，順序不一樣，意思就不一樣。
+
+【肯定句：主詞在前】
+I can swim.　我會游泳。
+He is busy.　他很忙。
+You have finished.　你已經做完了。
+She will come.　她會來。
+
+【問句：can、is、have、will 搬到前面】
+Can I swim?　我可以游泳嗎？
+Is he busy?　他忙嗎？
+Have you finished?　你做完了嗎？
+Will she come?　她會來嗎？
+
+① 疑問詞放最前面，後面一樣是問句的順序
+What can I do?　我能做什麼？
+Where is he?　他在哪裡？
+
+② 問句放進句子裡，要變回肯定句的順序
+Do you know where he is? ✓
+I don't know what I can do. ✓
+
+⚠️ 這是最常錯的地方：Do you know where is he? ✗　→　Do you know where he is? ✓
+
+③ 「我也是」：so ／ neither ＋ 助動詞 ＋ 主詞（也是倒過來）
+I can swim. — So can I.　我也會。
+I am tired. — So am I.　我也很累。
+I don't like it. — Neither do I.　我也不喜歡。
+
+💡 口語有時候只靠語調：You can swim?（尾音上揚）是驚訝的「你會游泳？」，正式的問句還是要用 Can you swim?`;
+  if (it) it.note = it.note.replace('▍否定祈使句', add + '\n\n▍否定祈使句');
+  items.splice(items.indexOf(it) + 1, 0,
+    { id: 'b-inv-question', front: '把 You can swim. 改成問句', back: 'Can you swim?\ncan 搬到主詞前面',
+      quiz: { q: '「你會游泳嗎？」哪一句對？', options: ['Can you swim?', 'Do you can swim?', 'Are you can swim?', 'You can swim.'], answer: 0 } },
+    { id: 'b-inv-indirect', front: '「你知道他在哪裡嗎？」', back: 'Do you know where he is?\n句子裡的問句要用肯定句的順序',
+      quiz: { q: '「你知道他在哪裡嗎？」哪一句對？', options: ['Do you know where he is?', 'Do you know where is he?', 'Do you know where does he?', 'Are you know where he is?'], answer: 0 } },
+    { id: 'b-inv-so', front: 'I am tired. 回答「我也是」', back: 'So am I.\nso ＋ be 動詞 ＋ 主詞',
+      quiz: { q: 'I am tired. 回答「我也是」', options: ['So am I.', 'So I am.', 'So do I.', 'Me am too.'], answer: 0 } },
+    { id: 'b-inv-neither', front: "I don't like it. 回答「我也不喜歡」", back: 'Neither do I.\n否定句的「我也是」用 neither',
+      quiz: { q: "I don't like it. 回答「我也不喜歡」", options: ['Neither do I.', 'So do I.', 'Neither I do.', 'Me too.'], answer: 0 } }
+  );
+}
+
+// ---------- 🔄 位置或小字一換，意思就不一樣（10/23 使用者覺得倒裝很實用，要類似的） ----------
+{
+  const items = NOTES.find(c => c.id === 'basics').items;
+  const at = items.findIndex(i => i.id === 'b-inv-neither') + 1;
+  items.splice(at, 0, {
+    id: 'b-group-order', title: '🔄 位置或小字一換，意思就不一樣',
+    note: `{{pair}}台灣人很常搞錯的地方：英文字的「位置」和「小字」很重要，換一下意思就差很多。
+
+【① only 放哪裡，意思就不同】
+Only I love you.　只有我愛你（別人都不愛）
+I love only you.　我只愛你一個人
+👉 only 放在它要限制的字前面
+
+【② enough：名詞放後面，形容詞放前面】
+enough money　足夠的錢
+big enough　夠大
+I don't have enough time.　我時間不夠。
+This room is big enough.　這個房間夠大。
+👉 ⚠️ enough big ✗ → big enough ✓
+
+【③ something ＋ 形容詞：形容詞放後面】
+something cold　冰的東西
+someone special　特別的人
+nothing new　沒什麼新鮮事
+Do you want something to drink?　你想喝點東西嗎？
+👉 ⚠️ cold something ✗ → something cold ✓
+
+【④ a few／few：差一個 a，意思相反】
+a few friends　有幾個朋友（還不錯）
+few friends　幾乎沒有朋友
+a little money　有一點錢
+little money　幾乎沒錢
+👉 few、a few 接可數；little、a little 接不可數
+
+【⑤ 附加問句：…, aren't you?（對吧？）】
+You are busy, aren't you?　你很忙，對吧？
+She can swim, can't she?　她會游泳，對吧？
+He likes coffee, doesn't he?　他喜歡咖啡，對吧？
+You didn't go, did you?　你沒去，對吧？
+👉 前面肯定，後面就否定；前面否定，後面就肯定
+
+【⑥ 否定問句：看事實回答，不看問題】
+Don't you like it?　你不喜歡嗎？
+Yes, I do.　不，我喜歡。（事實是喜歡）
+No, I don't.　對，我不喜歡。（事實是不喜歡）
+👉 ⚠️ 中文說「對，我不喜歡」，英文要說 No, I don't.，不是 Yes, I don't.
+
+【⑦ 感嘆句：What a…！／How…！】
+What a beautiful day!　天氣真好！
+What nice people!　人真好！（複數不加 a）
+How beautiful!　好美！
+How fast he runs!　他跑得好快！
+👉 感嘆句不是問句，主詞和動詞不用倒過來`
+  },
+    { id: 'b-ord-enough', front: '「這個房間夠大」', back: 'This room is big enough.\n形容詞 ＋ enough',
+      quiz: { q: '「這個房間夠大」哪一句對？', options: ['This room is big enough.', 'This room is enough big.', 'This room enough is big.', 'This enough room is big.'], answer: 0 } },
+    { id: 'b-ord-something', front: '「你想要冰的東西嗎？」', back: 'Do you want something cold?\nsomething ＋ 形容詞',
+      quiz: { q: '「你想要冰的東西嗎？」哪一句對？', options: ['Do you want something cold?', 'Do you want cold something?', 'Do you want somethings cold?', 'Do you cold want something?'], answer: 0 } },
+    { id: 'b-ord-few', front: '「我幾乎沒有朋友」', back: 'I have few friends.\nfew（沒有 a）＝幾乎沒有',
+      quiz: { q: '「我幾乎沒有朋友」哪一句對？', options: ['I have few friends.', 'I have a few friends.', 'I have a little friends.', 'I have little friend.'], answer: 0 } },
+    { id: 'b-ord-tag', front: "You are busy, ___?（對吧？）", back: "aren't you\n前面肯定，後面就否定",
+      quiz: { q: "You are busy, ___?（你很忙，對吧？）", options: ["aren't you", 'are you', "don't you", "isn't it"], answer: 0 } },
+    { id: 'b-ord-neg', front: "Don't you like it?\n（其實你喜歡）怎麼回答？", back: 'Yes, I do.\n看事實：喜歡就用 Yes',
+      quiz: { q: "Don't you like it?（其實你喜歡）怎麼回答？", options: ['Yes, I do.', "No, I don't.", "Yes, I don't.", 'No, I do.'], answer: 0 } },
+    { id: 'b-ord-what', front: '「天氣真好！」', back: 'What a beautiful day!\nWhat a ＋ 形容詞 ＋ 名詞',
+      quiz: { q: '「天氣真好！」哪一句對？', options: ['What a beautiful day!', 'How a beautiful day!', 'What beautiful a day!', 'What a day beautiful!'], answer: 0 } }
+  );
+}

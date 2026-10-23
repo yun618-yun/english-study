@@ -286,6 +286,8 @@ const isShortBlock = ls => ls.length >= 2 && ls.length <= 16 &&
 const STOP = new Set(['the', 'and', 'for', 'you', 'are', 'not', 'can', 'his', 'her', 'its', 'this', 'that', 'with', 'one', 'two']);
 function attachTips(blocks) {
   const body = blocks.filter(ls => !/^(💡|⚠️)/.test(ls[0].trim()));
+  // 合併的筆記：每個 ▍小標題算一段，提醒只能放在自己那一段
+  let n = 0; const sec = new Map(blocks.map(ls => [ls, ls[0].trim().startsWith('▍') ? ++n : n]));
   const moved = new Set();
   // 更正（收集的筆記哪裡寫錯）不顯示；⚠️ 注意事項和 💡 小提醒一樣，放到相關的那一行下面
   const isCorrection = ls => /收集的筆記|原本筆記|原本的筆記|原本寫|插畫上|截圖|口訣把|不是正確的說|→ 正確是|→ 比較正確|→ 常用意思|→ 最常用的意思|筆記寫/.test(ls.join(''));
@@ -294,7 +296,7 @@ function attachTips(blocks) {
     const text = ls.join(' ');
     const words = [...new Set((text.match(/[A-Za-z][A-Za-z'.-]*[A-Za-z]/g) || []).map(w => w.toLowerCase()))].filter(w => !STOP.has(w));
     let best = null, bestScore = 0;
-    body.forEach(b => b.forEach((l, i) => {
+    body.forEach(b => sec.get(b) === sec.get(ls) && b.forEach((l, i) => {
       if (l.trim().startsWith('{{tip:') || l.trim().startsWith('▍')) return;   // 不要對到別的提醒、合併筆記的小標題
       const low = l.toLowerCase();
       const has = w => new RegExp(`(^|[^a-z])${w.replace(/[.']/g, '\\$&')}([^a-z]|$)`).test(low);
