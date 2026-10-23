@@ -1338,7 +1338,7 @@ at home　狀語：在家裡（地點，介係詞＋名詞）
     ['left', '⬅️', 'Turn left here.　左邊|He left an hour ago.　離開了（leave 的過去式）'],
     ['present', '🎁', 'This is a present for you.　禮物|All students are present.　出席的'],
     ['last', '🔚', 'This is the last bus.　最後的|The movie lasts two hours.　持續'],
-    ['match', '🔥', 'We watched a football match.　比賽|Light a match.　火柴'],
+    ['match', '🔥', "We watched a football match.　比賽|Light a match.　火柴|Who won the match?　比賽|Don't play with matches.　火柴|Your shoes match your bag.　搭配、相配|This color doesn't match.　不搭配"],
     ['bank', '🏦', 'I need to go to the bank.　銀行|We sat on the river bank.　河岸'],
     ['interest', '📈', 'I have an interest in music.　興趣|The bank pays interest.　利息'],
     ['miss', '💭', 'I miss you.　想念|I missed the bus.　錯過']
@@ -1357,6 +1357,8 @@ at home　狀語：在家裡（地點，介係詞＋名詞）
   vocab.splice(at, 0, {
     id: 'mm-multi', title: `🔀 一字多義：一個字兩種意思（${MULTI.length} 個）`,
     note: '{{pair}}同一個英文字，放在不同句子裡意思完全不同。只背一個意思，看到句子就會卡住。\n\n' + boxes.join('\n\n') +
-      '\n\n💡 看到認識的字卻看不懂句子時，想想看：這個字是不是還有別的意思？'
+      '\n\n💡 看到認識的字卻看不懂句子時，想想看：這個字是不是還有別的意思？' +
+      '\n\n💡 match 記法：比賽是兩邊「配成一對」來比；火柴要「配上」火柴盒才點得起來；衣服顏色「配」在一起就是搭配' +
+      '\n\n💡 sleepy（想睡的）和 tired（累的）不一樣：熬夜後眼睛睜不開是 sleepy；運動完全身沒力是 tired'
   }, ...MULTI.map(([w, , rows]) => C(w, rows)));
 }
