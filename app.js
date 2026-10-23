@@ -257,10 +257,12 @@ function formatNote(text) {
   if (text.startsWith('{{grid}}')) {
     const parts = text.replace(/^\{\{grid\}\}\n*/, '').split('\n\n');
     const boxes = parts.filter(p => p.trim().startsWith('【'));
-    const others = parts.filter(p => !p.trim().startsWith('【'));
-    return formatBlocks(others[0] || '') +
+    // 框框前面的說明放上面，框框後面的提醒放下面
+    const first = parts.findIndex(p => p.trim().startsWith('【'));
+    const isBox = p => p.trim().startsWith('【');
+    return parts.slice(0, Math.max(first, 0)).filter(p => !isBox(p)).map(formatBlocks).join('') +
       `<div class="nbgrid">${boxes.map(formatBlocks).join('')}</div>` +
-      others.slice(1).map(formatBlocks).join('');
+      parts.slice(Math.max(first, 0)).filter(p => !isBox(p)).map(formatBlocks).join('');
   }
   // 筆記開頭寫 {{nogrid}}：框框都一整排，不自動並排（情境單字的英文比較長，並排會擠）
   if (text.startsWith('{{nogrid}}')) return formatBlocks(text.replace(/^\{\{nogrid\}\}\n*/, ''), true);

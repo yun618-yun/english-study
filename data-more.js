@@ -808,6 +808,6 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
       const en = (l.match(/\{\{say:([^}]+)\}\}/) || [])[1];
       (parts.find(p => p.ws.includes(en)) || parts.find(p => p.ws[0] === '*') || parts[parts.length - 1]).lines.push(l);
     }
-    it.note = '{{nogrid}}' + [...parts.filter(p => p.lines.length).map(p => `【${p.name}（${p.lines.length} 個）】\n` + p.lines.join('\n')), ...rest].join('\n\n');
+    it.note = '{{grid}}' + [...parts.filter(p => p.lines.length).map(p => `【${p.name}（${p.lines.length} 個）】\n` + p.lines.join('\n')), ...rest].join('\n\n');
   }
 }

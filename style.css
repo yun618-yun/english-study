@@ -539,3 +539,17 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .page .nbgrid .nb .row.multi .v { display: block; text-align: left; font-size: 13px; line-height: 1.45; padding: 0; }
 .page .nbgrid .nb .row.multi .v + .v { color: var(--muted); }
 .page .nbgrid .nb .row .k .syl { flex: 0 0 100%; order: 9; margin-top: -2px; }
+/* 單字表分段：每段一個框框，兩欄排（跟妙招一樣）；框框裡英文在上、中文在下 */
+.page .nbgrid .nb:has(.pic) .row { display: block; padding: 5px 0; }
+.page .nbgrid .nb:has(.pic) .row .k { font-size: 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 2px 6px; }
+.page .nbgrid .nb:has(.pic) .row .v { display: block; text-align: left; font-size: 13.5px; padding: 0; }
+.page .nbgrid .nb:has(span.pic) .row span.pic { font-size: 20px; }
+/* 有插畫的單字表：顯示圖片時，每段還是整排（圖卡本身就是兩欄）；藏起圖片才變兩欄 */
+.page .nbgrid:has(img.pic) { display: block; }
+.page .nbgrid:has(img.pic) .nb:has(img.pic) .row { display: flex; }
+.page .nbgrid:has(img.pic) .nb:has(img.pic) .row .k { font-size: 19px; }
+[data-pics="off"] .page .nbgrid:has(img.pic) { display: grid; }
+[data-pics="off"] .page .nbgrid .nb:has(img.pic) { padding: 34px 2px 6px 26px; }
+[data-pics="off"] .page .nbgrid:has(img.pic) .nb:has(img.pic) .row { display: block; padding: 5px 0; border-top: 1px dashed var(--line); }
+[data-pics="off"] .page .nbgrid:has(img.pic) .nb:has(img.pic) .row .k { font-size: 16px; }
+[data-pics="off"] .page .nbgrid:has(img.pic) .nb:has(img.pic) .row .v { text-align: left; }
