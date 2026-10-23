@@ -441,3 +441,44 @@ Ben was made to wait. Ben 被要求等。
     }))
   );
 }
+
+// ===================== 第九批（10/23 Claude 以老師角度補充：聊天用的句子和單字） =====================
+{
+  const card = ([en, zh], key, p) => ({ id: `${p}-${key}-${slug(en)}`, front: zh, back: en, say: en, group: `${p}-${key}` });
+  // 💬 生活常用句：聊天真的會用到的句子
+  NOTES.find(c => c.id === 'daily').items.push(...buildGroups('dl', [
+    ['rescue', '🆘 聽不懂時的救命句', '對話卡住的時候，用這幾句就不怕。初學者最重要的一組！',
+      "Sorry, could you say that again?=不好意思，可以再說一次嗎？|Could you speak more slowly?=可以說慢一點嗎？|What does that mean?=那是什麼意思？|How do you spell it?=那個怎麼拼？|I don't understand.=我聽不懂。|Do you mean this one?=你是說這個嗎？|Can you write it down?=可以寫下來嗎？|How do you say this in English?=這個英文怎麼說？|Sorry, my English isn't very good.=抱歉，我的英文不是很好。|Just a moment, please.=請等一下。|Let me think.=讓我想一下。|Could you show me?=可以指給我看嗎？",
+      "💡 Sorry? 或 Pardon? 尾音上揚，也可以表示「再說一次？」\n💡 聽不懂很正常，直接問比假裝聽懂好很多"],
+    ['react', '💬 接話、回應', '對方說完以後，用這些回應，對話才接得下去。',
+      "Really?=真的嗎？|That's great!=太棒了！|I see.=我懂了。|Me too.=我也是。|Me neither.=我也不（否定句的「我也是」）。|Sounds good.=聽起來不錯。|That's too bad.=真可惜／好慘。|No way!=不會吧！|Of course.=當然。|I think so.=我想是吧。|I don't think so.=我不這麼認為。|That makes sense.=有道理。|Good idea!=好主意！|Congratulations!=恭喜！",
+      "💡 對方說 I don't like coffee.，你也不喜歡 → 要說 Me neither.，不是 Me too.\n💡 That's too bad. 是同情對方，不是「太壞了」"],
+    ['plan', '🗓️ 約時間、邀約', '約朋友、約會、約見面都用得到。',
+      "Are you free on Saturday?=你星期六有空嗎？|What are you doing this weekend?=你這個週末要做什麼？|Do you want to grab coffee?=要不要一起喝杯咖啡？|How about 7 p.m.?=晚上七點怎麼樣？|Where should we meet?=我們要在哪裡見面？|Let's meet at the station.=我們在車站見。|I'm free after work.=我下班後有空。|Sorry, I'm busy that day.=抱歉，那天我有事。|Can we change it to Sunday?=可以改成星期天嗎？|See you then!=到時候見！|I'm running late.=我會晚一點到。|I'm on my way.=我在路上了。",
+      "💡 grab coffee 是很口語的「喝杯咖啡」，約朋友很常用\n💡 遲到要先傳訊息：I'm running late. Sorry!"],
+    ['drink', '🧋 點飲料和特殊需求', '點手搖飲、點餐時的特別要求。',
+      "Less sugar, please.=少糖，謝謝。|No sugar, please.=無糖，謝謝。|Less ice, please.=少冰，謝謝。|No ice, please.=去冰，謝謝。|Can I have it hot?=可以做熱的嗎？|Can I get a large?=可以給我大杯嗎？|I'm allergic to peanuts.=我對花生過敏。|I don't eat beef.=我不吃牛肉。|Not too spicy, please.=不要太辣，謝謝。|Can I have the sauce on the side?=醬可以另外放嗎？|Is this vegetarian?=這是素的嗎？|Can I have a bag, please?=可以給我一個袋子嗎？",
+      "💡 國外通常沒有「半糖」這種選項，可以說 less sugar（少糖）或 half sugar\n💡 過敏一定要說清楚：I'm allergic to + 食物"],
+    ['hobby', '🎨 興趣嗜好', '自我介紹、交朋友時聊興趣。',
+      "What do you do for fun?=你平常喜歡做什麼？|What are your hobbies?=你的興趣是什麼？|I'm into hiking.=我很喜歡爬山。|I enjoy cooking.=我喜歡煮飯。|I like watching movies.=我喜歡看電影。|I love traveling.=我很愛旅行。|I play the guitar.=我會彈吉他。|I go to the gym three times a week.=我一週去健身房三次。|I'm learning English.=我在學英文。|I'm not into sports.=我對運動沒什麼興趣。|How about you?=你呢？|We have a lot in common!=我們有好多共同點！",
+      "💡 I'm into… 是很口語的「我很迷…」，後面接名詞或 V-ing\n💡 like、enjoy 後面的動作要加 ing：I enjoy cooking.\n💡 樂器前面要加 the：play the guitar；運動不用：play tennis"],
+    ['mobile', '📱 手機和網路', '出國、上班、跟朋友聯絡都會用到。',
+      "Can I charge my phone here?=我可以在這裡充電嗎？|My phone is dead.=我的手機沒電了。|What's the Wi-Fi password?=Wi-Fi 密碼是什麼？|The Wi-Fi isn't working.=Wi-Fi 不能用。|Can I have your LINE?=可以給我你的 LINE 嗎？|Send me a message.=傳訊息給我。|I'll call you later.=我晚點打給你。|Can you send me the photo?=可以把照片傳給我嗎？|I'll text you the address.=我把地址傳給你。|Let me take a picture.=我拍張照。|Can you take a photo of us?=可以幫我們拍張照嗎？|There's no signal here.=這裡收不到訊號。",
+      "💡 My phone is dead. 是「手機沒電」，不是手機壞掉\n💡 text 當動詞是「傳簡訊、傳訊息」：I'll text you."],
+    ['taxi', '🚕 交通：計程車、公車、買票', '出國搭車用得到的句子。',
+      "Can you take me to this address?=可以載我到這個地址嗎？|How much is it to the airport?=到機場多少錢？|Please stop here.=請停在這裡。|Can I pay by card?=可以刷卡嗎？|Which bus goes to the museum?=哪一班公車到博物館？|Does this bus go downtown?=這班公車有到市中心嗎？|Where can I buy a ticket?=哪裡可以買票？|One ticket to Tokyo, please.=一張到東京的票，謝謝。|A round-trip ticket, please.=一張來回票，謝謝。|What time is the next train?=下一班火車是幾點？|How long does it take?=要多久？|Where do I get off?=我要在哪裡下車？",
+      "💡 單程票 one-way ticket；來回票 round-trip ticket\n💡 get on 上車、get off 下車"],
+    ['link', '🔗 說話用的連接詞', '把短句連起來，說話就不會一句一句斷掉。',
+      "I'm tired because I worked late.=我很累，因為我工作到很晚。|It was raining, so I stayed home.=那時在下雨，所以我待在家。|I like it, but it's too expensive.=我喜歡，但是太貴了。|First, I wash my face. Then, I eat breakfast.=首先我洗臉，然後吃早餐。|Actually, I don't like coffee.=其實我不喜歡咖啡。|By the way, are you free tomorrow?=對了，你明天有空嗎？|For example, I like apples and bananas.=例如，我喜歡蘋果和香蕉。|I want to go, but I'm busy.=我想去，但是我很忙。|After work, I go to the gym.=下班後我去健身房。|Anyway, let's go!=總之，我們走吧！",
+      "💡 中文說「因為…所以…」，英文 because 和 so 只能選一個：Because I was tired, I slept. 或 I was tired, so I slept.\n💡 By the way 是要換話題的時候用"]
+  ], { card }));
+  // ⚡ 常用動詞和形容詞：頻率副詞、個性和外表
+  NOTES.find(c => c.id === 'core').items.push(...buildGroups('cw', [
+    ['freq', '🔁 頻率副詞：多常做', '說自己的習慣一定會用。順序是 100% → 0%。',
+      "always=總是（100%）|usually=通常（90%）|often=常常（70%）|sometimes=有時候（50%）|rarely=很少（10%）|never=從不（0%）|every day=每天|once a week=一週一次|twice a month=一個月兩次|on weekends=週末的時候",
+      "💡 頻率副詞放在一般動詞前面、be 動詞後面：I always get up early.／I am always busy.\n💡 例句：I usually take the bus to work. 我通常搭公車上班。\n💡 問頻率：How often do you exercise? 你多常運動？"],
+    ['people', '😊 個性和外表', '介紹朋友、描述一個人。',
+      "friendly=友善的|kind=善良的|funny=好笑的、幽默的|shy=害羞的|outgoing=外向的|smart=聰明的|patient=有耐心的|lazy=懶惰的|honest=誠實的|tall=高的|short=矮的|slim=苗條的|cute=可愛的|handsome=帥的|pretty=漂亮的|long hair=長頭髮|short hair=短頭髮|glasses=眼鏡",
+      "💡 描述外表：She has long hair. 她留長頭髮。He wears glasses. 他戴眼鏡。\n💡 問個性：What is he like? 他是個怎樣的人？（不是問他喜歡什麼）\n💡 fat（胖）不太禮貌，可以說 a little big 或不要提"]
+  ], { card }));
+}
