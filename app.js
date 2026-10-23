@@ -395,9 +395,12 @@ function renderNotes() {
         <span class="vname">${esc(name)}</span>${n ? `<span class="vcount">${n} 個</span>` : ''}</button>`;
     };
     // 背單字妙招（字首字尾、諧音）放在單字下面另一區
-    const words = items.filter(it => it.id.startsWith('vocab-')), tricks = items.filter(it => !it.id.startsWith('vocab-'));
+    // 下面兩區：背單字妙招、情境圖解和發音規則（10/23 從小分類搬進來的）
+    const words = items.filter(it => it.id.startsWith('vocab-')), tricks = items.filter(it => it.id.startsWith('mm-'));
+    const extra = items.filter(it => !it.id.startsWith('vocab-') && !it.id.startsWith('mm-'));
+    const sec = (name, list) => list.length ? `<h3 class="vsec">${name}</h3><div class="vgrid">${list.map(tile).join('')}</div>` : '';
     $view.innerHTML = catHead() + `<div class="vgrid">${words.map(tile).join('')}</div>` +
-      (tricks.length ? `<h3 class="vsec">🧠 背單字妙招：字首字尾、諧音口訣</h3><div class="vgrid">${tricks.map(tile).join('')}</div>` : '');
+      sec('🧠 背單字妙招：字首字尾、諧音口訣', tricks) + sec('🖼️ 情境圖解和 🔤 發音規則', extra);
     return;
   }
   // 其他分類：兩欄的彩色小方塊。標題拆成「主標題」和「副標題」（全形空白或括號後面的部分）
@@ -1023,7 +1026,7 @@ function markRead(id) {
   readNotes.push(id);
   try { localStorage.setItem(READ_KEY, JSON.stringify(readNotes)); } catch (e) {}
 }
-const nextNote = () => ALL.find(it => it.note && !['vocab', 'scene'].includes(it.cat) && !readNotes.includes(it.id));
+const nextNote = () => ALL.find(it => it.note && (!['vocab', 'scene'].includes(it.cat) || it.pron) && !readNotes.includes(it.id));   // 發音規則搬進「單字」後還是要讀
 const PLAN_KEY = 'english-study-plan';
 let planDone = { day: '', done: [] }, planRun = null;
 try { planDone = JSON.parse(localStorage.getItem(PLAN_KEY)) || planDone; } catch (e) {}
@@ -1340,8 +1343,11 @@ function showTab(tab) {
 function route() {
   const [tab, cat, item] = decodeURIComponent(location.hash.slice(1)).split('/');
   currentTab = TABS[tab] ? tab : 'today';
+  // 分類搬家、筆記合併後，舊的網址（或「回到上次那一頁」）也要能打開：找不到就回到那則筆記現在所在的分類
+  const moved = item && ALL.find(it => it.id === item && it.note);
   currentCat = CAT[cat] || (cat === 'all' && currentTab !== 'notes') ? cat : null;
-  openItem = currentTab === 'notes' && currentCat && ALL.some(it => it.id === item) ? item : null;
+  if (moved && currentTab === 'notes' && moved.cat !== currentCat) currentCat = moved.cat;
+  openItem = currentTab === 'notes' && currentCat && ALL.some(it => it.id === item && it.cat === currentCat && it.note) ? item : null;
   showTab(currentTab);
 }
 function go(tab, cat, item, replace) {

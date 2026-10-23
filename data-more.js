@@ -945,3 +945,26 @@ mergeNotes('core', 'cw-group-verb', '常用動詞：每天、萬用、生活（6
 mergeNotes('core', 'cw-group-adj5', '5 個重要形容詞（eager、fair、familiar、firm、foreign）', ['cw-adj-eager', 'cw-adj-fair', 'cw-adj-familiar', 'cw-adj-firm', 'cw-adj-foreign'], 'section');
 mergeNotes('core', 'cw-group-family', '-er 變成人、單字家族', ['cw-er', 'cw-family'], 'section');
 mergeNotes('scene', 'sc-group-airport', '✈️ 機場：行李提領區、航廈和停機坪（19 個）', ['sc-baggage', 'sc-airport'], 'section');
+
+// ===================== 🏠 只有 2～3 格的小分類，搬進相關的大分類（10/23 使用者覺得獨立一塊很怪） =====================
+// id 都不變，卡片和練習紀錄不受影響；舊網址會自動找到新位置（app.js route）
+function moveCat(from, to, { after, prefix, flag } = {}) {
+  const fi = NOTES.findIndex(c => c.id === from), dest = NOTES.find(c => c.id === to);
+  if (fi < 0 || !dest) return;
+  const moved = NOTES[fi].items.map(it => ({ ...it, ...(prefix && it.title ? { title: prefix + it.title } : {}), ...(flag ? { [flag]: true } : {}) }));
+  const at = after ? dest.items.findIndex(i => i.id === after) + 1 : dest.items.length;
+  dest.items.splice(at || dest.items.length, 0, ...moved);
+  NOTES.splice(fi, 1);
+}
+moveCat('place-prep', 'basics', { after: 'b-in-on-at', prefix: '📍 ' });
+moveCat('signals', 'tenses', { prefix: '⏰ ' });
+moveCat('numbers', 'daily', { prefix: '🔢 ' });
+moveCat('mistakes', 'basics', { prefix: '🚫 ' });
+moveCat('scene', 'vocab');
+// 發音規則：在單字格子裡用標題第一個符號當圖示，所以前面加 Emoji
+{
+  const icons = { 'ipa-48': '🔤 ', 'silent-rules': '🤫 ', 'letter-combos': '🔠 ' };
+  const pron = NOTES.find(c => c.id === 'pron');
+  if (pron) for (const it of pron.items) if (icons[it.id] && it.title) it.title = icons[it.id] + it.title;
+}
+moveCat('pron', 'vocab', { flag: 'pron' });
