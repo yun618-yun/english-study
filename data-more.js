@@ -524,13 +524,13 @@ NOTES.find(c => c.id === 'terms').items.unshift({
     id: `${p}-${key}-${slug(en)}`, front: AFFIX[key] ? `${zh}\n（用 ${AFFIX[key]}）` : zh,
     back: en + (hint && hint !== zh ? '\n💡 ' + hint : ''), say: en, group: `${p}-${key}`
   });
-  const at = NOTES.findIndex(c => c.id === 'vocab');
-  NOTES.splice(at, 0, {
-    id: 'memo', name: '背單字妙招', icon: '🧠', color: '#8a5cb8', desc: '字首字尾、諧音口訣，一次記一串',
-    items: [
+  // 使用者想要放在「單字」裡面，不要另外一格，才不用分兩個地方點（10/23）
+  const vocab = NOTES.find(c => c.id === 'vocab');
+  vocab.desc += '，還有字首字尾、諧音口訣';
+  vocab.items.push(
       {
         id: 'mm-how',
-        title: '4 種背單字的方法（先看這則）',
+        title: '💡 4 種背單字的方法（先看這則）',
         note: `單字硬背很容易忘，有「記憶點」才記得久。這裡用 4 種方法：
 
 ① 拆字首、字尾（最推薦）
@@ -695,6 +695,5 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
           'hear=聽=裡面有 ear（耳朵）|here=這裡=跟 there、where 一家人，都是地點|their=他們的=有 i，像「人」→ 屬於人的|there=那裡=裡面藏著 here（這裡）→ 也是地點|son=兒子=o 跟 boy 的 o 一樣|sun=太陽=跟 sunny（晴天）一起記|buy=買=有 u → you buy 你買|by=搭、透過=最短的那個：by bus 搭公車|eight=八=gh 不發音|ate=吃了=eat 的過去式：I ate lunch.',
           '💡 there、their、they\'re 三個都念 /ðer/：There is a cat. 那裡有貓／their cat 他們的貓／They\'re happy. 他們很開心']
       ], { card })
-    ]
-  });
+  );
 }

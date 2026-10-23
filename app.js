@@ -373,13 +373,17 @@ function renderNotes() {
     const coverHtml = (pic, key) => Array.isArray(pic)
       ? `<span class="vquad">${pic.map(p => `<img src="${esc(p)}" alt="" loading="lazy">`).join('')}</span>`
       : pic ? `<img src="${esc(pic)}" alt="" loading="lazy">` : `<span class="vicon">${VOCAB_ICON[key] || '📚'}</span>`;
-    $view.innerHTML = catHead() + `<div class="vgrid">${items.map(it => {
-      const key = it.id.replace(/^vocab-/, ''), pic = cover(key);
-      const [, name, n] = it.title.match(/^\S+\s(.+?)（(\d+) 個）$/) || [, it.title, ''];
+    const tile = it => {
+      const key = it.id.replace(/^vocab-/, ''), word = it.id.startsWith('vocab-');
+      const [, icon, name, n] = it.title.match(/^(\S+)\s(.+?)(?:（(\d+) 個）)?$/) || [, '📚', it.title, ''];
       return `<button class="vtile" data-open="${esc(it.id)}">
-        ${coverHtml(pic, key)}
-        <span class="vname">${esc(name)}</span><span class="vcount">${n} 個</span></button>`;
-    }).join('')}</div>`;
+        ${word ? coverHtml(cover(key), key) : `<span class="vicon">${esc(icon)}</span>`}
+        <span class="vname">${esc(name)}</span>${n ? `<span class="vcount">${n} 個</span>` : ''}</button>`;
+    };
+    // 背單字妙招（字首字尾、諧音）放在單字下面另一區
+    const words = items.filter(it => it.id.startsWith('vocab-')), tricks = items.filter(it => !it.id.startsWith('vocab-'));
+    $view.innerHTML = catHead() + `<div class="vgrid">${words.map(tile).join('')}</div>` +
+      (tricks.length ? `<h3 class="vsec">🧠 背單字妙招：字首字尾、諧音口訣</h3><div class="vgrid">${tricks.map(tile).join('')}</div>` : '');
     return;
   }
   // 其他分類：兩欄的彩色小方塊。標題拆成「主標題」和「副標題」（全形空白或括號後面的部分）
