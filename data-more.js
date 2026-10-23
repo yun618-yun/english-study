@@ -745,7 +745,7 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
     'salami=sa-la-mi|salesperson=sales-per-son|sandpaper=sand-pa-per|saxophone=sax-o-phone|screwdriver=screw-driv-er|secretary=sec-re-tar-y|skateboarding=skate-board-ing|spectacular=spec-tac-u-lar|spectator=spec-ta-tor|stadium=sta-di-um|stepfather=step-fa-ther|stepmother=step-moth-er|strawberry=straw-ber-ry|submarine=sub-ma-rine|subtitle=sub-ti-tle|subtotal=sub-to-tal|subzero=sub-ze-ro|sugarcane=sug-ar-cane|sunflower=sun-flow-er|supermarket=su-per-mar-ket|' +
     'talkative=talk-a-tive|telegram=tel-e-gram|telephone=tel-e-phone|teleport=tel-e-port|telescope=tel-e-scope|television=tel-e-vi-sion|theater=the-a-ter|tomato=to-ma-to|tornado=tor-na-do|tortilla=tor-ti-lla|traditional=tra-di-tion-al|triangle=tri-an-gle|tricycle=tri-cy-cle|' +
     'underwear=un-der-wear|unfamiliar=un-fa-mil-iar|unhappy=un-hap-py|unhealthy=un-health-y|unicorn=u-ni-corn|uniform=u-ni-form|university=u-ni-ver-si-ty|utility=u-til-i-ty|' +
-    'venison=ven-i-son|video=vid-e-o|violet=vi-o-let|visible=vis-i-ble|visitor=vis-i-tor|volleyball=vol-ley-ball|washable=wash-a-ble|watermelon=wa-ter-mel-on|weightlifting=weight-lift-ing|conditioner=con-di-tion-er|microwave=mi-cro-wave|vinegar=vin-e-gar|delicious=de-li-cious|excited=ex-cit-ed|embarrassed=em-bar-rassed|stomachache=stom-ach-ache|allergy=al-ler-gy|medicine=med-i-cine|departure=de-par-ture|arrival=ar-riv-al|souvenir=sou-ve-nir|Taiwanese=Tai-wan-ese|Japanese=Jap-a-nese|Korean=Ko-re-an|American=A-mer-i-can|Germany=Ger-ma-ny|Vietnam=Vi-et-nam|Vietnamese=Vi-et-nam-ese')
+    'venison=ven-i-son|video=vid-e-o|violet=vi-o-let|visible=vis-i-ble|visitor=vis-i-tor|volleyball=vol-ley-ball|washable=wash-a-ble|watermelon=wa-ter-mel-on|weightlifting=weight-lift-ing|camera=cam-er-a|battery=bat-ter-y|holiday=hol-i-day|Halloween=Hal-low-een|Thanksgiving=Thanks-giv-ing|conditioner=con-di-tion-er|microwave=mi-cro-wave|vinegar=vin-e-gar|delicious=de-li-cious|excited=ex-cit-ed|embarrassed=em-bar-rassed|stomachache=stom-ach-ache|allergy=al-ler-gy|medicine=med-i-cine|departure=de-par-ture|arrival=ar-riv-al|souvenir=sou-ve-nir|Taiwanese=Tai-wan-ese|Japanese=Jap-a-nese|Korean=Ko-re-an|American=A-mer-i-can|Germany=Ger-ma-ny|Vietnam=Vi-et-nam|Vietnamese=Vi-et-nam-ese')
     .split('|').map(s => s.split('=')));
   const vocab = NOTES.find(c => c.id === 'vocab');
   for (const it of vocab.items) {
@@ -795,7 +795,9 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
     travel: '證件和行李=passport,visa,boarding pass,ticket,luggage,suitcase,backpack|在機場=flight,gate,seat,check in,connecting flight,delay,customs,departure,arrival|旅遊=*',
     road: '路上看到的=traffic light,crosswalk,intersection,corner,sidewalk,bridge,tunnel,bus stop,gas station,highway,sign,traffic jam|問路常用=*',
     money: '付錢=money,cash,credit card,coin,price,receipt,change|買東西=*',
-    country: '亞洲=Taiwan,Taiwanese,Japan,Japanese,Korea,Korean,Thailand,Thai,Vietnam,Vietnamese|歐美=*'
+    country: '亞洲=Taiwan,Taiwanese,Japan,Japanese,Korea,Korean,Thailand,Thai,Vietnam,Vietnamese|歐美=*',
+    tech: '裝置=cell phone,smartphone,laptop,tablet,camera,earphones,wireless earbuds,mouse,keyboard,screen|充電和電源=charger,charging cable,power bank,outlet,battery|網路和操作=*',
+    festival: `台灣的節日=Chinese New Year,New Year's Eve,red envelope,Lantern Festival,Tomb-Sweeping Day,Dragon Boat Festival,rice dumpling,Moon Festival|西洋的節日=Christmas,Santa Claus,Halloween,Thanksgiving,Valentine's Day,Mother's Day,Father's Day,New Year's Day|其他=*`
   };
   const vocab = NOTES.find(c => c.id === 'vocab');
   for (const [key, spec] of Object.entries(PARTS)) {

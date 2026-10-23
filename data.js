@@ -1460,7 +1460,10 @@ const MORE_VOCAB = [
   ['travel', '機場和旅行', '✈️', '護照=passport=🛂|簽證=visa=|登機證=boarding pass=🎫|票=ticket=🎟️|行李=luggage=🧳|行李箱=suitcase=🧳|背包=backpack=🎒|班機=flight=✈️|登機門=gate=|座位=seat=💺|報到、入住=check in=|轉機的班機=connecting flight=|延誤=delay=⏰|海關=customs=🛂|出發=departure=🛫|抵達=arrival=🛬|紀念品=souvenir=🎁|導遊=tour guide=🚩|地圖=map=🗺️'],
   ['road', '馬路和交通', '🚦', '紅綠燈=traffic light=🚦|斑馬線=crosswalk=🚸|十字路口=intersection=|轉角=corner=|人行道=sidewalk=|橋=bridge=🌉|隧道=tunnel=|公車站=bus stop=🚏|塞車=traffic jam=🚗|加油站=gas station=⛽|高速公路=highway=🛣️|標誌、招牌=sign=🪧|左轉=turn left=⬅️|右轉=turn right=➡️|直走=go straight=⬆️'],
   ['money', '購物和錢', '🛒', '錢=money=💰|現金=cash=💵|信用卡=credit card=💳|硬幣=coin=🪙|價錢=price=🏷️|收據=receipt=🧾|折扣=discount=|特價中=on sale=🏷️|找的零錢=change=🪙|便宜的=cheap=|貴的=expensive=💸|購物車=shopping cart=🛒|袋子=bag=🛍️|退款=refund=|退貨=return=|尺寸=size=|試穿=try on=👗'],
-  ['country', '國家和語言', '🌍', '台灣=Taiwan=🇹🇼|台灣人；台語=Taiwanese=|日本=Japan=🇯🇵|日本人；日文=Japanese=|韓國=Korea=🇰🇷|韓國人；韓文=Korean=|美國=the US=🇺🇸|美國人；美國的=American=|英國=the UK=🇬🇧|英國人；英國的=British=|法國=France=🇫🇷|法國人；法文=French=|德國=Germany=🇩🇪|德國人；德文=German=|泰國=Thailand=🇹🇭|泰國人；泰文=Thai=|越南=Vietnam=🇻🇳|越南人；越南文=Vietnamese=']
+  ['country', '國家和語言', '🌍', '台灣=Taiwan=🇹🇼|台灣人；台語=Taiwanese=|日本=Japan=🇯🇵|日本人；日文=Japanese=|韓國=Korea=🇰🇷|韓國人；韓文=Korean=|美國=the US=🇺🇸|美國人；美國的=American=|英國=the UK=🇬🇧|英國人；英國的=British=|法國=France=🇫🇷|法國人；法文=French=|德國=Germany=🇩🇪|德國人；德文=German=|泰國=Thailand=🇹🇭|泰國人；泰文=Thai=|越南=Vietnam=🇻🇳|越南人；越南文=Vietnamese='],
+  // 10/23 使用者選的：3C 電子產品、節日（最常用到的兩類）
+  ['tech', '3C 電子產品', '📱', '手機=cell phone=📱|智慧型手機=smartphone=📱|筆電=laptop=💻|平板=tablet=|相機=camera=📷|耳機=earphones=🎧|藍牙耳機=wireless earbuds=|滑鼠=mouse=🖱️|鍵盤=keyboard=⌨️|螢幕=screen=🖥️|充電器=charger=🔌|充電線=charging cable=|行動電源=power bank=🔋|插座=outlet=🔌|電池=battery=🔋|網路=internet=🌐|無線網路=Wi-Fi=📶|訊號=signal=📶|帳號=account=|密碼=password=🔑|應用程式=app=📲|下載=download=⬇️|更新=update=🔄|截圖=screenshot='],
+  ['festival', '節日', '🎉', `春節、農曆新年=Chinese New Year=🧨|除夕=New Year's Eve=🌙|紅包=red envelope=🧧|元宵節=Lantern Festival=🏮|清明節=Tomb-Sweeping Day=|端午節=Dragon Boat Festival=🐉|粽子=rice dumpling=|中秋節=Moon Festival=🥮|聖誕節=Christmas=🎄|聖誕老人=Santa Claus=🎅|萬聖節=Halloween=🎃|感恩節=Thanksgiving=🦃|情人節=Valentine's Day=💝|母親節=Mother's Day=💐|父親節=Father's Day=👔|元旦=New Year's Day=🎆|生日=birthday=🎂|煙火=fireworks=🎆|國定假日、假期=holiday=🏖️`]
 ];
 for (const [key, name, icon, list] of MORE_VOCAB) {
   const rows = list.split('|').map(s => s.split('='));
@@ -1493,7 +1496,26 @@ for (const [key, en, tip] of [
   ['job', 'chemist', '💡 英國的 chemist 也指「藥劑師、藥局」（美國叫 pharmacist、pharmacy）'],
   ['clothes', 'purse', '💡 美國的 purse 是女生的「手提包」；英國的 purse 才是小錢包'],
   ['clothes', 'muffler', '💡 美國的 muffler 也是汽車的「消音器」；圍巾一般說 scarf'],
-  ['body', 'whisker', '💡 whiskers 是臉頰兩邊的鬍鬚、貓的鬍鬚；絡腮鬍、下巴的鬍子是 beard']
+  ['body', 'whisker', '💡 whiskers 是臉頰兩邊的鬍鬚、貓的鬍鬚；絡腮鬍、下巴的鬍子是 beard'],
+  // 📱 3C 電子產品
+  ['tech', '_3c', '💡「3C」是台灣的說法，英文說 electronics（電子產品）或 gadgets（小裝置）'],
+  ['tech', 'cell phone', '💡 美國說 cell phone，英國說 mobile phone；平常直接說 phone 就可以'],
+  ['tech', 'laptop', '⚠️ notebook 在英文通常是「筆記本」，筆電要說 laptop'],
+  ['tech', 'outlet', '💡 插座：美國說 outlet，英國說 socket；插頭是 plug'],
+  ['tech', 'power bank', '💡 行動電源也可以說 portable charger'],
+  ['tech', 'mouse', '💡 電腦的滑鼠，複數 mice 或 mouses 都有人用'],
+  ['tech', 'wireless earbuds', '💡 earbuds 是塞進耳朵的小耳機；headphones 是戴在頭上的大耳機'],
+  ['tech', 'app', '💡 app 是 application（應用程式）的簡稱，念 /æp/'],
+  ['tech', 'screenshot', '💡 截圖是 take a screenshot：I took a screenshot. 我截圖了'],
+  ['tech', '_phone', '💡 手機沒電：My phone is dead. 手機快沒電：My battery is low.\n💡 「上網」是 go online，不是 go internet'],
+  // 🎉 節日
+  ['festival', '_cap', '💡 節日名稱的每個字開頭都要大寫：Chinese New Year、Mother\'s Day\n💡 祝福：Happy New Year!、Merry Christmas!、Happy Mother\'s Day!'],
+  ['festival', 'Chinese New Year', '💡 也常說 Lunar New Year（農曆新年）；過年快樂：Happy Chinese New Year!'],
+  ['festival', 'red envelope', '💡 也叫 red packet；給紅包：give someone a red envelope'],
+  ['festival', 'Tomb-Sweeping Day', '💡 也叫 Qingming Festival'],
+  ['festival', 'Moon Festival', '💡 也叫 Mid-Autumn Festival（中秋節）'],
+  ['festival', 'rice dumpling', '💡 粽子是 rice dumpling；水餃是 dumpling，不要搞混'],
+  ['festival', 'holiday', '💡 美國的 holiday 是「國定假日」，去度假說 vacation；英國的 holiday 兩個意思都有\n💡 在節日當天用 on：on Christmas Day、on Mother\'s Day']
 ]) {
   VOCAB_TIPS[key] = VOCAB_TIPS[key] || {};
   VOCAB_TIPS[key][en] = VOCAB_TIPS[key][en] ? VOCAB_TIPS[key][en] + '\n' + tip : tip;
