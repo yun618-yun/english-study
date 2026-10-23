@@ -148,6 +148,7 @@ const inline = s => esc(s)
   .replace(/\[([^\]]+)\]/g, '<span class="hl">$1</span>')
   .replace(/\{\{pic:([^}]+)\}\}/g, (_, p) => picHtml(p.replace(/^faded:/, ''), p.startsWith('faded:') ? 'pic faded' : 'pic'))
   .replace(/\{\{say:([^}]+)\}\}/g, (_, t) => sayBtn(t))
+  .replace(/\{\{syl:([^}]+)\}\}/g, '<span class="syl">$1</span>')   // 音節：單字下面一行灰色小字
   .replace(/\{\{tip:([^}]+)\}\}/g, (_, t) => {
     const warn = t.startsWith('⚠️');
     const body = t.replace(/^(💡|⚠️)\s*/, '').split('¶').join('<br>');
@@ -211,7 +212,7 @@ function tableRow(t) {
     `<span class="${i ? 'v' : 'k'}">${inline(p)}${say(i)}</span>`).join('')}</div>${tips}`;
 }
 // 一行裡的英文部分（後面的中文翻譯不念）
-const englishPart = l => l.replace(/[\[\]]/g, '').replace(/[✓✗]/g, '').split(/[　-鿿＀-￯]/)[0].trim();
+const englishPart = l => l.replace(/\{\{syl:[^}]*\}\}/g, '').replace(/[\[\]]/g, '').replace(/[✓✗]/g, '').split(/[　-鿿＀-￯]/)[0].trim();
 // 卡片背面要念什麼：有 say 就用；沒有的話，念背面裡英文開頭的句子（要有空白，才是句子不是單一公式）
 const cardSay = it => it.say || it.back.split('\n').filter(isEnglish).map(englishPart).filter(t => / /.test(t) && !/\//.test(t)).join('. ');
 function line(l) {

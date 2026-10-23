@@ -527,6 +527,31 @@ NOTES.find(c => c.id === 'terms').items.unshift({
   // 使用者想要放在「單字」裡面，不要另外一格，才不用分兩個地方點（10/23）
   const vocab = NOTES.find(c => c.id === 'vocab');
   vocab.desc += '，還有字首字尾、諧音口訣';
+  // 使用者覺得小格太多 → 每一組的筆記合併成 6 大格（卡片還是一組一組，id 不變）
+  const SECTIONS = [
+    ['prefix', '⬅️ 字首：放在前面', 'un re dis im pre mis over num sub inter tele'],
+    ['suffix', '➡️ 字尾：放在後面', 'er ist ful less ly able tion ness ment ous ship en y al ive ize ward'],
+    ['root', '🧩 字根：單字的核心', 'port spect vis phon aud dict struct form'],
+    ['sound', '🎵 諧音口訣', 'loan loan2 sound sound2 sound3'],
+    ['link', '💭 聯想、拆字、一家人', 'link link2 family'],
+    ['confuse', '🤯 容易搞混、同音字', 'confuse homo homo2']
+  ];
+  const mergeTricks = items => {
+    const cards = items.filter(it => !it.note), notes = items.filter(it => it.note);
+    return [...SECTIONS.map(([key, title, groups]) => {
+      const gs = groups.split(' ').map(g => notes.find(n => n.id === 'mm-' + g));
+      const n = cards.filter(c => gs.some(g => c.group === g.id)).length;
+      return {
+        id: 'mm-' + key, title: `${title}（${n} 個）`,
+        // 每一組一個框框：【標題】、說明、單字表；小提醒接在框框下面
+        note: '{{nogrid}}' + gs.map(g => {
+          const [intro, rows, tip] = g.note.split('\n\n');
+          // 小提醒改成 👉 開頭，才會留在自己那一組的框框裡（💡 開頭的會被搬到別的地方）
+          return `【${g.title.replace(/（\d+ 個）$/, '')}】\n${intro}\n${rows}` + (tip ? '\n' + tip.replace(/^💡 ?/gm, '👉 ').replace(/^⚠️ ?/gm, '👉 ⚠️ ') : '');
+        }).join('\n\n')
+      };
+    }), ...cards];
+  };
   vocab.items.push(
       {
         id: 'mm-how',
@@ -552,7 +577,7 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
 💡 foreign（外國的）可以聯想「門外的」：它真正的字源就是拉丁文的「在門外」。之前說的「foreign 裡面有 reign（統治）」只是拼字剛好像，不是真的字源，用來幫忙記可以，但不要當成規則
 💡 背的時候：先看口訣 → 按 🔊 念三次 → 閉上眼睛拼一次`
       },
-      ...buildGroups('mm', [
+      ...mergeTricks(buildGroups('mm', [
         ['un', '🚫 un- = 不、相反', '放在形容詞前面 → 「不…的」；放在動詞前面 → 「把動作反過來」。',
           'unhappy=不開心的=un（不）＋ happy（開心）|unfair=不公平的=un（不）＋ fair（公平）|unkind=不友善的=un（不）＋ kind（友善）|unfamiliar=不熟悉的=un（不）＋ familiar（熟悉）|unhealthy=不健康的=un（不）＋ healthy（健康）|unlock=開鎖=un（反過來）＋ lock（鎖上）',
           '💡 un- 是最常見的「不」，看到 un 開頭先猜「不…」'],
@@ -694,6 +719,41 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
         ['homo2', '👯 發音一樣的字②', '再一組念起來一樣的字，寫作文最容易寫錯。',
           'hear=聽=裡面有 ear（耳朵）|here=這裡=跟 there、where 一家人，都是地點|their=他們的=有 i，像「人」→ 屬於人的|there=那裡=裡面藏著 here（這裡）→ 也是地點|son=兒子=o 跟 boy 的 o 一樣|sun=太陽=跟 sunny（晴天）一起記|buy=買=有 u → you buy 你買|by=搭、透過=最短的那個：by bus 搭公車|eight=八=gh 不發音|ate=吃了=eat 的過去式：I ate lunch.',
           '💡 there、their、they\'re 三個都念 /ðer/：There is a cat. 那裡有貓／their cat 他們的貓／They\'re happy. 他們很開心']
-      ], { card })
+      ], { card }))
   );
+}
+
+// ---------- 🔤 長單字拆音節（10/23 使用者想要：3 個音節以上的字用橫線拆開）----------
+// 一個一個手寫，不用程式猜。顯示在「單字」筆記英文後面（括號裡）和卡片背面第二行
+{
+  const SYL = Object.fromEntries(('January=Jan-u-ar-y|February=Feb-ru-ar-y|September=Sep-tem-ber|October=Oc-to-ber|November=No-vem-ber|December=De-cem-ber|Saturday=Sat-ur-day|' +
+    'afternoon=af-ter-noon|yesterday=yes-ter-day|tomorrow=to-mor-row|family=fam-i-ly|together=to-geth-er|' +
+    'abdomen=ab-do-men|accountant=ac-count-ant|adventurous=ad-ven-tur-ous|agony=ag-o-ny|agreement=a-gree-ment|ambulance=am-bu-lance|announcer=an-nounc-er|apartment=a-part-ment|apologize=a-pol-o-gize|apricot=a-pri-cot|archery=arch-er-y|asparagus=as-par-a-gus|assistant=as-sis-tant|astronaut=as-tro-naut|atmosphere=at-mo-sphere|attendant=at-tend-ant|attorney=at-tor-ney|attractive=at-trac-tive|' +
+    'audio=au-di-o|audible=au-di-ble|audiobook=au-di-o-book|audition=au-di-tion|auditorium=au-di-to-ri-um|' +
+    'bachelor=bach-e-lor|badminton=bad-min-ton|balcony=bal-co-ny|banana=ba-nan-a|basketball=bas-ket-ball|beautiful=beau-ti-ful|beverage=bev-er-age|bicycle=bi-cy-cle|bilingual=bi-lin-gual|broccoli=broc-co-li|bulldozer=bull-doz-er|businessperson=busi-ness-per-son|butterfly=but-ter-fly|' +
+    'cabinet=cab-i-net|camellia=ca-mel-li-a|candidate=can-di-date|capsicum=cap-si-cum|carefully=care-ful-ly|carnation=car-na-tion|cauliflower=cau-li-flow-er|celebration=cel-e-bra-tion|celery=cel-er-y|championship=cham-pi-on-ship|chocolate=choc-o-late|cinema=cin-e-ma|citizenship=cit-i-zen-ship|coconut=co-co-nut|collection=col-lec-tion|colorful=col-or-ful|comfortable=com-fort-a-ble|computer=com-put-er|construction=con-struc-tion|contradict=con-tra-dict|convenience=con-ve-nience|creative=cre-a-tive|cucumber=cu-cum-ber|cultural=cul-tur-al|' +
+    'dangerous=dan-ger-ous|detective=de-tec-tive|dictation=dic-ta-tion|dictionary=dic-tion-ar-y|director=di-rec-tor|disagree=dis-a-gree|disappear=dis-ap-pear|disconnect=dis-con-nect|discover=dis-cov-er|dishonest=dis-hon-est|drinkable=drink-a-ble|' +
+    'easily=eas-i-ly|economy=e-con-o-my|editor=ed-i-tor|education=ed-u-ca-tion|elephant=el-e-phant|elevator=el-e-va-tor|engineer=en-gi-neer|enjoyable=en-joy-a-ble|enjoyment=en-joy-ment|expensive=ex-pen-sive|explorer=ex-plor-er|' +
+    'familiar=fa-mil-iar|firefighter=fire-fight-er|fisherman=fish-er-man|gallery=gal-ler-y|geography=ge-og-ra-phy|government=gov-ern-ment|granddaughter=grand-daugh-ter|grandfather=grand-fa-ther|grandmother=grand-moth-er|guitarist=gui-tar-ist|gymnastics=gym-nas-tics|' +
+    'hairdresser=hair-dress-er|hamburger=ham-burg-er|happily=hap-pi-ly|happiness=hap-pi-ness|hazelnut=ha-zel-nut|headteacher=head-teach-er|helicopter=hel-i-cop-ter|history=his-to-ry|horizontal=hor-i-zon-tal|hospital=hos-pi-tal|humidity=hu-mid-i-ty|humorous=hu-mor-ous|hurricane=hur-ri-cane|hydrangea=hy-dran-gea|' +
+    'impatient=im-pa-tient|impolite=im-po-lite|impossible=im-pos-si-ble|incorrect=in-cor-rect|informal=in-for-mal|information=in-for-ma-tion|institute=in-sti-tute|instruction=in-struc-tion|interact=in-ter-act|interchange=in-ter-change|international=in-ter-na-tion-al|internet=in-ter-net|intersection=in-ter-sec-tion|interview=in-ter-view|invisible=in-vis-i-ble|invitation=in-vi-ta-tion|' +
+    'javelin=jav-e-lin|journalist=jour-nal-ist|kangaroo=kan-ga-roo|kindergarten=kin-der-gar-ten|lavender=lav-en-der|leadership=lead-er-ship|lemonade=lem-on-ade|library=li-brar-y|' +
+    'marathon=mar-a-thon|membership=mem-ber-ship|memorize=mem-o-rize|microphone=mi-cro-phone|misunderstand=mis-un-der-stand|modernize=mod-ern-ize|motorcycle=mo-tor-cy-cle|mulberry=mul-ber-ry|museum=mu-se-um|musical=mu-si-cal|musician=mu-si-cian|' +
+    'narcissus=nar-cis-sus|national=na-tion-al|natural=nat-u-ral|officer=of-fi-cer|organize=or-ga-nize|overcast=o-ver-cast|overeat=o-ver-eat|overseas=o-ver-seas|oversleep=o-ver-sleep|overtime=o-ver-time|overweight=o-ver-weight|overwork=o-ver-work|' +
+    'pajamas=pa-ja-mas|parallel=par-al-lel|peony=pe-o-ny|persimmon=per-sim-mon|personal=per-son-al|pharmacy=phar-ma-cy|pianist=pi-an-ist|pineapple=pine-ap-ple|poisonous=poi-son-ous|policeman=po-lice-man|portable=port-a-ble|potato=po-ta-to|prediction=pre-dic-tion|professor=pro-fes-sor|protective=pro-tec-tive|' +
+    'readable=read-a-ble|realize=re-al-ize|refrigerator=re-frig-er-a-tor|relationship=re-la-tion-ship|reporter=re-port-er|researcher=re-search-er|restaurant=res-tau-rant|reusable=re-us-a-ble|' +
+    'salami=sa-la-mi|salesperson=sales-per-son|sandpaper=sand-pa-per|saxophone=sax-o-phone|screwdriver=screw-driv-er|secretary=sec-re-tar-y|skateboarding=skate-board-ing|spectacular=spec-tac-u-lar|spectator=spec-ta-tor|stadium=sta-di-um|stepfather=step-fa-ther|stepmother=step-moth-er|strawberry=straw-ber-ry|submarine=sub-ma-rine|subtitle=sub-ti-tle|subtotal=sub-to-tal|subzero=sub-ze-ro|sugarcane=sug-ar-cane|sunflower=sun-flow-er|supermarket=su-per-mar-ket|' +
+    'talkative=talk-a-tive|telegram=tel-e-gram|telephone=tel-e-phone|teleport=tel-e-port|telescope=tel-e-scope|television=tel-e-vi-sion|theater=the-a-ter|tomato=to-ma-to|tornado=tor-na-do|tortilla=tor-ti-lla|traditional=tra-di-tion-al|triangle=tri-an-gle|tricycle=tri-cy-cle|' +
+    'underwear=un-der-wear|unfamiliar=un-fa-mil-iar|unhappy=un-hap-py|unhealthy=un-health-y|unicorn=u-ni-corn|uniform=u-ni-form|university=u-ni-ver-si-ty|utility=u-til-i-ty|' +
+    'venison=ven-i-son|video=vid-e-o|violet=vi-o-let|visible=vis-i-ble|visitor=vis-i-tor|volleyball=vol-ley-ball|washable=wash-a-ble|watermelon=wa-ter-mel-on|weightlifting=weight-lift-ing')
+    .split('|').map(s => s.split('=')));
+  const vocab = NOTES.find(c => c.id === 'vocab');
+  for (const it of vocab.items) {
+    // 卡片：背面第一行是答案，音節放第二行
+    if (it.front && SYL[it.say]) it.back = it.back.replace(/^[^\n]*/, m => m + '\n🔤 ' + SYL[it.say]);
+    if (!it.note) continue;
+    // 單字表：「comfortable {{say:comfortable}}」、妙招表：一行開頭「comfortable　」
+    it.note = it.note.replace(/([A-Za-z]+) \{\{say:([A-Za-z]+)\}\}/g, (m, w, s) => w === s && SYL[w] ? `${m}{{syl:${SYL[w]}}}` : m)
+      .replace(/^([A-Za-z]+)　/gm, (m, w) => SYL[w] ? `${w} {{say:${w}}}{{syl:${SYL[w]}}}　` : m);
+  }
 }
