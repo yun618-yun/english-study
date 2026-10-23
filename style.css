@@ -527,3 +527,6 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 }
 [data-pics="off"] .page .nb:has(img.pic) .row .k { font-size: 17px; flex: 1; }
 [data-pics="off"] .page .nb:has(img.pic) .row .v { text-align: right; }
+.page .nb:has(img.pic) > .row-tips { display: none; }
+[data-pics="off"] .page .nb:has(img.pic) > .row-tips { display: block; }
+[data-pics="off"] .page .nb:has(img.pic) .row .wtip { display: none; }

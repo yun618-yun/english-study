@@ -198,7 +198,11 @@ const isEnglish = s => /^[A-Za-z"'\[(]/.test(s.replace(/^[\s　]+/, ''));
 function tableRow(t) {
   // 一般表格：小提醒拿出來，放在這一列的下面（整排寬）；有插圖的單字卡，提醒留在卡片裡
   let tips = '';
-  if (!t.includes('{{pic:')) t = t.replace(/\{\{tip:[^}]*\}\}/g, m => { tips += inline(m); return ''; });
+  // Emoji 圖示的單字列（不是插畫格子）也一樣拿出來，才不會擠在中文那邊（使用者 10/23 要的）
+  const imgRow = /\{\{pic:[^}]*\.(png|jpe?g|webp|gif)\}\}/i.test(t);
+  if (!imgRow) t = t.replace(/\{\{tip:[^}]*\}\}/g, m => { tips += inline(m); return ''; });
+  // 插畫格子：提醒留在卡片裡；另外放一份在下面，「藏起圖片」變清單時改顯示這份
+  else if (t.includes('{{tip:')) tips = '<div class="row-tips">' + t.match(/\{\{tip:[^}]*\}\}/g).map(inline).join('') + '</div>';
   const parts = t.split('　');
   // 表格第一欄是英文（例如 be interested in、I am）→ 後面加 🔊；已經有 🔊 或插圖的就不重複加
   const allEn = parts.length >= 2 && parts.every(p => isEnglish(p) && !/[一-鿿]/.test(p));   // 整列都是英文（代名詞表）→ 念整列
