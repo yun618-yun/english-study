@@ -203,7 +203,9 @@ function tableRow(t) {
   if (!imgRow) t = t.replace(/\{\{tip:[^}]*\}\}/g, m => { tips += inline(m); return ''; });
   // 插畫格子：提醒留在卡片裡；另外放一份在下面，「藏起圖片」變清單時改顯示這份
   else if (t.includes('{{tip:')) tips = '<div class="row-tips">' + t.match(/\{\{tip:[^}]*\}\}/g).map(inline).join('') + '</div>';
-  const parts = t.split('　');
+  let parts = t.split('　');
+  // 第三欄跟第二欄一樣（例如 sofa　沙發　沙發）就不重複顯示
+  if (parts.length === 3 && parts[2].trim() === parts[1].trim()) { parts = parts.slice(0, 2); t = parts.join('　'); }
   // 表格第一欄是英文（例如 be interested in、I am）→ 後面加 🔊；已經有 🔊 或插圖的就不重複加
   const allEn = parts.length >= 2 && parts.every(p => isEnglish(p) && !/[一-鿿]/.test(p));   // 整列都是英文（代名詞表）→ 念整列
   const text = allEn ? parts.join(', ') : englishPart(parts[0]);
@@ -221,6 +223,11 @@ const englishPart = l => l.replace(/\{\{syl:[^}]*\}\}/g, '').replace(/[\[\]]/g, 
 const cardSay = it => it.say || it.back.split('\n').filter(isEnglish).map(englishPart).filter(t => / /.test(t) && !/\//.test(t)).join('. ');
 function line(l) {
   l = l.replace(/^[\s　]+/, '');
+  // 框框裡 👉 開頭的提醒：用黃色（⚠️ 是粉紅色）小框，才看得出來是提醒（10/23 使用者說太淡）
+  if (l.startsWith('👉')) {
+    const t = l.replace(/^👉\s*/, ''), warn = t.startsWith('⚠️');
+    return `<div class="wtip ${warn ? 'warn' : ''}">${warn ? '⚠️ ' : '💡 '}${inline(t.replace(/^⚠️\s*/, ''))}</div>`;
+  }
   if (l.includes('　')) return tableRow(l);
   const kv = l.match(/^([^：:\[]{1,6})：(.+)$/);
   if (kv) {
@@ -1563,7 +1570,10 @@ function masonry() {
       return { side, gap: bestGap };
     };
     const all = items.map((_, i) => i);
-    let plan = best(all);
+    // 先照順序放進比較矮的那一欄（左右輪流，順序最自然）；差很多才用「最平均」的分法
+    const inOrder = (() => { const sum = [0, 0], side = {}; all.forEach(i => { const c = sum[0] <= sum[1] ? 0 : 1; side[i] = c; sum[c] += h[i]; }); return { side, gap: Math.abs(sum[0] - sum[1]) }; })();
+    const tot0 = h.reduce((s, x) => s + x, 0);
+    let plan = inOrder.gap <= Math.max(200, tot0 * 0.12) ? inOrder : best(all);
     // 還是差很多的話，試試把最後一個或最長的那個拉到下面變寬；明顯比較平均才換
     if (items.length >= 3 && plan.gap > 200) {
       for (const idx of [all.slice(0, -1)]) {   // 只拉最後一個，才不會打亂順序

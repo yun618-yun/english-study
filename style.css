@@ -633,3 +633,4 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .page .nb .row .v { color: var(--text) !important; font-size: 15px !important; font-weight: 500; font-family: "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif; }
 .page .nb .row .k { font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
 .page .syl { color: #8c8375; }
+.page .nb .row .v + .v { color: var(--muted) !important; font-size: 13.5px !important; font-weight: 400; }   /* 第三欄：口訣、拆法 */
