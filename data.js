@@ -1580,6 +1580,18 @@ for (const [key, zh, en, hint] of [
   VOCAB_TIPS[key][en] = VOCAB_TIPS[key][en] ? VOCAB_TIPS[key][en] + '\n' + t : t;
 }
 VOCAB_TIPS.feel._sound = '⚠️ 🎵 諧音只用來記「意思」！真正的發音一定要按 🔊 聽，照中文念會念錯';
+// 🔀 一字多義：單字庫裡已經有的字，加「另一個意思」提示（10/24）
+for (const [key, en, tip] of [
+  ['room', 'light', '🔀 另一個意思：輕的 This bag is very light. 這個包包很輕'],
+  ['room', 'fan', '🔀 另一個意思：粉絲、迷 I\'m a big fan of this singer. 我是這位歌手的大粉絲'],
+  ['place', 'bank', '🔀 另一個意思：河岸 the river bank 河岸'],
+  ['tableware', 'glass', '🔀 glass 也是「玻璃」；加 es 的 glasses 是「眼鏡」'],
+  ['place', 'park', '🔀 park 也是動詞「停車」（詳細在「背單字妙招 → 一字多義」）'],
+  ['tech', 'mouse', '🔀 mouse 也是動物「老鼠」']
+]) {
+  VOCAB_TIPS[key] = VOCAB_TIPS[key] || {};
+  if (!(VOCAB_TIPS[key][en] || '').includes(tip.slice(0, 8))) VOCAB_TIPS[key][en] = VOCAB_TIPS[key][en] ? VOCAB_TIPS[key][en] + '\n' + tip : tip;
+}
 const picOf = (key, en) => {
   const hit = (PICS[key] || '').split('|').reverse().find(p => p.split('=')[0] === en);   // 後面的優先
   return hit ? hit.split('=')[1] : '';

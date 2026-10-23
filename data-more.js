@@ -1317,3 +1317,46 @@ at home　狀語：在家裡（地點，介係詞＋名詞）
 💡 拆句子的順序：先找動詞（謂語）→ 問「誰做？」找主語 → 問「做什麼？」找賓語 → 剩下修飾名詞的是定語、說明時間地點方式的是狀語`;
   if (it) it.note = it.note.replace('▍5 大基本句型', add + '\n\n▍5 大基本句型');
 }
+
+// ===================== 🔀 一字多義（10/24 使用者要的，放在背單字妙招；單字庫有的字另外加提示） =====================
+{
+  // [單字, 圖示, '例句　意思|例句　意思']，卡片問「除了第一個意思，還有什麼意思」
+  const MULTI = [
+    ['fine', '👌', "I'm fine, thanks.　很好|I got a parking fine.　罰款"],
+    ['change', '🪙', 'I want to change my job.　改變、換|Keep the change.　找的零錢'],
+    ['date', '📅', "What's the date today?　日期|We have a date tonight.　約會"],
+    ['light', '💡', 'Turn on the light.　燈|This bag is very light.　輕的'],
+    ['book', '📖', "I'm reading a book.　書|I booked a hotel.　預訂"],
+    ['run', '🏃', 'I run every morning.　跑步|He runs a small shop.　經營'],
+    ['kind', '😊', 'She is very kind.　善良的|What kind of music do you like?　種類'],
+    ['mean', '😠', 'What do you mean?　意思是|Don\'t be mean to your sister.　壞心、刻薄'],
+    ['watch', '⌚', 'I watch TV every night.　看|This is my new watch.　手錶'],
+    ['park', '🅿️', 'Let\'s go to the park.　公園|You can park here.　停車'],
+    ['right', '➡️', "You're right.　對的|Turn right at the corner.　右邊"],
+    ['cold', '🥶', "It's cold today.　冷的|I have a cold.　感冒"],
+    ['close', '🚪', 'Please close the door.　關上|My house is close to the station.　近的'],
+    ['left', '⬅️', 'Turn left here.　左邊|He left an hour ago.　離開了（leave 的過去式）'],
+    ['present', '🎁', 'This is a present for you.　禮物|All students are present.　出席的'],
+    ['last', '🔚', 'This is the last bus.　最後的|The movie lasts two hours.　持續'],
+    ['match', '🔥', 'We watched a football match.　比賽|Light a match.　火柴'],
+    ['bank', '🏦', 'I need to go to the bank.　銀行|We sat on the river bank.　河岸'],
+    ['interest', '📈', 'I have an interest in music.　興趣|The bank pays interest.　利息'],
+    ['miss', '💭', 'I miss you.　想念|I missed the bus.　錯過']
+  ];
+  const boxes = MULTI.map(([w, icon, rows]) => `【${icon} ${w}】\n` + rows.split('|').join('\n'));
+  const vocab = NOTES.find(c => c.id === 'vocab').items;
+  const at = vocab.findIndex(i => i.id === 'mm-confuse') + 1;
+  const C = (w, rows) => {
+    const r = rows.split('|').map(x => x.split('　'));
+    const others = MULTI.filter(m => m[0] !== w).map(m => m[2].split('|')[1].split('　')[1]);
+    const opts = [r[1][1], ...others.filter(o => o !== r[1][1]).sort(() => 0.5 - Math.random()).slice(0, 3)];
+    return { id: 'mm-multi-' + w, front: `${w}\n除了「${r[0][1]}」，還有什麼意思？`, back: `${r[1][1]}\n${r[1][0]}`, say: r[1][0],
+      quiz: { q: `${r[1][0]}
+這句的 ${w} 是什麼意思？`, options: opts, answer: 0 } };
+  };
+  vocab.splice(at, 0, {
+    id: 'mm-multi', title: `🔀 一字多義：一個字兩種意思（${MULTI.length} 個）`,
+    note: '{{pair}}同一個英文字，放在不同句子裡意思完全不同。只背一個意思，看到句子就會卡住。\n\n' + boxes.join('\n\n') +
+      '\n\n💡 看到認識的字卻看不懂句子時，想想看：這個字是不是還有別的意思？'
+  }, ...MULTI.map(([w, , rows]) => C(w, rows)));
+}
