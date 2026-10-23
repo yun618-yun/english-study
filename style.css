@@ -595,7 +595,7 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .page .nbgrid.masonry > .mrow:empty { display: none; }
 .page .nbgrid.masonry > .mrow > .mcol { flex: 1 1 0; min-width: 0; }
 .page .nbgrid.masonry > .mrow > .mcol > .nb { display: block; width: 100%; margin-bottom: 10px; }
-.page .nbgrid.masonry > .mrow > .mcol > .nb.two { display: grid; }
+.page .nbgrid.masonry > .mrow > .mcol > .nb.two { display: block; }   /* 已經在半邊了，框框裡不再分兩欄 */
 .page .nbgrid.masonry > .nb.wide { display: grid !important; grid-template-columns: 1fr 1fr; column-gap: 14px; width: 100%; margin-bottom: 14px; align-items: start; }
 .page .nbgrid.masonry > .nb.wide > :not(.row) { grid-column: 1 / -1; }
 .page .nbgrid.masonry > .nb.wide > .row { display: block; }

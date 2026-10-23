@@ -274,7 +274,7 @@ function formatNote(text) {
 // 很長的單字表（8 行以上、每行都是「短英文　中文」）→ 框框裡排成兩欄，不用一直往下滑（10/23 使用者要的）
 const twoCol = ls => {
   const rows = ls.filter(l => !l.trim().startsWith('{{tip:'));
-  return rows.length >= 8 && rows.every(l => { const p = l.replace(/{{tip:[^}]*}}/g, '').trim().split('　'); return p.length === 2 && !l.includes('{{pic:') && visibleLen(p[0]) <= 22 && visibleLen(p[1]) <= 14; }) ? ' two' : '';
+  return rows.length >= 6 && rows.every(l => { const p = l.replace(/{{tip:[^}]*}}/g, '').trim().split('　'); return p.length === 2 && !l.includes('{{pic:') && visibleLen(p[0]) <= 22 && visibleLen(p[1]) <= 14; }) ? ' two' : '';
 };
 const visibleLen = l => l.replace(/\{\{[^}]*\}\}/g, '').replace(/[\[\]]/g, '').trim().length;
 // 10/23 使用者希望多用兩欄四宮格、少往下滑：每行不長（26 字以內）的框框都並排，短的英文句子也可以

@@ -1004,3 +1004,8 @@ mergeVocab('g-feel', '心情和生病', '😊', ['feel', 'sick']);
 mergeVocab('g-road', '交通工具和馬路', '🚗', ['transport', 'road']);
 mergeVocab('g-travel', '旅行、購物和國家', '✈️', ['travel', 'money', 'country']);
 { const v = NOTES.find(c => c.id === 'vocab'); v.desc = v.desc.replace(/分 \d+ 類/, `分 ${v.items.filter(i => /^vocab-/.test(i.id)).length} 類`); }
+// 單字頁最下面一區（情境圖解、發音規則）也改成兩欄四宮格（10/23 使用者發現漏掉了）
+for (const id of ['sc-restaurant', 'sc-group-airport', 'ipa-48', 'letter-combos']) {
+  const it = NOTES.find(c => c.id === 'vocab').items.find(i => i.id === id);
+  if (it) it.note = '{{pair}}' + it.note.replace(/^\{\{(no)?grid\}\}\n*/, '');
+}
