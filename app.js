@@ -1542,7 +1542,9 @@ function masonry() {
     const row = g.appendChild(Object.assign(document.createElement('div'), { className: 'mrow' }));
     const cols = [0, 1].map(() => row.appendChild(Object.assign(document.createElement('div'), { className: 'mcol' })));
     // 先量每個框框放在半邊時有多高
-    const h = items.map(el => { cols[0].appendChild(el); return el.offsetHeight; });
+    items.forEach(el => cols[0].appendChild(el));
+    fitLabels();   // 標題換行會讓框框變高，先調好再量
+    const h = items.map(el => el.offsetHeight);
     const ok = (a, b) => Math.abs(a - b) <= Math.max(300, (a + b) * 0.2);   // 兩欄差不多高
     // 分配：照順序放進比較矮的那一欄（order）或從最高的先放（tall），回傳每個框框放哪一欄
     const split = (idx, tall) => {
