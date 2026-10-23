@@ -606,3 +606,10 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .page .nb.two .row.multi .v { display: block; text-align: left; font-size: 13.5px; }
 .page .nb.two > .takeaway { grid-column: 1 / -1; }
 .page .nb.two > :not(.row):not(.lbl) { grid-column: 1 / -1; }
+/* 有插畫的單字表也兩欄（10/23）：左右各一段，段裡的圖卡在手機上一直排、寬螢幕兩張一排 */
+.page .nbgrid.masonry > .mrow > .mcol > .nb:has(img.pic) { display: grid !important; grid-template-columns: 1fr; gap: 10px; }
+@media (min-width: 700px) { .page .nbgrid.masonry > .mrow > .mcol > .nb:has(img.pic) { grid-template-columns: 1fr 1fr; } }
+[data-pics="off"] .page .nbgrid.masonry > .mrow > .mcol > .nb:has(img.pic) { display: block !important; }
+.page .nbgrid.masonry > .nb.wide:has(img.pic) { grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (min-width: 700px) { .page .nbgrid.masonry > .nb.wide:has(img.pic) { grid-template-columns: repeat(4, 1fr); } }
+[data-pics="off"] .page .nbgrid.masonry > .nb.wide:has(img.pic) { grid-template-columns: 1fr 1fr; }

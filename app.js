@@ -1522,30 +1522,38 @@ function fitLabels() {
 function masonry() {
   document.querySelectorAll('.page .nbgrid').forEach(g => {
     if (!g._items) g._items = [...g.children].filter(el => !el.classList.contains('mcol'));
-    const single = showPics && g.querySelector('img.pic');
+    const single = false;   // 10/23 使用者要有插畫的單字表也兩欄（每一段的圖卡排成一直排）
     const items = g._items;
     g.innerHTML = '';
     g.classList.remove('stack', 'masonry');
     items.forEach(el => el.classList.remove('wide'));
     if (single) { items.forEach(el => g.appendChild(el)); return; }
     g.classList.add('masonry');
-    // 前 n 個框框排成兩欄（放進比較矮的那一欄），剩下的框框各佔一整排、裡面的字分兩欄
-    const layout = n => {
-      g.innerHTML = '';
-      const row = g.appendChild(Object.assign(document.createElement('div'), { className: 'mrow' }));
-      const cols = [0, 1].map(() => row.appendChild(Object.assign(document.createElement('div'), { className: 'mcol' })));
-      items.forEach((el, i) => {
-        el.classList.toggle('wide', i >= n);
-        if (i < n) (cols[0].offsetHeight <= cols[1].offsetHeight ? cols[0] : cols[1]).appendChild(el);
-        else g.appendChild(el);
-      });
-      const [a, b] = cols.map(c => c.offsetHeight);
-      return Math.abs(a - b) <= Math.max(250, (a + b) * 0.15);   // 兩欄差不多高 → OK
+    const row = g.appendChild(Object.assign(document.createElement('div'), { className: 'mrow' }));
+    const cols = [0, 1].map(() => row.appendChild(Object.assign(document.createElement('div'), { className: 'mcol' })));
+    // 先量每個框框放在半邊時有多高
+    const h = items.map(el => { cols[0].appendChild(el); return el.offsetHeight; });
+    const ok = (a, b) => Math.abs(a - b) <= Math.max(300, (a + b) * 0.2);   // 兩欄差不多高
+    // 分配：照順序放進比較矮的那一欄（order）或從最高的先放（tall），回傳每個框框放哪一欄
+    const split = (idx, tall) => {
+      const side = {}, sum = [0, 0];
+      (tall ? [...idx].sort((x, y) => h[y] - h[x]) : idx).forEach(i => { const c = sum[0] <= sum[1] ? 0 : 1; side[i] = c; sum[c] += h[i]; });
+      return { side, gap: ok(sum[0], sum[1]) };
     };
-    // 1. 全部兩欄 → 2. 最後一個拉到下面變寬（10/23 使用者的點子）→ 3. 每個都一整排
-    if (layout(items.length)) return;
-    if (items.length >= 3 && layout(items.length - 1)) return;
-    layout(0);
+    const all = items.map((_, i) => i);
+    const last = all.slice(0, -1);
+    const big = h.indexOf(Math.max(...h));
+    // 1. 照順序兩欄 → 2. 重新分配讓兩邊一樣高 → 3. 最後一個拉到下面變寬（使用者的點子）→ 4. 最長的那個變寬 → 5. 每個都一整排
+    const plans = [[all, false], [all, true], items.length >= 3 && [last, false], items.length >= 3 && [last, true],
+      items.length >= 3 && [all.filter(i => i !== big), true]].filter(Boolean);
+    let plan = plans.map(([idx, tall]) => ({ idx, ...split(idx, tall) })).find(p => p.gap);
+    if (!plan) plan = { idx: [], side: {} };
+    // 框框照原本的順序放回去（同一欄裡上下順序不變）
+    items.forEach((el, i) => {
+      const inCol = i in plan.side;
+      el.classList.toggle('wide', !inCol);
+      if (inCol) cols[plan.side[i]].appendChild(el); else g.appendChild(el);
+    });
   });
   // 字型、圖片載入完高度會變，再排一次
   if (!masonry.waiting) {
