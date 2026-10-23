@@ -348,7 +348,7 @@ function renderNotes() {
   if (openItem) {
     const idx = items.findIndex(it => it.id === openItem);
     const it = items[idx];
-    $view.innerHTML = `${backBtn(CAT[currentCat].name)}
+    $view.innerHTML = `${backBtn(CAT[currentCat].name)}${it.note.includes('{{pic:') ? picToggleBtn() : ''}
       <article class="page" ${catStyle(CAT[currentCat])}>
         <h2>${esc(it.title)}</h2>
         ${formatNote(it.note)}
@@ -815,6 +815,20 @@ document.getElementById('theme-btn').addEventListener('click', () => {
   applyTheme();
 });
 applyTheme();
+
+// ===== 🖼️ 單字表的插圖：可以藏起來變成精簡清單（卡片練習的圖不受影響），記在手機裡 =====
+let showPics = true;
+try { showPics = localStorage.getItem('english-study-pics') !== 'off'; } catch (e) {}
+const picToggleBtn = () => `<button class="pic-toggle" id="pic-toggle">${showPics ? '📋 藏起圖片' : '🖼️ 顯示圖片'}</button>`;
+function applyPics() { document.documentElement.dataset.pics = showPics ? 'on' : 'off'; }
+document.addEventListener('click', e => {
+  if (!e.target.closest('#pic-toggle')) return;
+  showPics = !showPics;
+  try { localStorage.setItem('english-study-pics', showPics ? 'on' : 'off'); } catch (e) {}
+  applyPics();
+  e.target.closest('#pic-toggle').outerHTML = picToggleBtn();
+});
+applyPics();
 
 // ===== 📅 每日複習（間隔複習）=====
 // 每張卡片記：下次要複習的日子 due、目前間隔 iv（天）。記得 → 間隔拉長；忘記 → 明天再來

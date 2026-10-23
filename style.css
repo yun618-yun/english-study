@@ -516,3 +516,14 @@ img.pic.big { width: auto; max-width: 100%; height: auto; max-height: 200px; bor
 .cal-d.today { outline: 2px solid var(--teal); }
 label.btn { display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
 .backup-banner { background: var(--tip-bg); border: 1px solid #f0c85a; border-radius: 14px; padding: 10px 12px; margin-bottom: 10px; font-size: 15px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; } .backup-banner .btn { width: auto; padding: 6px 14px; margin-left: auto; }
+
+/* 🖼️ 單字表藏起圖片：變成一行一個字的精簡清單 */
+.pic-toggle { float: right; margin: 0 0 8px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--text); font-size: 14px; }
+[data-pics="off"] .page .nb img.pic, [data-pics="off"] .page .nb span.pic { display: none; }
+[data-pics="off"] .page .nb:has(img.pic) { display: block; }
+[data-pics="off"] .page .nb:has(img.pic) .row {
+  flex-direction: row; align-items: center; justify-content: space-between; gap: 8px;
+  background: none; border: 0; border-top: 1px solid var(--line); border-radius: 0; box-shadow: none; padding: 6px 2px;
+}
+[data-pics="off"] .page .nb:has(img.pic) .row .k { font-size: 17px; flex: 1; }
+[data-pics="off"] .page .nb:has(img.pic) .row .v { text-align: right; }
