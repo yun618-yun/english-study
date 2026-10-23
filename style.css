@@ -497,3 +497,17 @@ img.pic.big { width: auto; max-width: 100%; height: auto; max-height: 200px; bor
 .cat:not(.wide) .cd { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .cat:not(.wide) .cc { margin-top: 0; }
 .cat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .cat { min-width: 0; }
+/* 🔍 搜尋 */
+.search { width: 100%; font-size: 16px; padding: 11px 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--card); color: var(--head); margin-bottom: 10px; font-family: inherit; box-shadow: var(--shadow); }
+.search-row { display: flex; flex-direction: column; gap: 2px; width: 100%; text-align: left; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; margin-bottom: 8px; color: var(--head); font-size: 16px; font-family: inherit; }
+.search-row .muted { font-size: 13px; }
+/* 🗓️ 學習月曆 */
+.cal-top { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 8px; }
+.cal-nav { border: 1px solid var(--line); background: var(--card); border-radius: 10px; width: 36px; height: 32px; font-size: 18px; color: var(--head); }
+.cal-nav:disabled { opacity: .3; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+.cal-h { font-size: 12px; color: var(--muted); }
+.cal-d { padding: 6px 0; border-radius: 8px; font-size: 14px; color: var(--muted); }
+.cal-d.ok { background: var(--good); color: #fff; font-weight: 800; }
+.cal-d.today { outline: 2px solid var(--teal); }
+label.btn { display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }

@@ -88,8 +88,36 @@ function renderCatGrid(mode) {
       <span class="cbody"><span class="cn">全部混在一起</span>
       <span class="cc">${ALL.filter(isCard).length} 張卡片</span></span>
     </button>`;
-  $view.innerHTML = `<p class="intro">${intro}</p><div class="cat-grid">${cats}</div>${mix}`;
+  const search = mode === 'notes'
+    ? `<input id="search" class="search" type="search" placeholder="🔍 搜尋筆記和單字（中文、英文都可以）" autocomplete="off"><div id="search-results"></div>` : '';
+  $view.innerHTML = `${search}<p class="intro">${intro}</p><div class="cat-grid">${cats}</div>${mix}`;
 }
+
+// ===== 🔍 搜尋：筆記（標題＋內容）和卡片（題目＋答案），中英文都可以 =====
+const plain = s => (s || '').replace(/\{\{[^}]*\}\}/g, '').replace(/[\[\]]/g, '');
+function renderSearch(q) {
+  const box = document.getElementById('search-results');
+  const hideGrid = on => $view.querySelectorAll('.intro, .cat-grid').forEach(el => { el.style.display = on ? 'none' : ''; });
+  q = q.trim().toLowerCase();
+  if (!q) { box.innerHTML = ''; hideGrid(false); return; }
+  hideGrid(true);
+  const has = s => plain(s).toLowerCase().includes(q);
+  const notes = ALL.filter(it => it.note && (has(it.title) || has(it.note))).slice(0, 30);
+  const cards = ALL.filter(it => isCard(it) && !it.note && (has(it.front) || has(it.back))).slice(0, 40);
+  // 筆記內容裡找到的那一行，拿來當預覽
+  const peek = it => {
+    const l = plain(it.note).split('\n').find(l => l.toLowerCase().includes(q)) || '';
+    return l.length > 40 ? l.slice(0, 40) + '…' : l;
+  };
+  box.innerHTML = (!notes.length && !cards.length) ? '<div class="empty">找不到「' + esc(q) + '」</div>' :
+    (notes.length ? `<h3 class="sec-title">📖 筆記（${notes.length}）</h3>` + notes.map(it =>
+      `<button class="search-row" data-act="open-note" data-c="${esc(it.cat)}" data-id="${esc(it.id)}">
+        <b>${esc(it.title)}</b><span class="muted">${esc(CAT[it.cat].name)}${peek(it) ? '・' + esc(peek(it)) : ''}</span></button>`).join('') : '') +
+    (cards.length ? `<h3 class="sec-title">🃏 卡片（${cards.length}）</h3>` + cards.map(it =>
+      `<div class="search-row"><div><b>${esc(firstLine(it.back))}</b> ${cardSay(it) || isEnglish(firstLine(it.back)) ? sayBtn(cardSay(it) || firstLine(it.back)) : ''}</div>
+        <span class="muted">${esc(it.front.replace(/\n/g, ' '))}</span></div>`).join('') : '');
+}
+document.addEventListener('input', e => { if (e.target.id === 'search') renderSearch(e.target.value); });
 
 function backBtn(text = '分類') {
   return `<button class="back" data-act="back">‹ ${esc(text)}</button>`;
@@ -139,18 +167,26 @@ function sayBtn(text) {
   return `<button class="say" data-say="${esc(text)}" aria-label="念出 ${esc(text)}">🔊</button>`;
 }
 let enVoice = null;
+const VOICE_KEY = 'english-study-voice';
+const enVoices = () => (window.speechSynthesis ? speechSynthesis.getVoices() : []).filter(v => /^en/i.test(v.lang));
 function pickVoice() {
-  const voices = window.speechSynthesis ? speechSynthesis.getVoices() : [];
-  const en = voices.filter(v => /^en[-_]US/i.test(v.lang));
-  // 盡量挑比較自然的聲音（iPhone 的 Samantha、Windows 的 Aria／Jenny、Chrome 的 Google）
-  enVoice = en.find(v => /Samantha|Aria|Jenny|Google US/i.test(v.name)) || en[0] || voices.find(v => /^en/i.test(v.lang)) || null;
+  const voices = enVoices();
+  // 使用者在「進度」頁選過聲音就用那個
+  let saved = null;
+  try { saved = localStorage.getItem(VOICE_KEY); } catch (e) {}
+  const us = voices.filter(v => /^en[-_]US/i.test(v.lang));
+  // 沒選過：盡量挑比較自然的聲音（iPhone 的 Samantha、Windows 的 Aria／Jenny、Chrome 的 Google）
+  enVoice = voices.find(v => v.name === saved) || us.find(v => /Samantha|Aria|Jenny|Google US/i.test(v.name)) || us[0] || voices[0] || null;
 }
-if (window.speechSynthesis) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+// 聲音的口音：en-US → 美式
+const ACCENT = { US: '美式', GB: '英式', AU: '澳洲', CA: '加拿大', IE: '愛爾蘭', IN: '印度', NZ: '紐西蘭', ZA: '南非' };
+const accentOf = v => ACCENT[(v.lang.split(/[-_]/)[1] || '').toUpperCase()] || v.lang;
+if (window.speechSynthesis) { pickVoice(); speechSynthesis.onvoiceschanged = () => { pickVoice(); if (currentTab === 'progress') renderProgress(); }; }   // 聲音清單晚一點才載入，進度頁要重畫選單
 function speak(text) {
   if (!window.speechSynthesis) return alert('這個瀏覽器不支援發音');
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text.replace(/\s*\/\s*/g, ', '));
-  u.lang = 'en-US';
+  u.lang = enVoice ? enVoice.lang : 'en-US';
   u.rate = slowVoice ? 0.55 : 0.85;   // 🐢 慢速：右上角的按鈕切換
   if (enVoice) u.voice = enVoice;
   speechSynthesis.speak(u);
@@ -674,8 +710,73 @@ function renderProgress() {
       <div class="bar"><div class="k" style="width:${k / n * 100}%"></div><div class="u" style="width:${u / n * 100}%"></div></div>
       <div class="stat-row"><span>已熟 ${k}</span><span>不熟 ${u}</span><span>未標記 ${r.items.length - k - u}</span></div>
     </div>`;
-  }).join('') + `<button class="btn ghost" data-act="reset">清除所有標記</button>`;
+  }).join('') + settingsHtml() + `<button class="btn ghost" data-act="reset">清除所有標記</button>`;
+  // 月曆放在總覽下面
+  document.querySelector('.sec-title').insertAdjacentHTML('beforebegin', calendarHtml());
 }
+
+// ===== 🗓️ 學習月曆：這個月有做完複習的日子打勾 =====
+const dayNum = d => Math.floor((d - d.getTimezoneOffset() * 60000) / 86400000);   // 跟 today() 同一種算法
+let calOffset = 0;   // 0 = 這個月，-1 = 上個月
+function calendarHtml() {
+  const now = new Date(), first = new Date(now.getFullYear(), now.getMonth() + calOffset, 1);
+  const days = new Date(first.getFullYear(), first.getMonth() + 1, 0).getDate();
+  const set = new Set(studyDays), t = today();
+  let cells = '<span class="cal-h">日</span><span class="cal-h">一</span><span class="cal-h">二</span><span class="cal-h">三</span><span class="cal-h">四</span><span class="cal-h">五</span><span class="cal-h">六</span>';
+  cells += '<span></span>'.repeat(first.getDay());
+  let count = 0;
+  for (let i = 1; i <= days; i++) {
+    const n = dayNum(new Date(first.getFullYear(), first.getMonth(), i));
+    const ok = set.has(n); if (ok) count++;
+    cells += `<span class="cal-d ${ok ? 'ok' : ''} ${n === t ? 'today' : ''}">${ok ? '✓' : i}</span>`;
+  }
+  return `<div class="box cal">
+    <div class="cal-top"><button class="cal-nav" data-act="cal" data-v="-1">‹</button>
+      <b>${first.getFullYear()} 年 ${first.getMonth() + 1} 月</b>　<span class="muted">練習了 ${count} 天</span>
+      <button class="cal-nav" data-act="cal" data-v="1" ${calOffset >= 0 ? 'disabled' : ''}>›</button></div>
+    <div class="cal-grid">${cells}</div></div>`;
+}
+
+// ===== ⚙️ 設定：選聲音、備份／還原紀錄 =====
+function settingsHtml() {
+  const voices = enVoices();
+  const opts = voices.map(v => `<option value="${esc(v.name)}" ${enVoice && v.name === enVoice.name ? 'selected' : ''}>${esc(accentOf(v))}・${esc(v.name)}</option>`).join('');
+  return `<h3 class="sec-title">⚙️ 設定</h3>
+    <div class="box">
+      <h3>🎙️ 英文語音</h3>
+      ${voices.length ? `<select id="voice-sel" class="search">${opts}</select>` : '<p class="muted">這個瀏覽器沒有英文語音</p>'}
+      <p class="muted">選了會念一句給你聽。iPhone 可以到「設定 → 輔助使用 → 朗讀內容 → 聲音 → 英文」下載更自然的聲音（例如 Ava、Samantha 的「加強版」）</p>
+    </div>
+    <div class="box">
+      <h3>💾 備份練習紀錄</h3>
+      <p class="muted">清除網站資料或換手機以前，先備份；之後按「還原」就能找回來</p>
+      <div class="row-btns"><button class="btn ghost" data-act="backup-copy">📋 複製備份文字</button><button class="btn ghost" data-act="backup-file">💾 存成檔案</button></div>
+      <div class="row-btns"><button class="btn ghost" data-act="restore-paste">📥 貼上還原</button><label class="btn ghost">📂 從檔案還原<input type="file" id="restore-file" accept=".json,.txt" hidden></label></div>
+    </div>`;
+}
+// 備份：所有 english-study- 開頭的紀錄
+function backupText() {
+  const data = {};
+  try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k.startsWith('english-study-')) data[k] = localStorage.getItem(k); } } catch (e) {}
+  return JSON.stringify({ app: 'english-study', date: new Date().toISOString().slice(0, 10), data });
+}
+function restoreText(text) {
+  try {
+    const o = JSON.parse(text);
+    if (!o || o.app !== 'english-study' || !o.data) throw new Error();
+    if (!confirm(`要用 ${o.date} 的備份覆蓋現在的紀錄嗎？`)) return;
+    Object.entries(o.data).forEach(([k, v]) => localStorage.setItem(k, v));
+    alert('✅ 還原好了！');
+    location.reload();
+  } catch (e) { alert('❌ 這不是正確的備份內容'); }
+}
+document.addEventListener('change', e => {
+  if (e.target.id === 'voice-sel') {
+    try { localStorage.setItem(VOICE_KEY, e.target.value); } catch (err) {}
+    pickVoice(); speak('Hello! This is my voice.');
+  }
+  if (e.target.id === 'restore-file' && e.target.files[0]) e.target.files[0].text().then(restoreText);
+});
 
 // ===== 🐢 慢速語音（記在手機裡，下次打開還是一樣） =====
 let slowVoice = false;
@@ -863,6 +964,7 @@ const PLAN = [
   { k: 'wrong', name: '📕 錯題抽查', n: 5 },
   { k: 'listen', name: '🎧 聽力', n: 5 },
   { k: 'order', name: '🧩 句子重組', n: 3 },
+  { k: 'type', name: '⌨️ 看中文打英文', n: 3 },
   { k: 'shadow', name: '🗣️ 跟讀', n: 3 }
 ];
 const PLAN_KEY = 'english-study-plan';
@@ -895,7 +997,7 @@ function startPlan(k) {
     return;
   }
   go('listen');
-  startListenRound(k, k === 'listen' ? (Math.random() < 0.5 ? 'word' : 'daily') : 'daily', p.n);
+  startListenRound(k, k === 'listen' || k === 'type' ? (Math.random() < 0.5 ? 'word' : 'daily') : 'daily', p.n);
   renderListen();
 }
 // 課表裡的練習做完：記成完成，按鈕變成「回到今日」
@@ -914,7 +1016,7 @@ const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
 function startListen() { listenMode = null; listenSrc = null; }
 function listenHome() {
   const srcBtns = mode => Object.entries(LISTEN_SRC)
-    .filter(([k]) => mode === 'listen' ? k !== 'example' : mode === 'order' ? k !== 'word' : true)
+    .filter(([k]) => mode === 'listen' || mode === 'type' ? k !== 'example' : mode === 'order' ? k !== 'word' : true)
     .map(([k, s]) => `<button class="btn ghost" data-act="listen-go" data-mode="${mode}" data-src="${k}">${s.name}</button>`).join('');
   const dlgBtns = typeof DIALOGS === 'undefined' ? '' : DIALOGS.map(d =>
     `<button class="btn ghost" data-act="dlg-start" data-id="${d.id}">${esc(d.title)}</button>`).join('');
@@ -933,6 +1035,10 @@ function listenHome() {
       <div class="row-btns">${srcBtns('order')}</div>
     </div>
     <div class="listen-box">
+      <h3>⌨️ 看中文打英文</h3><p class="muted">沒有選項，自己想、自己打出來（大小寫、標點不用管，I'm 和 I am 都算對）</p>
+      <div class="row-btns">${srcBtns('type')}</div>
+    </div>
+    <div class="listen-box">
       <h3>🗣️ 跟讀</h3><p class="muted">先聽一句，再按 🎤 跟著念，網站會標出你念對哪些字${Rec ? '' : '<br>⚠️ 這個瀏覽器不支援語音辨識，只能聽完自己跟著念（iPhone 請用 Safari）'}</p>
       <div class="row-btns">${srcBtns('shadow')}</div>
     </div>`;
@@ -941,9 +1047,32 @@ function startListenRound(mode, src, n = LISTEN_ROUND) {
   listenMode = mode; listenSrc = src; lPos = 0; lScore = 0;
   let items = LISTEN_SRC[src].items();
   // 句子重組：3～10 個字的句子才好排
+  if (mode === 'type') items = items.filter(it => orderTokens(listenEn(it)).length <= 7);   // 太長的句子打字太累
   if (mode === 'order') items = items.filter(it => { const k = orderTokens(listenEn(it)).length; return k >= 3 && k <= 10 && !/[/()]/.test(listenEn(it)); });
   lDeck = shuffle(items).slice(0, n);
 }
+// ⌨️ 看中文打英文：比對時把縮寫展開（I'm = I am、don't = do not），「A / B」兩種寫法都算對
+const expandShort = s => normAns(s).replace(/\bcan't\b/g, 'cannot').replace(/\bwon't\b/g, 'will not')
+  .replace(/n't\b/g, ' not').replace(/'m\b/g, ' am').replace(/'re\b/g, ' are').replace(/'ll\b/g, ' will')
+  .replace(/'ve\b/g, ' have').replace(/'d\b/g, ' would').replace(/\b(it|that|what|there|he|she|who|where|how)'s\b/g, '$1 is');
+function checkType2() {
+  if (lQ.answered) return;
+  const inp = document.getElementById('type-ans');
+  if (!inp.value.trim()) return inp.focus();
+  lQ.answered = true; inp.disabled = true;
+  const it = lDeck[lPos], got = expandShort(inp.value);
+  const ok = lQ.en.split('/').map(expandShort).includes(got);
+  inp.classList.add(ok ? 'right' : 'wrong');
+  if (ok) lScore++; else if (it.cat) setStatus(it.id, 'unknown');
+  document.getElementById('card-after').innerHTML = `<div class="answer-box ${ok ? 'ok' : 'ng'}">
+      <div class="ab-title">${ok ? '⭕ 答對了！' : '❌ 正確答案：'}</div>
+      <div class="pre">${esc(lQ.en)}</div>${ok ? '' : `<div class="muted">你打的是：${esc(inp.value)}</div>`}
+      <div class="say-wrap">${sayBtn(lQ.en)}</div></div>
+    <div class="row-btns">${ok ? '' : '<button class="btn ghost" data-act="type2-fix">我其實答對了（只是打錯字）</button>'}
+      <button class="btn" data-act="listen-next">下一題 ›</button></div>`;
+  speak(lQ.en);
+}
+
 // 🧩 句子重組：用空白切成字卡，句尾的 . ? ! 拿掉（排完再補上）
 const orderTokens = en => en.replace(/[.?!]+$/, '').split(/\s+/).filter(Boolean);
 const sameWord = (a, b) => a.toLowerCase().replace(/’/g, "'") === b.toLowerCase().replace(/’/g, "'");
@@ -992,6 +1121,19 @@ function renderListen() {
       </div>
       <div id="card-opts">${optsHtml(lQ.options, 'listen-ans')}</div>
       <div id="card-after"></div>`;
+  } else if (listenMode === 'type') {
+    lQ = { en };
+    const hint = en.split(' ').map(w => w.replace(/^([A-Za-z])([A-Za-z'’]*)/, (m, a, b) => a + b.replace(/[A-Za-z]/g, '_'))).join(' ');
+    $view.innerHTML = head + counter + `
+      <div class="word-card"><div class="big-word zh" style="font-size:26px">${esc(listenZh(it))}</div><div class="muted">用英文打出來</div></div>
+      <input id="type-ans" class="type-input" type="text" placeholder="用英文打出答案" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
+      <div class="row-btns"><button class="btn ghost" data-act="type2-hint">💡 提示</button><button class="btn" data-act="type2-ok">確定</button></div>
+      <div id="type-hint" class="type-hint" hidden>開頭字母：<b>${esc(hint)}</b></div>
+      <div id="card-after"></div>`;
+    const inp = document.getElementById('type-ans');
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') checkType2(); });
+    setTimeout(() => inp.focus(), 50);
+    return;   // 打字題一開始不念（念了就等於給答案）
   } else if (listenMode === 'order') {
     // 打亂到跟原本順序不一樣為止
     const tiles = orderTokens(en);
@@ -1212,6 +1354,19 @@ $view.addEventListener('click', e => {
     case 'card-ans': answerCard(Number(el.dataset.i)); break;
     case 'blank-ans': answerBlank(Number(el.dataset.i)); break;
     case 'listen-home': listenMode = null; renderListen(); break;
+    case 'cal': calOffset += Number(el.dataset.v); renderProgress(); break;
+    case 'backup-copy':
+      navigator.clipboard.writeText(backupText()).then(() => alert('✅ 已複製！貼到備忘錄或 LINE 傳給自己存起來'), () => prompt('請全選複製這串文字：', backupText()));
+      break;
+    case 'backup-file': {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([backupText()], { type: 'application/json' }));
+      a.download = `英文學習備份-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      break;
+    }
+    case 'restore-paste': { const t = prompt('把備份文字貼在這裡：'); if (t) restoreText(t); break; }
+    case 'open-note': go('notes', el.dataset.c, el.dataset.id); break;
     case 'plan-go': startPlan(el.dataset.k); window.scrollTo(0, 0); break;
     case 'plan-back': go('today'); break;
     case 'listen-go': planRun = null; startListenRound(el.dataset.mode, el.dataset.src); renderListen(); window.scrollTo(0, 0); break;
@@ -1223,6 +1378,9 @@ $view.addEventListener('click', e => {
     case 'dlg-show': dShown = true; renderDialog(); break;
     case 'dlg-next': dPos++; dShown = false; renderDialog(); break;
     case 'dlg-rec': dialogRec(); break;
+    case 'type2-ok': checkType2(); break;
+    case 'type2-hint': document.getElementById('type-hint').hidden = false; break;
+    case 'type2-fix': lScore++; el.remove(); break;
     case 'order-pick': if (!lQ.answered) { lQ.picked.push(Number(el.dataset.i)); renderOrder(); } break;
     case 'order-undo': if (!lQ.answered) { lQ.picked.splice(Number(el.dataset.i), 1); renderOrder(); } break;
     case 'order-reset': lQ.picked = []; lQ.answered = false; document.getElementById('card-after').innerHTML = ''; renderOrder(); break;
