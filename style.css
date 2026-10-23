@@ -567,3 +567,6 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 /* 合併後的筆記：每一段的小標題 */
 .page .msec { margin: 22px 0 10px; padding: 4px 10px; font-size: 18px; color: var(--head); border-left: 5px solid var(--teal); background: color-mix(in srgb, var(--teal) 8%, transparent); border-radius: 4px; }
 .page .msec:first-child { margin-top: 4px; }
+/* 兩欄框框裡的表格：每一列都改成上下排（英文在上、說明在下），才不會被切掉 */
+.page .nbgrid .nb .row { display: block; }
+.page .nbgrid .nb .row .v { display: block; text-align: left; padding: 0; }

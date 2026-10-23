@@ -265,6 +265,8 @@ function formatNote(text) {
       parts.slice(Math.max(first, 0)).filter(p => !isBox(p)).map(formatBlocks).join('');
   }
   // 筆記開頭寫 {{nogrid}}：框框都一整排，不自動並排（情境單字的英文比較長，並排會擠）
+  // 筆記開頭寫 {{pair}}：每個框框都兩欄並排（就算是三欄的表格；框框裡會改成上下排）
+  if (text.startsWith('{{pair}}')) return formatBlocks(text.replace(/^\{\{pair\}\}\n*/, ''), false, true);
   if (text.startsWith('{{nogrid}}')) return formatBlocks(text.replace(/^\{\{nogrid\}\}\n*/, ''), true);
   return formatBlocks(text);
 }
@@ -304,7 +306,7 @@ function attachTips(blocks) {
   }
   return [...body, ...rest];   // 找不到對應的提醒，才放在最下面；⚠️ 更正不顯示
 }
-function formatBlocks(text, noGrid) {
+function formatBlocks(text, noGrid, pairAll) {
   const blocks = attachTips(splitBlocks(text));
   const html = blocks.map(renderBlock);
   if (noGrid) return html.join('');
@@ -312,7 +314,7 @@ function formatBlocks(text, noGrid) {
   let out = '', run = [];
   const flush = () => { out += run.length >= 2 ? `<div class="nbgrid">${run.join('')}</div>` : run.join(''); run = []; };
   blocks.forEach((ls, i) => {
-    if (isShortBlock(ls) && html[i].startsWith('<div class="nb">')) run.push(html[i]);
+    if ((pairAll ? MARK.test(ls[0].trim()) : isShortBlock(ls)) && html[i].startsWith('<div class="nb')) run.push(html[i]);
     else { flush(); out += html[i]; }
   });
   flush();

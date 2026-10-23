@@ -103,7 +103,7 @@ NOTES.find(c => c.id === 'core').items.push(
   {
     id: 'cw-er',
     title: '動詞加 -er 變成「做這件事的人」',
-    note: '很多動詞後面加 -er，就變成「做這件事的人」，常常就是職業。\n\n【三種加法】\n一般直接加 er　teach → teacher\ne 結尾只加 r　dance → dancer\n短母音＋一個子音結尾：重複最後一個字母再加 er　run → runner\n\n① 直接加 er\nteach　teacher　老師\nsing　singer　歌手\nread　reader　讀者\npaint　painter　畫家\nclean　cleaner　清潔工\nbuild　builder　建築工人\ndesign　designer　設計師\nreport　reporter　記者\nbuy　buyer　買家\nfight　fighter　戰士\n\n② e 結尾只加 r\ndance　dancer　舞者\nwrite　writer　作家\ndrive　driver　司機\n\n③ 重複字母再加 er\nprogram　programmer　程式設計師\nrun　runner　跑者\nswim　swimmer　游泳的人\n\n④ 例外：不是加 er\nedit　editor　編輯（加 or）\nact　actor　演員（加 or）\ncook　cook　廚師（cook 本身就是廚師）\n\n⚠️ 注意：cooker 是「爐具、電鍋」，不是廚師！廚師是 cook 或 chef\n⚠️ 收集的筆記有錯：每一個都寫 +er，其實 write、dance、drive 只加 r；programmer 要重複 m；editor 是加 or；cook 加 er 變成 cooker 是「爐具」，筆記寫「廚具」放在職業裡容易誤會',
+    note: '很多動詞後面加 -er，就變成「做這件事的人」，常常就是職業。\n\n【三種加法】\n一般直接加 er　teach → teacher\ne 結尾只加 r　dance → dancer\n短母音＋一個子音結尾：重複最後一個字母再加 er　run → runner\n\n① 直接加 er\nteach　teacher　老師\nsing　singer　歌手\nread　reader　讀者\npaint　painter　畫家\nclean　cleaner　清潔工\nbuild　builder　建築工人\ndesign　designer　設計師\nreport　reporter　記者\nbuy　buyer　買家\nfight　fighter　戰士\n\n② e 結尾只加 r\ndance　dancer　舞者\nwrite　writer　作家\ndrive　driver　司機\n\n③ 重複字母再加 er\nprogram　programmer　程式設計師\nrun　runner　跑者\nswim　swimmer　游泳的人\n\n④ 例外：不是加 er\nedit　editor　編輯（加 or）\nact　actor　演員（加 or）\ncook　cook　廚師（cook 本身就是廚師）\n\n⚠️ cooker 是「爐具、電鍋」，不是廚師！廚師是 cook 或 chef\n⚠️ 收集的筆記有錯：每一個都寫 +er，其實 write、dance、drive 只加 r；programmer 要重複 m；editor 是加 or；cook 加 er 變成 cooker 是「爐具」，筆記寫「廚具」放在職業裡容易誤會',
     front: 'write（寫）→ 作家？',
     back: 'writer\ne 結尾只加 r',
     quiz: { q: 'run → 跑者？', options: ['runer', 'runner', 'running', 'runor'], answer: 1 }
@@ -968,3 +968,5 @@ moveCat('scene', 'vocab');
   if (pron) for (const it of pron.items) if (icons[it.id] && it.title) it.title = icons[it.id] + it.title;
 }
 moveCat('pron', 'vocab', { flag: 'pron' });
+// -er 變成人、單字家族：框框兩欄四宮格（10/23 使用者要的）
+{ const it = NOTES.find(c => c.id === 'core').items.find(i => i.id === 'cw-group-family'); if (it) it.note = '{{pair}}' + it.note; }
