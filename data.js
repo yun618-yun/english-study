@@ -1448,6 +1448,38 @@ for (const [key, words] of [
   ['place', 'parking lot,college,bar,court,port,shop,store,station,club,zoo,church,airport,bookshop,bookstore,institute,market,hotel,kindergarten,cashier,fitting room']
 ]) PICS[key] = (PICS[key] || '') + '|' + words.split(',').map(w => `${w}=img/${key}/${w.toLowerCase().replace(/ /g, '-')}.jpg`).join('|');
 
+// ===================== 10/23 新增 10 類生活單字（使用者選：日常生活、自己和身體、出門和旅行；Claude 補的，沒有插畫，用 Emoji） =====================
+// 格式：[代號, 名稱, 分類圖示, '中文=英文=Emoji|…']（Emoji 可以空著，會顯示淡淡的分類圖示）
+const MORE_VOCAB = [
+  ['bath', '浴室和日用品', '🧴', '牙刷=toothbrush=🪥|牙膏=toothpaste=🦷|毛巾=towel=|肥皂=soap=🧼|洗髮精=shampoo=🧴|潤髮乳=conditioner=|沐浴乳=body wash=|衛生紙=toilet paper=🧻|面紙=tissue=|梳子=comb=|吹風機=hair dryer=|刮鬍刀=razor=🪒|洗手台=sink=|馬桶=toilet=🚽|淋浴=shower=🚿|浴缸=bathtub=🛁|海綿=sponge=🧽'],
+  ['chore', '家事', '🧹', '洗衣服=do the laundry=🧺|洗碗=do the dishes=🍽️|掃地=sweep the floor=🧹|拖地=mop the floor=|吸地板=vacuum=|倒垃圾=take out the trash=🗑️|整理床鋪=make the bed=🛏️|煮晚餐=cook dinner=🍳|燙衣服=iron the clothes=|晾衣服=hang up the clothes=|摺衣服=fold the clothes=👕|擦桌子=wipe the table=|澆花=water the plants=🪴|餵寵物=feed the pet=🐶|洗衣機=washing machine=|掃把=broom=🧹|拖把=mop=|吸塵器=vacuum cleaner='],
+  ['cook', '廚房和煮飯', '🍳', '鍋子=pot=🍲|平底鍋=pan=🍳|水壺=kettle=🫖|砧板=cutting board=|烤箱=oven=|微波爐=microwave=|爐子=stove=|電鍋=rice cooker=🍚|煮（飯菜）=cook=🧑‍🍳|水煮=boil=|煎、炸=fry=🍳|炒=stir-fry=🥘|烤（麵包、蛋糕）=bake=🍞|烤（肉）=grill=🍖|蒸=steam=🥟|切=cut=🔪|削皮=peel=🥔|攪拌=mix=🥣'],
+  ['taste', '調味料和味道', '🧂', '鹽=salt=🧂|糖=sugar=🍬|醬油=soy sauce=|醋=vinegar=|胡椒=pepper=|番茄醬=ketchup=🍅|油=oil=🫗|蜂蜜=honey=🍯|奶油=butter=🧈|甜的=sweet=🍭|酸的=sour=🍋|苦的=bitter=☕|辣的=spicy=🌶️|鹹的=salty=🧂|好吃的=delicious=😋|沒味道的、清淡的=bland='],
+  ['feel', '情緒和感受', '😊', '開心的=happy=😊|難過的=sad=😢|生氣的=angry=😠|累的=tired=😫|無聊的=bored=😑|興奮的=excited=🤩|緊張的=nervous=😰|害怕的=scared=😨|驚訝的=surprised=😮|擔心的=worried=😟|寂寞的=lonely=😔|尷尬的=embarrassed=😳|驕傲的=proud=😤|放鬆的=relaxed=😌|困惑的=confused=😕|忌妒的=jealous=😒|餓的=hungry=🤤|渴的=thirsty=🥤|想睡的=sleepy=😴'],
+  ['sick', '生病和症狀', '🤒', '頭痛=headache=🤕|肚子痛=stomachache=|牙痛=toothache=🦷|發燒=fever=🤒|感冒=cold=🤧|咳嗽=cough=😷|喉嚨痛=sore throat=|流鼻水=runny nose=🤧|打噴嚏=sneeze=🤧|頭暈的=dizzy=😵|過敏=allergy=|疹子=rash=|瘀青=bruise=|藥=medicine=💊|看醫生=see a doctor=🩺|受傷的=hurt=🩹'],
+  ['travel', '機場和旅行', '✈️', '護照=passport=🛂|簽證=visa=|登機證=boarding pass=🎫|票=ticket=🎟️|行李=luggage=🧳|行李箱=suitcase=🧳|背包=backpack=🎒|班機=flight=✈️|登機門=gate=|座位=seat=💺|報到、入住=check in=|轉機的班機=connecting flight=|延誤=delay=⏰|海關=customs=🛂|出發=departure=🛫|抵達=arrival=🛬|紀念品=souvenir=🎁|導遊=tour guide=🚩|地圖=map=🗺️'],
+  ['road', '馬路和交通', '🚦', '紅綠燈=traffic light=🚦|斑馬線=crosswalk=🚸|十字路口=intersection=|轉角=corner=|人行道=sidewalk=|橋=bridge=🌉|隧道=tunnel=|公車站=bus stop=🚏|塞車=traffic jam=🚗|加油站=gas station=⛽|高速公路=highway=🛣️|標誌、招牌=sign=🪧|左轉=turn left=⬅️|右轉=turn right=➡️|直走=go straight=⬆️'],
+  ['money', '購物和錢', '🛒', '錢=money=💰|現金=cash=💵|信用卡=credit card=💳|硬幣=coin=🪙|價錢=price=🏷️|收據=receipt=🧾|折扣=discount=|特價中=on sale=🏷️|找的零錢=change=🪙|便宜的=cheap=|貴的=expensive=💸|購物車=shopping cart=🛒|袋子=bag=🛍️|退款=refund=|退貨=return=|尺寸=size=|試穿=try on=👗'],
+  ['country', '國家和語言', '🌍', '台灣=Taiwan=🇹🇼|台灣人；台語=Taiwanese=|日本=Japan=🇯🇵|日本人；日文=Japanese=|韓國=Korea=🇰🇷|韓國人；韓文=Korean=|美國=the US=🇺🇸|美國人；美國的=American=|英國=the UK=🇬🇧|英國人；英國的=British=|法國=France=🇫🇷|法國人；法文=French=|德國=Germany=🇩🇪|德國人；德文=German=|泰國=Thailand=🇹🇭|泰國人；泰文=Thai=|越南=Vietnam=🇻🇳|越南人；越南文=Vietnamese=']
+];
+for (const [key, name, icon, list] of MORE_VOCAB) {
+  const rows = list.split('|').map(s => s.split('='));
+  VOCAB.push([key, name, rows.map(([zh, en]) => zh + '=' + en).join('|')]);
+  VOCAB_ICON[key] = icon;
+  PICS[key] = (PICS[key] || '') + '|' + rows.filter(r => r[2]).map(([, en, p]) => en + '=' + p).join('|');
+}
+Object.assign(VOCAB_TIPS, {
+  bath: { tissue: '💡 tissue 是擦臉、擤鼻涕的面紙；toilet paper 是上廁所用的衛生紙', shower: '💡 shower 也是動詞「淋浴」：I take a shower every night. 我每天晚上洗澡' },
+  chore: { _do: '💡 家事常用 do：do the laundry、do the dishes、do housework（做家事）\n💡 問家事：Who does the dishes at your home? 你家誰洗碗？', vacuum: '💡 vacuum 當動詞是「用吸塵器吸」，吸塵器是 vacuum cleaner' },
+  cook: { cook: '💡 cook 是動詞「煮」，也是名詞「廚師」；cooker 是「鍋具」，不是人！', bake: '💡 bake 用烤箱烤麵包、蛋糕；grill 是用火直接烤肉；roast 是大塊的肉放烤箱烤' },
+  taste: { _taste: '💡 問味道：How does it taste? 味道怎麼樣？\n💡 回答：It tastes sweet. 吃起來甜甜的（taste 後面接形容詞）', spicy: '💡 spicy 是「辣」；hot 也可以說辣，但 hot 也有「燙」的意思', pepper: '💡 pepper 是胡椒；bell pepper 才是甜椒（在「蔬菜」那類）' },
+  feel: { bored: '⚠️ bored（覺得無聊）和 boring（令人無聊）不一樣：\nI am bored. 我好無聊 ✓\nI am boring. 我是個無聊的人 ✗（意思差很多）', excited: '💡 一樣的規則：excited 我很興奮／exciting 這件事很刺激', _feel: '💡 說心情：I feel happy. 或 I am happy.\n💡 問心情：How do you feel? 你覺得怎麼樣？' },
+  sick: { _have: '💡 生病大多用 have：I have a headache. 我頭痛。I have a fever. 我發燒\n💡 去藥局說：I don\'t feel well. 我不太舒服', cold: '💡 cold 有兩個意思：「冷的」和「感冒」：I have a cold. 我感冒了', sneeze: '💡 別人打噴嚏時，要說 Bless you!（保佑你），對方會說 Thank you.' },
+  travel: { luggage: '⚠️ luggage 是不可數名詞，不能說 two luggages，要說 two pieces of luggage 或 two bags', 'check in': '💡 機場報到、飯店入住都用 check in；退房是 check out' },
+  road: { bridge: '💡 bridge 另一個意思是紙牌遊戲「橋牌」（在「體育」那類）', _ask: '💡 問路：How do I get to the station? 我要怎麼去車站？\n💡 可以搭配「💬 情境對話」的「🗺️ 問路」一起練', sidewalk: '💡 sidewalk 是美式；英式說 pavement' },
+  money: { change: '💡 change 當名詞是「找的零錢」：Keep the change. 不用找了', _pay: '💡 結帳：Can I pay by card? 可以刷卡嗎？\n💡 問價錢：How much is it? 這個多少錢？' },
+  country: { _rule: '💡 國家、國籍、語言的第一個字母都要大寫：Japan、Japanese\n💡 說自己：I\'m from Taiwan. 我來自台灣。I speak Chinese. 我會說中文', 'the US': '💡 美國也可以說 the USA 或 America，前面記得加 the（the US、the UK）' }
+});
 const picOf = (key, en) => {
   const hit = (PICS[key] || '').split('|').reverse().find(p => p.split('=')[0] === en);   // 後面的優先
   return hit ? hit.split('=')[1] : '';
