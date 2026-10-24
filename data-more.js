@@ -966,6 +966,12 @@ mergeNotes('numbers', 'nm-group-time', '說時間和日期（19 個）', ['nm-ti
 // 📝 單字類
 mergeNotes('phrase', 'ph-group-small', '動詞 + down／off／on／in（44 個）', ['ph-down', 'ph-off', 'ph-on', 'ph-in'], 'section');
 mergeNotes('phrase', 'ph-group-give-go', 'give 和 go 片語（28 個）', ['ph-give', 'ph-go'], 'section');
+// 10/24 使用者給的片語表：介系詞片語、常用動詞片語各合成一則
+{
+  const n = keys => keys.reduce((s, k) => s + PHRASES.find(p => p[0] === k)[3].split('|').length, 0);
+  mergeNotes('phrase', 'ph-group-prep', `介系詞片語：for／with／about／at／in（${n(['for', 'with', 'about', 'at', 'in2'])} 個）`, ['ph-for', 'ph-with', 'ph-about', 'ph-at', 'ph-in2'], 'section');
+  mergeNotes('phrase', 'ph-group-verb2', `常用動詞片語：look／get／take／come／keep／put（${n(['look', 'get', 'take', 'come', 'keep', 'put'])} 個）`, ['ph-look', 'ph-get', 'ph-take', 'ph-come', 'ph-keep', 'ph-put'], 'section');
+}
 mergeNotes('core', 'cw-group-verb', '常用動詞：每天、萬用、生活（61 個）', ['cw-verb-daily', 'cw-verb-common', 'cw-verb-more'], 'section');
 mergeNotes('core', 'cw-group-adj5', '5 個重要形容詞（eager、fair、familiar、firm、foreign）', ['cw-adj-eager', 'cw-adj-fair', 'cw-adj-familiar', 'cw-adj-firm', 'cw-adj-foreign'], 'section');
 mergeNotes('core', 'cw-group-family', '-er 變成人、單字家族', ['cw-er', 'cw-family'], 'section');

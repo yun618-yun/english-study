@@ -665,3 +665,5 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .lbl.hang { padding-left: 1.15em; text-indent: -1.15em; }
 .page h2, .cat-head h2, .lbl, .msec, .sec-title, .blank-title { word-break: keep-all; overflow-wrap: anywhere; }   /* 標題只在標點、空白換行，不從詞的中間斷 */
 .row .k { word-break: keep-all; overflow-wrap: anywhere; text-wrap: balance; }
+.ex { display: block; font-size: 13px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
+.ex { display: block; font-size: 13px; color: var(--muted); margin-top: 2px; line-height: 1.4; }

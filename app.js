@@ -149,6 +149,7 @@ const inline = s => esc(s)
   .replace(/\{\{pic:([^}]+)\}\}/g, (_, p) => picHtml(p.replace(/^faded:/, ''), p.startsWith('faded:') ? 'pic faded' : 'pic'))
   .replace(/\{\{say:([^}]+)\}\}/g, (_, t) => sayBtn(t))
   .replace(/\{\{syl:([^}]+)\}\}/g, '<span class="syl">$1</span>')   // 音節：單字下面一行灰色小字
+  .replace(/\{\{ex:([^}]+)\}\}/g, '<span class="ex">$1</span>')   // 片語的例句：中文下面一行小字
   .replace(/\{\{tip:([^}]+)\}\}/g, (_, t) => {
     const warn = t.startsWith('⚠️');
     const body = t.replace(/^(💡|⚠️)\s*/, '').split('¶').join('<br>');
