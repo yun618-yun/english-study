@@ -33,7 +33,7 @@ const CON = { "i'm": '主詞＋be動詞', "he's": '主詞＋be動詞', "it's": '
 const LABEL = { NEG: '否定', A2: '形容詞', R2: '副詞', D: '冠詞', A: '形容詞', R: '副詞', T: '時間', P: '介系詞', C: '連接詞', Q: '疑問詞', AUX: '助動詞', BE: 'be動詞', PP: '所有格', QA: '形容詞', NUM: '數字', INT: '感嘆詞', PD: '指示詞' };
 add('D', 'a an the');
 add('A', 'fair firm close mean');
-add('V', 'ate types dry wrote');
+add('V', 'ate types dry wrote talk');
 add('VN', 'park');
 const NOTING = W('something nothing everything anything spring thanksgiving peking lightning ring rings morning evening king sing bring thing building ceiling clothing stocking earring wedding pudding');
 const PHRASAL = W('put turn take pick wake get try give clean call');

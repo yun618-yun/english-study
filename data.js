@@ -1593,7 +1593,10 @@ for (const [key, en, tip] of [
   ['clothes', 'ring', '🔀 另一個意思：（鈴聲）響 The phone is ringing. 電話在響'],
   ['season', 'spring', '🔀 另一個意思：泉水 hot spring 溫泉'],
   ['season', 'fall', "🔀 另一個意思：跌倒、掉下來 Be careful! Don't fall. 小心！別跌倒"],
-  ['road', 'sign', '🔀 另一個意思：簽名 Please sign here. 請在這裡簽名']
+  ['road', 'sign', '🔀 另一個意思：簽名 Please sign here. 請在這裡簽名'],
+  ['feel', 'sleepy', '🔁 sleepy 是「想睡」（眼睛快閉上）；tired 是「累」（身體沒力）。詳細在「背單字妙招 → 中文一樣、英文要分開用」'],
+  ['feel', 'tired', "🔁 tired 是「累」（身體沒力）；sleepy 是「想睡」。I'm tired after work. 我下班後很累"],
+  ['sick', 'hurt', '🔁 hurt 也是動詞「痛」：My leg hurts. 我的腿好痛；pain 是名詞「疼痛」：I have back pain.']
 ]) {
   VOCAB_TIPS[key] = VOCAB_TIPS[key] || {};
   if (!(VOCAB_TIPS[key][en] || '').includes(tip.slice(0, 8))) VOCAB_TIPS[key][en] = VOCAB_TIPS[key][en] ? VOCAB_TIPS[key][en] + '\n' + tip : tip;

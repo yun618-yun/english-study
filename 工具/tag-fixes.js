@@ -60,4 +60,6 @@ module.exports = {
   'How many times have you been there?': '疑問詞 形容詞 名詞 助動詞 主詞 be動詞 副詞',
   'A ground support vehicle is next to the plane.': '冠詞 主詞 主詞 主詞 be動詞 形容詞 介系詞 冠詞 名詞',
   'They get water from a well.': '主詞 動詞 受詞 介系詞 冠詞 名詞',
+  'Say thank you.': '動詞 受詞 受詞',
+  'I have back pain.': '主詞 動詞 名詞 受詞',
 };

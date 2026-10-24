@@ -541,7 +541,8 @@ NOTES.find(c => c.id === 'terms').items.unshift({
     ['root', '🧩 字根①：看和聽', 'spect vis phon aud'],
     ['root2', '🧩 字根②：搬、說、建造、形狀', 'port dict struct form'],
     ['link', '💭 聯想、拆字、一家人', 'link link2 family'],
-    ['confuse', '🤯 容易搞混、同音字', 'confuse homo homo2']
+    ['confuse', '🤯 容易搞混、同音字', 'confuse homo homo2'],
+    ['synonym', '🔁 中文一樣、英文要分開用', 'syn1 syn2 syn3']
   ];
   const mergeTricks = items => {
     // 諧音的卡片搬進單字庫了（10/24），這裡不要重複
@@ -728,7 +729,17 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
           '⚠️ 諧音只用來記「意思」！真正的發音一定要按 🔊 聽\n💡 cough 的 gh 念 /f/，跟 laugh（笑）一樣'],
         ['homo2', '👯 發音一樣的字②', '再一組念起來一樣的字，寫作文最容易寫錯。',
           'hear=聽=裡面有 ear（耳朵）|here=這裡=跟 there、where 一家人，都是地點|their=他們的=有 i，像「人」→ 屬於人的|there=那裡=裡面藏著 here（這裡）→ 也是地點|son=兒子=o 跟 boy 的 o 一樣|sun=太陽=跟 sunny（晴天）一起記|buy=買=有 u → you buy 你買|by=搭、透過=最短的那個：by bus 搭公車|eight=八=gh 不發音|ate=吃了=eat 的過去式：I ate lunch.',
-          '💡 there、their、they\'re 三個都念 /ðer/：There is a cat. 那裡有貓／their cat 他們的貓／They\'re happy. 他們很開心']
+          '💡 there、their、they\'re 三個都念 /ðer/：There is a cat. 那裡有貓／their cat 他們的貓／They\'re happy. 他們很開心'],
+        // 10/24 使用者：中文很像、英文要分開用的字
+        ['syn1', '👀 看、聽、說：中文一樣，英文不同', '中文都說「看」「聽」「說」，英文要看情況分開用。',
+          'look=看（把眼睛轉過去）=look at＋東西：Look at the board.|see=看到（自然看見）=不用刻意：I can see the mountain.|watch=看（盯著會動的東西）=看一段時間：I watch TV every night.|hear=聽到（自然聽見）=聲音自己傳過來：Can you hear me?|listen=聽（專心聽）=listen to＋東西：Listen to the teacher.|say=說（說出內容）=say＋說的話：Say thank you.|tell=告訴（某人）=tell＋人：Tell me the truth.|speak=說（某種語言）=speak＋語言：Do you speak English?|talk=聊天、談話=talk to＋人：I talk to my mom every day.',
+          '💡 tell 後面先接「人」：Tell me. ✓　Say me. ✗\n💡 聽音樂要說 listen to music，不能說 listen music'],
+        ['syn2', '🎒 帶、穿、工作、旅行', '中文一樣，英文卻是兩個字：看方向、看是「動作」還是「狀態」。',
+          'bring=帶來（拿到這裡）=Bring your book tomorrow.|take=帶走（拿去別的地方）=Take an umbrella with you.|wear=穿著、戴著（狀態）=She wears glasses.|put on=穿上、戴上（動作）=Put on your coat.|job=工作（一份職業，可數）=I have a new job.|work=工作（要做的事，不可數）=I have a lot of work today.|trip=一趟旅行（名詞）=We took a trip to Japan.|travel=旅行（動詞）=I love to travel.',
+          '💡 a job ✓　a work ✗：work 當「工作量」不能加 a\n💡 borrow（借進來）和 lend（借出去）在「容易搞混」那一組'],
+        ['syn3', '📏 大小、累、痛', '意思很像，但用法或感覺不一樣。',
+          'big=大的（最口語）=a big dog 一隻大狗|large=大的（比較正式、尺寸）=a large Coke 大杯可樂；衣服的 L 就是 large|small=小的（尺寸）=This shirt is too small.|little=小小的（帶感情）=a little girl 小女孩；a little 也是「一點點」|sleepy=想睡的（眼睛快閉上）=I feel sleepy after lunch.|tired=累的（身體沒力）=I\'m tired after work.|hurt=痛（動詞）=My leg hurts.|pain=疼痛（名詞）=I have back pain.',
+          '💡 hurt 是動詞，主詞是痛的地方：My head hurts. 我頭痛\n💡 pain 是名詞，前面用 have：I have a pain in my chest. 我胸口痛']
       ], { card }))
   );
 }
