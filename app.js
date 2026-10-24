@@ -1333,6 +1333,7 @@ function listenHome() {
         <button class="btn ghost" data-act="listen-go" data-mode="ee" data-src="ee">🔤 英英解釋</button>
       </div>
     </div>
+    ${storyListHtml()}
     <div class="listen-box">
       <h3>💬 情境對話</h3><p class="muted">你扮演「你」：對方說完，輪到你先看中文、自己用英文說，再看答案</p>
       ${dlgBtns}
@@ -1415,6 +1416,7 @@ const listenZh = it => it.zh || it.front;
 function renderListen() {
   if (!listenMode) return listenHome();
   if (listenMode === 'dialog') return renderDialog();
+  if (listenMode === 'story') return renderStory();
   const head = `<button class="back" data-act="listen-home">‹ 聽說</button>`;
   if (lPos >= lDeck.length) {
     const back = planBack(listenMode);
@@ -1496,6 +1498,78 @@ function renderListen() {
       <div class="row-btns"><button class="btn ghost" data-act="listen-next">下一句 ›</button></div>`;
   }
   setTimeout(() => speak(en), 300);   // 一出來就念
+}
+// ===== 📖 分級小短文（10/24）：點英文字看中文、每句可以看翻譯、整篇念、讀完答 2 題 =====
+const STORY_READ_KEY = 'english-study-stories';
+let storyRead = [], story = null;
+try { storyRead = JSON.parse(localStorage.getItem(STORY_READ_KEY)) || []; } catch (e) {}
+function storyListHtml() {
+  if (typeof STORIES === 'undefined') return '';
+  return `<div class="listen-box"><h3>📖 小短文</h3><p class="muted">一篇 8 句的生活小故事。不懂的字直接點，會跳出中文；每句後面的「中」可以看翻譯</p>` +
+    [1, 2, 3].map(n => `<div class="dlg-level">${LEVEL_NAME[n]}</div><div class="dlg-grid">` +
+      STORIES.filter(s => s.level === n).map(s => `<button class="btn ghost" data-act="story-start" data-id="${s.id}">${storyRead.includes(s.id) ? '✅ ' : ''}${esc(s.title)}</button>`).join('') + '</div>').join('') + '</div>';
+}
+// 查字：這篇的 words → 常用小字 → 單字庫（去掉 s、ed、ing 再查）
+let storyDict = null;
+function lookupWord(w) {
+  if (!storyDict) {
+    storyDict = {};
+    ALL.filter(it => it.front && it.back && ['core', 'vocab'].includes(it.cat)).forEach(it => {
+      const en = firstLine(it.back).toLowerCase();
+      if (!storyDict[en]) storyDict[en] = it.front.split('；')[0];
+    });
+  }
+  w = w.toLowerCase().replace(/’/g, "'");
+  const forms = [w, w.replace(/'s$/, ''), w.replace(/ies$/, 'y'), w.replace(/es$/, ''), w.replace(/s$/, ''), w.replace(/ied$/, 'y'),
+    w.replace(/ed$/, ''), w.replace(/d$/, ''), w.replace(/ing$/, ''), w.replace(/ing$/, 'e'), w.replace(/(\w)\1(ed|ing)$/, '$1')];
+  const local = story && story.words ? Object.fromEntries(story.words.split('|').map(p => p.split('='))) : {};
+  for (const f of forms) if (local[f]) return local[f];
+  for (const f of forms) if (STORY_COMMON[f]) return STORY_COMMON[f];
+  for (const f of forms) if (storyDict[f]) return storyDict[f];
+  return '';
+}
+function startStory(id) { story = { ...STORIES.find(s => s.id === id), answered: 0 }; listenMode = 'story'; }
+function renderStory() {
+  const s = story;
+  const words = en => en.split(/([A-Za-z][A-Za-z']*)/).map((p, i) => i % 2 ? `<span class="st-w" data-act="st-word" data-w="${esc(p)}">${esc(p)}</span>` : esc(p)).join('');
+  // 問題的選項打亂一次就好（重畫時不要換位置）
+  s.q = s.q || s.qs.map(([q, ...opts]) => ({ q, options: shuffle(opts.map((t, i) => ({ text: t, right: i === 0 }))) }));
+  $view.innerHTML = `<button class="back" data-act="listen-home">‹ 聽說</button>
+    <div class="today-head"><span><b>${esc(s.title)}</b></span><span class="muted">${LEVEL_NAME[s.level]}</span></div>
+    <div class="row-btns"><button class="btn ghost" data-act="st-play">🔊 整篇念</button><button class="btn ghost" data-act="st-zh-all">中 全部翻譯</button></div>
+    <div class="story">${s.lines.map((l, i) => `<div class="st-line">
+      <span class="st-en">${words(l.en)}</span> ${sayBtn(l.en)}<button class="st-zh-btn" data-act="st-zh" data-i="${i}">中</button>
+      <div class="st-zh" id="st-zh-${i}" hidden>${zhWrap(esc(l.zh))}</div></div>`).join('')}</div>
+    <h3 class="sec-title">✏️ 看懂了嗎？</h3>
+    ${s.q.map((q, k) => `<div class="st-q" data-q="${k}"><div class="q">${k + 1}. ${esc(q.q)}</div>${optsHtml(q.options, 'st-ans')}<div class="st-after"></div></div>`).join('')}
+    <div id="story-end"></div>`;
+}
+function answerStory(el) {
+  const box = el.closest('[data-q]'), q = story.q[Number(box.dataset.q)], i = Number(el.dataset.i);
+  if (q.answered) return;
+  q.answered = true;
+  markOpts(q.options, i, box);
+  const ok = q.options[i].right;
+  box.querySelector('.st-after').innerHTML = `<div class="answer-box ${ok ? 'ok' : 'ng'}"><div class="ab-title">${ok ? '⭕ 答對了！' : '❌ 答案是：' + esc(q.options.find(o => o.right).text)}</div></div>`;
+  if (story.q.every(x => x.answered)) {
+    if (!storyRead.includes(story.id)) { storyRead.push(story.id); try { localStorage.setItem(STORY_READ_KEY, JSON.stringify(storyRead)); } catch (e) {} }
+    const same = STORIES.filter(x => x.level === story.level), next = same[same.findIndex(x => x.id === story.id) + 1];
+    document.getElementById('story-end').innerHTML = `<div class="answer-box ok"><div class="ab-title">🎉 讀完了！</div>
+      <div class="muted">再整篇聽一次、跟著念，效果更好</div></div>
+      <div class="row-btns">${next ? `<button class="btn" data-act="story-start" data-id="${next.id}">下一篇：${esc(next.title)} ›</button>` : ''}
+      <button class="btn ghost" data-act="listen-home">回到聽說</button></div>`;
+  }
+}
+// 點字：下面跳出小框框（中文＋🔊）
+function showWordPop(w) {
+  document.querySelectorAll('.word-pop').forEach(p => p.remove());
+  const zh = lookupWord(w);
+  const pop = document.createElement('div');
+  pop.className = 'word-pop';
+  pop.innerHTML = `<b>${esc(w)}</b> ${sayBtn(w)}<div class="wp-zh">${zh ? esc(zh) : '（這個字還沒有收錄，看整句的翻譯試試）'}</div><button class="wp-x" aria-label="關閉">✕</button>`;
+  pop.addEventListener('click', e => { if (e.target.closest('.wp-x')) pop.remove(); else if (e.target.closest('[data-say]')) speak(e.target.closest('[data-say]').dataset.say); });
+  document.body.appendChild(pop);
+  speak(w);
 }
 function answerEE(i) {
   if (lQ.answered) return;
@@ -1618,6 +1692,7 @@ function showTab(tab) {
 
 // ===== 換頁：每次換頁都記在網址上（#分頁/分類/筆記），瀏覽器的「上一頁」才會有用 =====
 function route() {
+  document.querySelectorAll(".word-pop").forEach(p => p.remove());   // 換頁時關掉小短文查字的框框
   const [tab, cat, item] = decodeURIComponent(location.hash.slice(1)).split('/');
   currentTab = TABS[tab] ? tab : 'today';
   // 分類搬家、筆記合併後，舊的網址（或「回到上次那一頁」）也要能打開：找不到就回到那則筆記現在所在的分類
@@ -1751,6 +1826,12 @@ $view.addEventListener('click', e => {
     case 'listen-play': speak(listenEn(lDeck[lPos])); break;
     case 'listen-ans': answerListen(Number(el.dataset.i)); break;
     case 'ee-ans': answerEE(Number(el.dataset.i)); break;
+    case 'story-start': startStory(el.dataset.id); renderListen(); window.scrollTo(0, 0); break;
+    case 'st-word': showWordPop(el.dataset.w); break;
+    case 'st-zh': { const z = document.getElementById('st-zh-' + el.dataset.i); z.hidden = !z.hidden; break; }
+    case 'st-zh-all': { const zs = [...document.querySelectorAll('.st-zh')], show = zs.some(z => z.hidden); zs.forEach(z => { z.hidden = !show; }); break; }
+    case 'st-play': speak(story.lines.map(l => l.en).join(' ')); break;
+    case 'st-ans': answerStory(el); break;
     case 'listen-next': lPos++; renderListen(); window.scrollTo(0, 0); break;
     case 'shadow-rec': shadowRec(); break;
     case 'dlg-start': startDialog(el.dataset.id); renderDialog(); window.scrollTo(0, 0); break;

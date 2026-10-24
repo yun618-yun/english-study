@@ -687,3 +687,17 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .level-pick { display: grid; gap: 8px; }
 .level-pick .btn small { font-weight: 400; font-size: 13px; opacity: .85; }
 .dlg-level { font-weight: 700; color: var(--teal); margin: 12px 0 6px; font-size: 15px; }
+/* 📖 小短文 */
+.story { background: var(--card); border-radius: 14px; padding: 12px 14px; margin: 10px 0 14px; box-shadow: var(--shadow); }
+.st-line { padding: 8px 0; border-bottom: 1px dashed var(--line); }
+.st-line:last-child { border-bottom: 0; }
+.st-en { font-size: 18px; line-height: 1.7; color: #2f3640; font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+.st-w { cursor: pointer; border-radius: 4px; }
+.st-w:active, .st-w:hover { background: var(--marker); }
+.st-zh-btn { border: 1px solid var(--line); background: var(--bg); color: var(--muted); border-radius: 8px; font-size: 13px; padding: 1px 7px; margin-left: 4px; vertical-align: middle; }
+.st-zh { color: var(--text); font-size: 15px; margin-top: 4px; font-family: "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif; word-break: keep-all; overflow-wrap: anywhere; }
+.st-q { margin-bottom: 14px; }
+.word-pop { position: fixed; left: 12px; right: 12px; bottom: calc(76px + env(safe-area-inset-bottom)); z-index: 50; background: var(--card); border: 1px solid var(--teal); border-radius: 14px; padding: 12px 40px 12px 14px; box-shadow: 0 6px 20px rgba(0,0,0,.18); font-size: 18px; max-width: 520px; margin: 0 auto; }
+.word-pop b { color: var(--teal); }
+.word-pop .wp-zh { font-size: 16px; margin-top: 4px; color: var(--text); }
+.word-pop .wp-x { position: absolute; top: 8px; right: 8px; border: 0; background: none; font-size: 18px; color: var(--muted); }
