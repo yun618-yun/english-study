@@ -713,3 +713,8 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 /* 👩‍🏫 老師說：插在筆記那一行下面的講解（app.js addTeach） */
 .wtip.teach { color: var(--text); margin-top: 6px; background: rgba(255, 255, 255, .85); border-left-color: var(--teal); font-size: 13.5px; line-height: 1.6; }
 .wtip.teach > b:first-child { display: block; color: var(--teal); font-size: 12.5px; }
+/* 例句：英文一行、中文翻譯下一行（app.js line() 的 tr） */
+.trl { padding: 3px 0 5px; }
+.trl .ex-en small { color: var(--muted); font-size: 12.5px; margin-right: 2px; }
+.trl .ex-zh { font-size: 14.5px; }
+.trl .ex-en { font-weight: 600; }

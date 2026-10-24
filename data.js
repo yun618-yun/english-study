@@ -970,9 +970,9 @@ const NOTES = [
       {
         id: 't-present-perfect',
         title: '⭐ 現在完成時　have / has done',
-        note: '定義：動作發生在過去，但對現在有影響\n例：I have eaten pears already. 我已經把梨吃完了。',
+        note: '定義：動作發生在過去，但對現在有影響\n例：I have already eaten the pears. 我已經把梨吃完了。',
         front: '現在完成時的結構？',
-        back: 'have / has done\nI have eaten pears already. 我已經把梨吃完了。',
+        back: 'have / has done\nI have already eaten the pears. 我已經把梨吃完了。',
         quiz: { q: 'I ___ my homework already.（已經寫完了）', options: ['have finished', 'had finish', 'finish', 'am finishing'], answer: 0 }
       },
       {

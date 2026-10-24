@@ -251,6 +251,14 @@ function line(l) {
   }
   if (l.includes('　')) return tableRow(l);
   const kv = l.match(/^([^：:\[]{1,6})：(.+)$/);
+  // 「英文句子. 中文翻譯」→ 英文一行、中文換到下一行（10/24 使用者：英文後面直接接中文，排版很醜）
+  const tr = (t, label) => {
+    const m = !t.includes('{{') && t.match(/^(.*[.!?])\s+([^.!?]*[一-鿿].*)$/);
+    if (!m || /[一-鿿]/.test(m[1]) || !isEnglish(m[1])) return '';
+    return `<div class="trl"><div class="ex-en">${label ? `<small>${inline(label)}</small> ` : ''}${inline(m[1])} ${sayBtn(englishPart(m[1]))}</div><div class="ex-zh">${/[[{]/.test(m[2]) ? inline(m[2]) : zhWrap(esc(m[2]))}</div></div>`;
+  };
+  if (kv && /^例/.test(kv[1]) && tr(kv[2], kv[1])) return tr(kv[2], kv[1]);
+  if (!kv && tr(l)) return tr(l);
   if (kv) {
     // 「例：I love pears. 我喜歡梨。」這種，英文例句後面也加 🔊
     const ex = /^例/.test(kv[1]) && isEnglish(kv[2]) ? englishPart(kv[2]) : '';
