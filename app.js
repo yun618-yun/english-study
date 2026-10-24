@@ -1438,7 +1438,9 @@ const LISTEN_SRC = {
   // 🧠 不經過中文（10/24 使用者：不想一直中翻英）：看插畫打英文、看英文解釋選字
   // 看圖：只用看圖就認得出來的類別（月份、星期、家人光看圖分不出來）
   pic: { name: '🖼️ 看圖', items: () => ALL.filter(it => it.front && it.pic && isImageFile(it.pic) && PIC_GROUPS.includes(it.group)) },
-  ee: { name: '🔤 英英', items: () => typeof EN_DEFS === 'undefined' ? [] : EN_DEFS.map(d => ({ id: 'ee-' + d.en, ...d })) }
+  ee: { name: '🔤 英英', items: () => typeof EN_DEFS === 'undefined' ? [] : EN_DEFS.map(d => ({ id: 'ee-' + d.en, ...d })) },
+  // 💬 怎麼回答？（10/24 使用者的朋友建議）：對方說一句，選出最自然的回答
+  reply: { name: '💬 怎麼回答', items: () => typeof REPLIES === 'undefined' ? [] : REPLIES }
 };
 const PIC_GROUPS = ['color', 'staple', 'bakery', 'tableware', 'drink', 'flower', 'fruit', 'vegetable', 'meat', 'transport', 'tool', 'weather', 'place', 'home', 'job', 'clothes', 'sport', 'body'];
 // 中文意思（答完才給看）：單字庫裡有的字才有
@@ -1447,7 +1449,7 @@ const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
 function startListen() { listenMode = null; listenSrc = null; }
 function listenHome() {
   const srcBtns = mode => Object.entries(LISTEN_SRC)
-    .filter(([k]) => k !== 'pic' && k !== 'ee')
+    .filter(([k]) => k !== 'pic' && k !== 'ee' && k !== 'reply')
     .filter(([k]) => mode === 'listen' || mode === 'type' ? k !== 'example' : mode === 'order' ? k !== 'word' : true)
     .map(([k, s]) => `<button class="btn ghost" data-act="listen-go" data-mode="${mode}" data-src="${k}">${s.name}</button>`).join('');
   // 對話照等級分組（10/24），每一級都可以點
@@ -1461,6 +1463,10 @@ function listenHome() {
         <button class="btn ghost" data-act="listen-go" data-mode="pic" data-src="pic">🖼️ 看圖打英文</button>
         <button class="btn ghost" data-act="listen-go" data-mode="ee" data-src="ee">🔤 英英解釋</button>
       </div>
+    </div>
+    <div class="listen-box">
+      <h3>💬 怎麼回答？</h3><p class="muted">對方說一句話，選出最自然的回答（打招呼、點餐、購物、問路、聊天、邀約…）</p>
+      <div class="row-btns"><button class="btn ghost" data-act="listen-go" data-mode="reply" data-src="reply">💬 開始練習</button></div>
     </div>
     ${storyListHtml()}
     <div class="listen-box">
@@ -1601,6 +1607,18 @@ function renderListen() {
       <div id="card-opts">${optsHtml(lQ.options, 'ee-ans')}</div>
       <div id="card-after"></div>`;
     return;
+  } else if (listenMode === 'reply') {
+    // 💬 怎麼回答？：先念對方的話；中文先藏起來，聽不懂再點
+    lQ = { options: shuffle([{ text: it.a, right: true }, ...it.wrong.map(t => ({ text: t, right: false }))]) };
+    $view.innerHTML = head + counter + `
+      <div class="word-card" id="card-top"><div class="muted">${esc(it.group)}・對方說：</div>
+        <div class="ee-def">${esc(it.q)} ${sayBtn(it.q)}</div>
+        <button class="btn ghost reply-zh-btn" data-act="reply-zh">看中文</button><div class="reply-zh" id="reply-zh" hidden>${esc(it.qz)}</div>
+        <div class="muted">你要怎麼回答？</div></div>
+      <div id="card-opts">${optsHtml(lQ.options, 'reply-ans')}</div>
+      <div id="card-after"></div>`;
+    speak(it.q);
+    return;
   } else if (listenMode === 'order') {
     // 打亂到跟原本順序不一樣為止
     const tiles = orderTokens(en);
@@ -1728,6 +1746,20 @@ $view.addEventListener('click', e => {
   const w = wordAtPoint(e.clientX, e.clientY);
   if (/[A-Za-z]/.test(w)) showWordPop(w, false);
 });
+function answerReply(i) {
+  if (lQ.answered) return;
+  lQ.answered = true;
+  const it = lDeck[lPos], ok = lQ.options[i].right;
+  markOpts(lQ.options, i, document.getElementById('card-opts'));
+  if (ok) lScore++;
+  const zh = document.getElementById('reply-zh'); if (zh) zh.hidden = false;
+  document.getElementById('card-after').innerHTML = `<div class="answer-box ${ok ? 'ok' : 'ng'}">
+      <div class="ab-title">${ok ? '⭕ 答對了！' : '❌ 比較自然的回答是：'}</div>
+      <div class="trl"><div class="ex-en">${esc(it.a)} ${sayBtn(it.a)}</div><div class="ex-zh">${esc(it.az)}</div></div>
+      <div class="reply-why">💡 ${esc(it.why)}</div></div>
+    <div class="row-btns"><button class="btn" data-act="listen-next">下一題 ›</button></div>`;
+  speak(it.a);
+}
 function answerEE(i) {
   if (lQ.answered) return;
   lQ.answered = true;
@@ -1987,6 +2019,8 @@ $view.addEventListener('click', e => {
     case 'listen-play': speak(listenEn(lDeck[lPos])); break;
     case 'listen-ans': answerListen(Number(el.dataset.i)); break;
     case 'ee-ans': answerEE(Number(el.dataset.i)); break;
+    case 'reply-ans': answerReply(Number(el.dataset.i)); break;
+    case 'reply-zh': { const z = document.getElementById('reply-zh'); if (z) z.hidden = !z.hidden; break; }
     case 'story-start': startStory(el.dataset.id); renderListen(); window.scrollTo(0, 0); break;
     case 'st-word': showWordPop(el.dataset.w); break;
     case 'tap-hint-x': try { localStorage.setItem('english-study-tap-hint', '99'); } catch (e) {} el.closest('.tap-hint').remove(); break;

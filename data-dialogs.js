@@ -239,3 +239,54 @@ const DIALOGS = [
   level: level || ({ cafe: 1, restaurant: 1, way: 1, shop: 1, friend: 1 }[id] || 2),
   lines: text.trim().split('\n').map(l => { const [who, en, zh] = l.split('|'); return { me: who === '你', who, en, zh }; })
 }));
+
+// 💬 怎麼回答？（10/24 使用者的朋友建議：題目「Hi, how are you?」→ 選出「I'm good.」這種回答）
+// 每一行：對方說的話|中文|正確回答|回答的中文|錯的回答1|錯的回答2|錯的回答3|為什麼
+// 錯的回答故意放「文法對、但答非所問」或台灣人常犯的錯
+const REPLIES = `
+打招呼|Hi, how are you?|嗨，你好嗎？|I'm good, thanks. And you?|我很好，謝謝。你呢？|I'm 30 years old.|Yes, I am.|I'm from Taiwan.|How are you? 是問「你好嗎」，回答 I'm good / I'm fine / Not bad 就好，可以再問回去 And you?
+打招呼|Nice to meet you.|很高興認識你。|Nice to meet you, too.|我也很高興認識你。|Yes, I meet you.|Thank you very much.|You're welcome.|對方說 Nice to meet you，回答加一個 too（也）就好
+打招呼|What's up?|最近怎樣？（很口語）|Not much. How about you?|沒什麼特別的，你呢？|The sky is up.|Yes, it is.|I'm up.|What's up? 是朋友之間的「最近怎樣」，常回答 Not much.（沒什麼）
+打招呼|Long time no see!|好久不見！|Yeah! How have you been?|對啊！你最近好嗎？|No, I can see you.|See you later.|Yes, I don't see.|Long time no see 是「好久不見」，回答時可以問 How have you been?（最近好嗎）
+打招呼|See you tomorrow!|明天見！|See you!|明天見！|Yes, I see.|Tomorrow is Friday.|I can't see you.|道別時對方說 See you…，回一句 See you! 或 Bye! 就好
+打招呼|Have a nice weekend!|週末愉快！|Thanks, you too!|謝謝，你也是！|Yes, I have.|No, I don't have.|It's Saturday.|別人祝福你，回答 Thanks, you too!（謝謝，你也是）
+自我介紹|Where are you from?|你是哪裡人？|I'm from Taiwan.|我來自台灣。|I'm fine, thank you.|I'm a nurse.|I live from Taipei.|Where are you from? 問你是哪裡人，用 I'm from + 地方
+自我介紹|What do you do?|你是做什麼工作的？|I'm a nurse.|我是護理師。|I'm watching TV.|I do my homework.|I'm good.|What do you do? 是問「職業」，不是問你現在在做什麼
+自我介紹|How old are you?|你幾歲？|I'm 30.|我三十歲。|I'm 30 years.|I have 30 years.|I'm fine.|年紀用 I'm + 數字（years old 可以省略），不能說 I have 30 years
+自我介紹|What's your name?|你叫什麼名字？|I'm Amy.|我是艾咪。|My name Amy.|Yes, my name.|I'm from Amy.|說名字用 I'm… 或 My name is…，is 不能少
+自我介紹|Do you like music?|你喜歡音樂嗎？|Yes, I do.|喜歡。|Yes, I like.|Yes, I am.|Yes, I music.|Do you…? 的問句，回答用 Yes, I do. / No, I don't.（不是 I am）
+自我介紹|Are you a student?|你是學生嗎？|No, I'm not. I work.|不是，我在上班。|No, I don't.|No, I'm not student.|Yes, I do.|Are you…? 的問句，回答用 Yes, I am. / No, I'm not.
+餐廳|Are you ready to order?|準備好點餐了嗎？|Yes, I'd like the chicken, please.|好了，我要雞肉，謝謝。|Yes, I'm order.|I'm ready, thank you.|No, I'm full.|點餐用 I'd like…（我想要…），比 I want 有禮貌
+餐廳|For here or to go?|內用還是外帶？|To go, please.|外帶，謝謝。|Yes, please.|I go.|Here you are.|這題是二選一，直接回答 For here 或 To go，不能只說 Yes
+餐廳|Anything to drink?|要喝點什麼嗎？|Just water, please.|白開水就好，謝謝。|Yes, I drink.|I'm drinking.|No, I don't drink water.|點飲料：Just water, please. 或 A coke, please.
+餐廳|How is everything?|餐點還可以嗎？|Everything is great, thanks.|都很好，謝謝。|Everything is 500 dollars.|I'm everything.|Yes, it is.|服務生來問餐點好不好吃，回答 It's great / It's delicious
+餐廳|Would you like some dessert?|要來點甜點嗎？|No, thanks. I'm full.|不用了，謝謝，我吃飽了。|No, I don't like you.|Yes, I would like.|I'm dessert.|Would you like…? 拒絕時說 No, thanks.，很有禮貌
+餐廳|Hot or iced?|要熱的還是冰的？|Iced, please.|冰的，謝謝。|Yes, please.|It's hot today.|I'm hot.|二選一的問題，直接說選哪一個，後面加 please
+購物|Can I help you?|需要幫忙嗎？|I'm just looking, thanks.|我只是看看，謝謝。|No, you can't.|Yes, you can help.|Yes, I can help you.|店員問你，只想自己逛就說 I'm just looking, thanks.
+購物|What size do you need?|你要什麼尺寸？|Medium, please.|中號，謝謝。|I need big.|Yes, I need.|I'm medium.|尺寸：small、medium、large，直接說尺寸就好
+購物|Cash or card?|付現還是刷卡？|Card, please.|刷卡，謝謝。|Yes, I have.|I'm cash.|No, thank you.|二選一，直接回答 Cash 或 Card
+購物|Do you need a bag?|需要袋子嗎？|No, thanks. I have one.|不用了，我有帶。|No, I don't need it bag.|Yes, I need bag please.|I'm a bag.|不需要就說 No, thanks.，要的話說 Yes, please.
+問路|Excuse me, where is the station?|不好意思，車站在哪裡？|Go straight and turn left.|直走然後左轉。|Yes, it is.|I'm the station.|No, thank you.|問路的回答：Go straight（直走）、turn left / right（左轉／右轉）
+問路|Is it far from here?|離這裡遠嗎？|No, it's about five minutes on foot.|不遠，走路大概五分鐘。|No, it isn't here.|Yes, I'm far.|It's from here.|回答遠不遠，可以說要走多久：It's about … minutes on foot.
+問路|Can you show me on the map?|可以在地圖上指給我看嗎？|Sure. We're here, and it's here.|當然。我們在這裡，它在這裡。|Sure, I can map.|No, you can't show.|Yes, I am.|Can you…? 答應別人用 Sure. 或 Of course.
+道謝道歉|Thank you so much!|非常謝謝你！|You're welcome.|不客氣。|Thank you too much.|Yes, I am.|Me too.|別人道謝，回答 You're welcome. / No problem. / My pleasure.
+道謝道歉|I'm sorry I'm late.|抱歉我遲到了。|That's OK. Don't worry.|沒關係，別擔心。|You're welcome.|Yes, you are late.|Me too.|別人道歉，回答 That's OK. / No problem. / Don't worry.（不是 You're welcome）
+道謝道歉|Sorry, I broke your cup.|抱歉，我打破你的杯子了。|It's OK. Are you hurt?|沒關係，你有沒有受傷？|You're welcome.|Yes, please.|Good job!|You're welcome 只用在別人「謝謝」你的時候，道歉不能用
+道謝道歉|Excuse me, can I sit here?|不好意思，我可以坐這裡嗎？|Sure, go ahead.|可以，請坐。|Yes, you sit.|No, I'm sitting.|You're welcome.|答應別人用 Sure, go ahead.（請便）
+邀約|Do you want to get coffee?|要不要去喝杯咖啡？|Sure, I'd love to!|好啊，我很想去！|Yes, I want coffee you.|I'm coffee.|No, I don't drink coffee you.|答應邀約：Sure! / I'd love to! 拒絕：Sorry, I'm busy.
+邀約|Are you free on Saturday?|你星期六有空嗎？|Sorry, I'm busy that day.|抱歉，我那天有事。|Yes, I'm free money.|No, Saturday is not free.|I'm Saturday.|有空 Yes, I'm free.；沒空 Sorry, I'm busy. 或 I have plans.
+邀約|How about 7 p.m.?|晚上七點怎麼樣？|Sounds good!|聽起來不錯！|It's 7 p.m. now.|I'm 7 p.m.|Yes, I about.|How about…? 是提議，同意就說 Sounds good! / OK!
+邀約|Would you like to come to my party?|你要來我的派對嗎？|I'd love to. Thanks!|我很想去，謝謝！|Yes, I like party.|No, I'm not party.|Yes, I would like.|Would you like to…? 答應的時候說 I'd love to.
+聊天|What did you do last weekend?|你上週末做了什麼？|I went hiking with my friends.|我跟朋友去爬山。|I go hiking with my friends.|I will go hiking.|Yes, I did.|問題用 did（過去），回答也要用過去式：went
+聊天|What are you doing?|你在做什麼？|I'm cooking dinner.|我在煮晚餐。|I'm a cook.|I cook dinner every day.|I'm fine.|What are you doing? 問「現在正在做什麼」，用 I'm + V-ing 回答
+聊天|Have you ever been to Japan?|你去過日本嗎？|Yes, I have. I went there last year.|有，我去年去過。|Yes, I do.|Yes, I am.|Yes, I go to Japan.|Have you…? 的問句，回答用 Yes, I have. / No, I haven't.
+聊天|What do you think of this movie?|你覺得這部電影怎麼樣？|I think it's really good.|我覺得很好看。|I think about the movie.|Yes, I think.|I'm a movie.|問你的看法，用 I think it's… 回答
+聊天|I'm so tired today.|我今天好累。|Oh no. You should get some rest.|喔不，你該好好休息。|You're welcome.|Thank you very much.|Good job!|別人說累，可以關心他：You should get some rest.（你該休息一下）
+聊天|I passed my driving test!|我駕照考過了！|Congratulations! That's great!|恭喜！太棒了！|That's too bad.|I'm sorry.|You're welcome.|好消息要說 Congratulations!；That's too bad 是聽到壞消息時用的
+聊天|I lost my wallet.|我的錢包掉了。|Oh no! That's too bad.|喔不！真糟糕。|Congratulations!|Good for you!|That's great!|壞消息要說 That's too bad. / I'm sorry to hear that.
+電話|Hello, may I speak to Tom?|喂，請問湯姆在嗎？|Sorry, he's not here right now.|抱歉，他現在不在。|Yes, you may speak.|I'm not Tom speak.|No, I don't.|電話裡找的人不在，說 Sorry, he's not here right now.
+電話|Can I leave a message?|我可以留言嗎？|Sure. What's your message?|當然，請說。|Yes, you can leave.|No, I'm a message.|Leave now.|答應幫忙留言：Sure. 再請對方說內容
+`.trim().split('\n').map((l, i) => {
+  const [group, q, qz, a, az, w1, w2, w3, why] = l.split('|');
+  return { id: 'reply-' + i, group, q, qz, a, az, wrong: [w1, w2, w3], why, en: q };
+});

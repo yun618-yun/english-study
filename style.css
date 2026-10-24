@@ -786,3 +786,9 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 /* 👆 點字查中文的小提示 */
 .tap-hint { position: relative; margin: 0 0 10px; padding: 9px 40px 9px 12px; border-radius: 12px; background: #fff6dc; border: 1px solid #f2c14e; font-size: 15px; color: var(--text); }
 .tap-hint button { position: absolute; top: 4px; right: 4px; border: 0; background: none; font-size: 16px; padding: 6px 8px; color: var(--muted); }
+/* 💬 怎麼回答？ */
+.reply-zh-btn { padding: 4px 12px; font-size: 14px; margin: 6px 0; }
+.reply-zh { font-size: 17px; color: var(--text); margin: 4px 0 6px; }
+.reply-why { margin-top: 8px; padding: 8px 10px; border-radius: 10px; background: #fff6dc; font-size: 15.5px; line-height: 1.6; color: var(--text); }
+.answer-box .trl .ex-en { font-size: 18px; font-weight: 700; }
+.answer-box .trl .ex-zh { font-size: 16.5px; color: var(--text); }
