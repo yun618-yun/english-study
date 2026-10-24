@@ -965,16 +965,18 @@ document.getElementById('speed-btn').addEventListener('click', () => {
 renderSpeedBtn();
 
 // ===== 🎨 背景配色：A 燕麥米色（預設）／D 奶茶色，記在手機裡 =====
-let theme = 'a';
-try { theme = localStorage.getItem('english-study-theme') === 'd' ? 'd' : 'a'; } catch (e) {}
+// 10/24 加 W 白底筆記風（跟使用者的複習筆記一樣），先當預設給使用者試；用新的記錄名稱，舊的米色設定不會蓋掉它
+const THEMES = { w: ['🎨 白底', '#f1f1ef'], a: ['🎨 米色', '#e3dac9'], d: ['🎨 奶茶', '#d8cbbb'] };
+let theme = 'w';
+try { const t = localStorage.getItem('english-study-theme2'); if (THEMES[t]) theme = t; } catch (e) {}
 function applyTheme() {
   document.documentElement.dataset.theme = theme;
-  document.getElementById('theme-btn').innerHTML = theme === 'd' ? '🎨 奶茶' : '🎨 米色';
-  document.querySelector('meta[name="theme-color"]').content = theme === 'd' ? '#d8cbbb' : '#e3dac9';
+  document.getElementById('theme-btn').innerHTML = THEMES[theme][0];
+  document.querySelector('meta[name="theme-color"]').content = THEMES[theme][1];
 }
 document.getElementById('theme-btn').addEventListener('click', () => {
-  theme = theme === 'd' ? 'a' : 'd';
-  try { localStorage.setItem('english-study-theme', theme); } catch (e) {}
+  theme = { w: 'a', a: 'd', d: 'w' }[theme];
+  try { localStorage.setItem('english-study-theme2', theme); } catch (e) {}
   applyTheme();
 });
 applyTheme();

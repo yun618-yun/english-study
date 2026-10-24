@@ -743,3 +743,28 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 /* {{wide}} 的筆記（不規則動詞表）：一列一行，中文放右邊 */
 .wide-note .nb .row.sent { flex-direction: row; align-items: baseline; justify-content: space-between; gap: 10px; padding: 6px 0; }
 .wide-note .nb .row.sent .v { text-align: right; flex: none; max-width: 40%; }
+
+/* 🎨 W 白底筆記風（10/24 使用者：跟複習筆記一樣，白底、英文深紅、中文黑色）。紅色給英文用，⚠️ 注意改橘色 */
+:root[data-theme="w"] {
+  --bg: #f1f1ef;
+  --card: #ffffff;
+  --text: #222222;
+  --head: #1f1f1f;
+  --muted: #6b6b6b;
+  --line: #dcdcdc;
+  --warn: #c2631a;
+  --pink: #fdf0e3;
+  --blue: #f2f2f0;
+  --green: #eef5ea;
+  --yellow: #fff6dc;
+  --tip-bg: #fff6dc;
+  --marker: rgba(246, 160, 180, .4);
+}
+[data-theme="w"] .page { background-image: none; box-shadow: 0 1px 6px rgba(0, 0, 0, .06); }
+[data-theme="w"] .page .nb .row .k, [data-theme="w"] .hl, [data-theme="w"] .page .ex-en, [data-theme="w"] .trl .ex-en,
+[data-theme="w"] .page .nb .en, [data-theme="w"] .page .nb .kv b { color: #a3262a; }
+[data-theme="w"] .page .nb > .lbl, [data-theme="w"] .nb .lbl, [data-theme="w"] .msec { color: #1f1f1f; }
+[data-theme="w"] .wtip.warn { border-left-color: #e8a15c; }
+[data-theme="w"] .page .nb::before {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 100' preserveAspectRatio='none'%3E%3Cpath d='M14 1 C7 1 8 6 8 14 L8 42 C8 48 5 50 2 50 C5 50 8 52 8 58 L8 86 C8 94 7 99 14 99' fill='none' stroke='%23555555' stroke-width='1.8' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+}
