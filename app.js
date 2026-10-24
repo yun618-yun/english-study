@@ -999,7 +999,7 @@ applyPics();
 // ===== 🌱 等級：先練日常、簡單的，再進階、高階（10/24 使用者要的） =====
 // 「今日」的新卡片、今日文法、課表的聽力／重組／打字只出現在等級以內的；筆記、卡片分頁不受限制
 // 名單裡寫筆記 id 或卡片的組別（group）；卡片沒有組別的，id 開頭對到也算。沒列到的都是第 2 級
-const LEVEL_1 = ['study-routine', 'study-think-en', 'g-overview', 'g-group-pos', 'g-pos-abbr', 'g-pos', 'g-noun', 'g-pronoun', 'g-verb', 'g-adj', 'g-adv', 'g-article', 'g-prep', 'g-conj', 'g-person', 'g-numbers', 'g-ordinal',
+const LEVEL_1 = ['study-routine', 'study-think-en', 'g-overview', 'g-group-pos', 'g-group-pos2', 'g-group-pos3', 'g-pos-abbr', 'g-pos', 'g-noun', 'g-pronoun', 'g-verb', 'g-adj', 'g-adv', 'g-article', 'g-prep', 'g-conj', 'g-person', 'g-numbers', 'g-ordinal',
   'b-structure', 'b-be', 'b-subject-verb', 'b-subject', 'b-group-pronoun', 'b-pronoun', 'b-group-sentence', 'b-neg', 'b-q', 'b-imperative', 'b-contractions', 'b-group-noun', 'b-article', 'b-plural', 'b-in-on-at', 'b-in', 'b-wh', 'b-there-is', 'b-there',
   'mn-be', 'mn-time-prep', 'mn-time', 'mn-group-plural', 'mn-plural', 'mn-fe', 'mn-group-present', 'mn-present',
   'dl-greet', 'dl-intro', 'dl-group-food', 'dl-food', 'dl-drink', 'dl-shop', 'dl-group-way', 'dl-way', 'dl-taxi', 'dl-group-talk', 'dl-rescue', 'dl-react', 'dl-feel', 'nm-group-num', 'nm-num', 'nm-price', 'nm-group-time', 'nm-time', 'nm-date',
@@ -1007,9 +1007,9 @@ const LEVEL_1 = ['study-routine', 'study-think-en', 'g-overview', 'g-group-pos',
   'vocab-g-time', 'month', 'season', 'time', 'week', 'vocab-color', 'color', 'vocab-g-food', 'staple', 'meal', 'vocab-g-drink', 'drink', 'vocab-fruit', 'fruit', 'vocab-vegetable', 'vegetable',
   'vocab-family', 'family', 'vocab-animal', 'animal', 'vocab-g-home', 'home', 'vocab-g-feel', 'feel', 'vocab-clothes', 'clothes', 'mm-how'];
 // 10/24 第 1 級控制在 600 多張：麵包點心、餐具、浴室、教室用品、大自然、身體、生活動詞第三組、個性外表放第 2 級
-const LEVEL_3 = ['g-group-tips', 'g-position', 'g-cloze', 'g-reading', 'g-reading-att', 'g-clauses',
+const LEVEL_3 = ['g-group-tips', 'g-group-tips2', 'g-group-tips3', 'g-position', 'g-cloze', 'g-reading', 'g-reading-att', 'g-clauses',
   'to-do-roles', 'to-role', 'to-purpose-reason-result', 'to-reason', 'to-only', 'to-opinion', 'to-noun', 'to-wh', 'to-forms', 'to-not', 'to-plus-doing', 'to-plus', 'to-or-doing', 'to-or', 'to-object', 'used-to', 'to-group-no', 'no-to', 'to-vs-for', 'to-vs', 'for-doing', 'to-for',
-  'ph-bare', 'ph-group-prep', 'ph-for', 'ph-with', 'ph-about', 'ph-at', 'ph-in2',
+  'ph-bare', 'ph-group-prep', 'ph-group-prep-with', 'ph-for', 'ph-with', 'ph-about', 'ph-at', 'ph-in2',
   'passive-table', 't-8-active-passive', 't-8', 't-group-perfect-cont', 't-usage', 's-group-present', 's-group-past-future', 's-simple', 's-present', 's-past',
   'mm-prefix', 'mm-prefix2', 'mm-prefix3', 'mm-suffix', 'mm-suffix2', 'mm-suffix3', 'mm-suffix4', 'mm-suffix5', 'mm-root', 'mm-root2',
   'mm-un', 'mm-re', 'mm-dis', 'mm-im', 'mm-pre', 'mm-mis', 'mm-over', 'mm-num', 'mm-sub', 'mm-inter', 'mm-tele', 'mm-er', 'mm-ist', 'mm-ful', 'mm-less', 'mm-ly', 'mm-able', 'mm-ous', 'mm-y', 'mm-al', 'mm-ive',

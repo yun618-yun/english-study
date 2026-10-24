@@ -1486,3 +1486,65 @@ at home　狀語：在家裡（地點，介係詞＋名詞）
       '\n\n💡 sleepy（想睡的）和 tired（累的）不一樣：熬夜後眼睛睜不開是 sleepy；運動完全身沒力是 tired'
   }, ...MULTI.map(([w, , rows]) => C(w, rows)));
 }
+
+// ===================== ✂️ 太長的合併筆記，照 ▍小段拆成好幾則（10/24 使用者：「就照你建議的」） =====================
+// 第一則沿用原本的 id（閱讀紀錄不會掉）；每一組用「小段標題裡的關鍵字」挑小段。
+// 只有一段的那則不留 ▍標題（筆記標題已經說了）。SPLIT_MOVES 給 data-teach.js 把講解搬到新的那一則。
+const SPLIT_MOVES = {};
+{
+  const splitNote = (catId, id, groups) => {
+    const items = NOTES.find(c => c.id === catId).items;
+    const it = items.find(i => i.id === id);
+    if (!it) return;
+    const pre = (it.note.match(/^\{\{\w+\}\}/) || [''])[0];
+    const parts = it.note.slice(pre.length).split(/\n\n(?=▍)/);
+    const at = items.indexOf(it);
+    groups.forEach(([newId, title, keys], k) => {
+      const secs = parts.filter(p => keys.some(key => p.split('\n')[0].includes(key)));
+      const n = secs.reduce((s, p) => s + Number((p.split('\n')[0].match(/（(\d+) 個）/) || [0, 0])[1]), 0);
+      const note = pre + (secs.length === 1 ? secs[0].replace(/^▍[^\n]*\n+/, '') : secs.join('\n\n'));
+      secs.forEach(p => {
+        const [head, ...rest] = p.split('\n');
+        SPLIT_MOVES[head] = [newId, secs.length === 1 ? (rest.find(l => l.trim()) || '').trim() : head];
+        SPLIT_MOVES['@' + id + '>' + newId] = 1;
+      });
+      const t = title.replace('{n}', n);
+      if (k === 0) { it.title = t; it.note = note; }
+      else items.splice(at + k, 0, { id: newId, title: t, note });
+    });
+  };
+  splitNote('terms', 'g-group-pos', [
+    ['g-group-pos', '8 種詞性 ①：名詞、代名詞、動詞', ['名詞是什麼', '代名詞是什麼', '動詞是什麼']],
+    ['g-group-pos2', '8 種詞性 ②：形容詞、副詞、冠詞', ['形容詞是什麼', '副詞是什麼', '冠詞是什麼']],
+    ['g-group-pos3', '8 種詞性 ③：介係詞、連接詞', ['介係詞是什麼', '連接詞是什麼']]
+  ]);
+  splitNote('terms', 'g-group-parts', [
+    ['g-group-parts', '句子的成分 ①：主詞、受詞、補語', ['主詞、受詞、補語', '8 種成分']],
+    ['g-group-parts2', '句子的成分 ②：看例句拆句子', ['看例句拆句子']],
+    ['g-group-parts3', '句子的成分 ③：5 大基本句型', ['5 大基本句型']]
+  ]);
+  splitNote('terms', 'g-group-tips', [
+    ['g-group-tips', '考試答題技巧 ①：看位置猜詞性', ['看位置猜詞性']],
+    ['g-group-tips2', '考試答題技巧 ②：語法填空', ['語法填空']],
+    ['g-group-tips3', '考試答題技巧 ③：閱讀測驗', ['閱讀測驗']]
+  ]);
+  splitNote('phrase', 'ph-group-prep', [
+    ['ph-group-prep', '介系詞片語 ①：for／about（{n} 個）', ['for 片語', 'about 片語']],
+    ['ph-group-prep-with', '介系詞片語 ②：with（{n} 個）', ['with 片語']]
+  ]);
+  splitNote('phrase', 'ph-group-small', [
+    ['ph-group-small', '動詞 + down／off（{n} 個）', ['動詞 + down', '動詞 + off']],
+    ['ph-group-small2', '動詞 + on／in（{n} 個）', ['動詞 + on', '動詞 + in']]
+  ]);
+  splitNote('phrase', 'ph-group-verb2', [
+    ['ph-group-verb2', '常用動詞片語 ①：look（{n} 個）', ['look 片語']],
+    ['ph-group-verb2b', '常用動詞片語 ②：get（{n} 個）', ['get 片語']]
+  ]);
+  // 後面的編號跟著改
+  const ph = NOTES.find(c => c.id === 'phrase').items;
+  const rename = (id, from, to) => { const x = ph.find(i => i.id === id); if (x) x.title = x.title.replace(from, to); };
+  rename('ph-group-verb3', '常用動詞片語 ②', '常用動詞片語 ③');
+  rename('ph-group-verb4', '常用動詞片語 ③', '常用動詞片語 ④');
+  rename('ph-at', '介系詞片語 ②', '介系詞片語 ③');
+  rename('ph-in2', '介系詞片語 ③', '介系詞片語 ④');
+}

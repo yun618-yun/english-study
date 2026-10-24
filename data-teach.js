@@ -563,4 +563,18 @@ for (const [k, v] of Object.entries(TEACH_MORE)) TEACH[k] = (TEACH[k] || []).con
     }
     TEACH[from] = keep;
   }
+  // 10/24 照 ▍小段拆開的筆記（data-more.js 的 SPLIT_MOVES）：錨點是小段標題的換成新的那一則；其他錨點照內容找
+  if (typeof SPLIT_MOVES === 'undefined') return;
+  const pairs = {};
+  Object.keys(SPLIT_MOVES).filter(k => k.startsWith('@')).forEach(k => { const [f, t] = k.slice(1).split('>'); (pairs[f] = pairs[f] || []).push(t); });
+  for (const [from, to] of Object.entries(pairs)) {
+    const keep = [];
+    for (const e of TEACH[from] || []) {
+      const mv = SPLIT_MOVES[e[0]];
+      if (mv) { if (mv[0] === from) keep.push([mv[1], e[1]]); else (TEACH[mv[0]] = TEACH[mv[0]] || []).push([mv[1], e[1]]); continue; }
+      const dest = to.find(id => id !== from && !note(from).includes(e[0]) && note(id).includes(e[0]));
+      if (dest) (TEACH[dest] = TEACH[dest] || []).push(e); else keep.push(e);
+    }
+    TEACH[from] = keep;
+  }
 })();

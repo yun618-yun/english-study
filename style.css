@@ -768,3 +768,8 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 [data-theme="w"] .page .nb::before {
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 100' preserveAspectRatio='none'%3E%3Cpath d='M14 1 C7 1 8 6 8 14 L8 42 C8 48 5 50 2 50 C5 50 8 52 8 58 L8 86 C8 94 7 99 14 99' fill='none' stroke='%23555555' stroke-width='1.8' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
 }
+/* 10/24 使用者：小框的標題（地點（5 個）這種）加螢光筆，一眼知道現在讀哪一區 */
+.page .nb > .lbl, .page .nb:has(img.pic) > .lbl {
+  background: linear-gradient(transparent 52%, rgba(255, 214, 92, .75) 52%, rgba(255, 214, 92, .75) 94%, transparent 94%);
+  -webkit-box-decoration-break: clone; box-decoration-break: clone; padding: 0 3px;
+}
