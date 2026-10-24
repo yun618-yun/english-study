@@ -164,7 +164,7 @@ const inline = s => esc(s)
   // 片語的例句：中文下面一行小字；英文和中文翻譯分兩行（10/24 使用者：擠在同一行，中文會被拆成「…同一間／房間。」）
   .replace(/\{\{ex:([^}]+)\}\}/g, (_, t) => {
     const m = t.match(/^(.*[.!?])\s+([^.!?]*[一-鿿].*)$/);   // 最後一個句點後面、有中文的那段是翻譯（UN 代表聯合國 也算）
-    return m ? `<span class="ex"><span class="ex-en">${m[1]}</span><span class="ex-zh">${zhWrap(m[2])}</span></span>` : `<span class="ex">${t}</span>`;
+    return m ? `<span class="ex"><span class="ex-en">${m[1]} ${sayBtn(m[1].replace(/<[^>]+>/g, "").replace(/&#39;/g, "'").replace(/&quot;/g, "\"").replace(/&amp;/g, "&"))}</span><span class="ex-zh">${zhWrap(m[2])}</span></span>` : `<span class="ex">${t}</span>`;
   })
   .replace(/⟪([^⟫]+)⟫/g, (_, t) => sayBtn(t.replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/\bsb\./g, 'somebody').replace(/\bsth\./g, 'something')))
   .replace(/\{\{tip:([^}]+)\}\}/g, (_, t) => {
@@ -231,7 +231,7 @@ function tableRow(t) {
   // 表格第一欄是英文（例如 be interested in、I am）→ 後面加 🔊；已經有 🔊 或插圖的就不重複加
   const allEn = parts.length >= 2 && parts.every(p => isEnglish(p) && !/[一-鿿]/.test(p));   // 整列都是英文（代名詞表）→ 念整列
   const text = allEn ? parts.join(', ') : englishPart(parts[0]);
-  const say = i => i === 0 && !t.includes('{{say:') && !t.includes('{{pic:') && isEnglish(parts[0]) && /[a-z]/i.test(text)
+  const say = i => i === 0 && !t.includes('{{say:') && !t.includes('{{pic:') && (isEnglish(parts[0]) || /^[\d,]+ \(?[a-z]/i.test(parts[0])) && /[a-z]/i.test(text)
     ? ' ' + sayBtn(text.replace(/\bsb\./g, 'somebody').replace(/\bsth\./g, 'something')) : '';
   // 英文是一整句（三個字以上）：改成英文在上、中文在下，比較不擠
   const sent = parts.length === 2 && !t.includes('{{pic:') && isEnglish(parts[0]) &&
@@ -262,7 +262,7 @@ function line(l) {
   if (!kv && tr(l)) return tr(l);
   if (kv) {
     // 「例：I love pears. 我喜歡梨。」這種，英文例句後面也加 🔊
-    const ex = /^例/.test(kv[1]) && isEnglish(kv[2]) ? englishPart(kv[2]) : '';
+    const ex = isEnglish(kv[2]) && /[A-Za-z]{2,}/.test(kv[2]) ? englishPart(kv[2]) : '';   // 10/24：「否定：She isn't…」這種也要有 🔊
     return `<div class="kv"><span>${inline(kv[1])}</span><b>${inline(kv[2])}${ex ? ' ' + sayBtn(ex) : ''}</b></div>`;
   }
   if (!isEnglish(l)) return `<div class="zh">${inline(l)}</div>`;
