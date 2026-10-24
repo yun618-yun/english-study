@@ -382,3 +382,156 @@ const TEACH = {
     ['② 時態 ＝ 時間 + 狀態', '時間有 4 種（現在、過去、將來、過去將來），狀態有 4 種（一般、進行、完成、完成進行），4 × 4 ＝ 16 大時態。']
   ]
 };
+
+// ===================== 第二批（10/24 使用者：用語、文法、動詞片語都要加）=====================
+// 同一則筆記已經有講解的，接在後面
+const TEACH_MORE = {
+  // ---------- ⭐ 基礎文法：之前沒做的 ----------
+  'pp-all': [
+    ['看圖記最快', '看圖的時候，嘴巴念出英文：「The cat is under the table.」一邊看一邊說，比只背中文記得牢。']
+  ],
+  'b-group-order': [
+    ['台灣人很常搞錯的地方', '中文換個位置意思常常差不多，英文不行。這一則每一項都是「位置」或「一個小字」決定意思。'],
+    ['👉 only 放在它要限制的字前面', '想成 only 是一個「只」字貼紙，貼在誰前面，就只限制誰。'],
+    ['This room is big enough.', '記法：enough 像一個小尾巴，跟在形容詞後面（big enough），但走在名詞前面（enough time）。'],
+    ['I want to eat something sweet.', 'something、anything、nothing 已經是一個完整的字了，形容詞只能從後面補充。'],
+    ['👉 few、a few 接可數', '有 a 的是「有一點，還不錯」；沒有 a 的是「幾乎沒有，很少」。'],
+    ['He likes coffee, doesn\'t he?', '做法：看前面用什麼小幫手（are、can、does），後面就用同一個，正負反過來。'],
+    ['No, I don\'t.　對，我不喜歡。', '英文的 Yes / No 只看「事實」：喜歡就說 Yes, I do.，不喜歡就說 No, I don\'t.，不管問題怎麼問。'],
+    ['How fast he runs!', '後面有名詞用 What（What a day!），只有形容詞用 How（How beautiful!）。'],
+    ['a coffee cup　咖啡杯', '兩個名詞放一起，前面的像形容詞，說是哪一種：coffee cup 是「咖啡的杯子」。'],
+    ['turn it on　把它打開', 'it、them 很短，要夾在中間；the light 比較長，放中間或後面都可以。'],
+    ['a big red car', '口語其實很少一次用三個以上形容詞，記住「大小在顏色前面」就夠用了。'],
+    ['Let\'s not argue.', 'Let\'s 的否定直接加 not：Let\'s not…（我們不要…吧）。'],
+    ['the first two pages', '中文說「前兩頁」，英文也是先說 first，再說 two。'],
+    ['I don\'t think he is right.', '英文習慣先把「不」說出來，語氣比較委婉。'],
+    ['No, not at all.　不介意，請坐。', 'mind ＝ 介意，所以 No（我不介意）才是「可以」。'],
+    ['I don\'t like it either.', 'too 用在肯定句，either 用在否定句，兩個都放在句子最後。'],
+    ['She is such a kind person.', '後面有名詞，就用 such；只有形容詞，就用 so。'],
+    ['Twice a week.　一週兩次。', '回答方式不同：How long → for…；How often → once a week；How many times → three times。']
+  ],
+  'mk-grammar': [
+    ['① very 不能放在動詞前面', 'very 只能形容「形容詞」（very good），不能形容動詞。想說「很喜歡」就用 really like 或 like … very much。'],
+    ['② agree 是動詞，前面不加 am', '中文「我同意」就是「我 + 同意」，英文一樣：I + agree，不用 be 動詞。'],
+    ['③ be 動詞和一般動詞不能放一起', '一句話只能有一個主要動詞，go 已經是動詞，就不要 am。'],
+    ['④ he / she / it 動詞要加 s', '現在式、主詞是一個人或一樣東西，動詞就要加 s。'],
+    ['⑤ although 和 but 只能用一個', '中文「雖然…但是…」是一組，英文只要一個連接詞就夠了：Although it rained, we went out.'],
+    ['⑥ because 和 so 只能用一個', '選一個：Because I was tired, I slept.\n或 I was tired, so I slept.'],
+    ['⑦ 中文「有…要…」不能直接翻', '一句話只能有一個主要動詞，have 和 want 擠在一起就錯了。也可以說 Can I ask you a question?'],
+    ['⑧ people 是複數', 'people 本身就是「很多人」，不加 s，動詞用 are。一個人是 a person。'],
+    ['⑨ How to… 不能自己當一句問句', 'How to… 只是一個片語，沒有主詞和動詞，要放進句子裡：I don\'t know how to say it.'],
+    ['⑩ 「不知道該怎麼辦」用 what to do', '中文「怎麼辦」其實是問「要做什麼」，所以用 what。']
+  ],
+  'mk-word': [
+    ['① 開燈、開電視用 turn on', '以前的燈和電視要「轉」開關，所以是 turn on / turn off。open 是打開門、窗、箱子。'],
+    ['③ play 後面接遊戲、運動、樂器', '「玩電腦」其實是「用電腦」或「玩電腦遊戲」，要說清楚。'],
+    ['④ 吃藥用 take', '藥不是食物，英文用 take（拿進去）。'],
+    ['⑦ discuss 後面直接接東西', 'discuss 本身就有「討論關於…」的意思，about 就多了。talk 才要加 about：talk about it。'],
+    ['⑧ marry 後面直接接人', '也可以說 get married：They got married last year.'],
+    ['⑩ I\'m boring. 是「我是個無聊的人」', '-ed 是「我覺得」，-ing 是「讓別人覺得」。I\'m bored. 我覺得好無聊。']
+  ],
+
+  // ---------- 📚 文法用語：補充 ----------
+  'study-routine': [
+    ['每天大約 25～30 分鐘', '時間不夠的話，至少做 ① 卡片複習。每天都碰一下英文，比一次做很多更重要。'],
+    ['⑥ ⌨️ 看中文打英文', '這一步最難，因為要自己想出句子。打錯沒關係，看答案、念一次，下次就會了。']
+  ],
+  'study-think-en': [
+    ['初學的時候腦中先想中文', '不用逼自己馬上不想中文。常用的句子練到很熟，就會自然跳出來，不用再翻譯。'],
+    ['I want to ＿＿.', '換字練習：I want to eat. → I want to sleep. → I want to go home.\n骨架不變，只換最後幾個字。'],
+    ['It\'s cold today.', '小技巧：做家事、走路的時候，用英文說出自己在做什麼。']
+  ],
+  'g-pos-abbr': [
+    ['n.　名詞', '最常用的是 n.、v.、adj.、adv. 這四個，先記這四個就好。'],
+    ['① 比較少提到的兩個', '同一個字可以有好幾個詞性：play 可以是動詞（玩），也可以是名詞（戲劇）。']
+  ],
+  'g-group-tips': [
+    ['做填空題時，先看空格的「位置」', '做法：先看空格前後一個字是什麼詞性，再決定要填名詞、動詞還是形容詞。'],
+    ['What about [going] swimming?', '介係詞後面要接名詞，動詞變成名詞的方法就是加 ing。'],
+    ['He is [very] clever.', '形容詞前面通常是 very、really、so 這種「程度」的副詞。'],
+    ['They [happily] went fishing.', '很多副詞是形容詞加 ly：happy → happily（y 變 i）。'],
+    ['He is [tall].', 'be、look、feel、seem 後面放形容詞，不放副詞：You look [happy]. ✓'],
+    ['填空題分兩種', '先看空格旁邊有沒有括號給字：有的話就是要把那個字變形（加 s、ed、ing…）。'],
+    ['第二次提到的名詞', 'the 的意思是「你知道我說的是哪一個」。']
+  ],
+  'g-group-pos': [
+    ['② 名詞分兩種', '可數：能一個一個數，可以加 s。不可數：水、錢、空氣，不加 s。'],
+    ['① 一般動詞：看得到的動作', '問自己：可以「做」出來嗎？可以就是一般動詞（eat、run），也包括心裡的動作（like、think）。'],
+    ['③ 助動詞：放在動詞前面幫忙的', '助動詞像小幫手：問句跑到最前面，否定加 not，後面的動詞用原形。'],
+    ['① 放在名詞前面', '形容詞放在名詞前面，跟中文一樣：a red car 一台紅色的車。'],
+    ['① 形容動詞（怎麼做）', '副詞通常放在動作後面：He runs [fast].（跑得快）'],
+    ['① a / an：不特定的「一個」', 'a、an 只能用在「一個」可以數的東西，水、錢不能用 a。'],
+    ['① 介係詞 + 名詞', '介係詞後面一定要有名詞或代名詞：with me、in the box。']
+  ],
+  'g-group-verb': [
+    ['③ 過去式：已經發生的事', '規則動詞加 ed：play → played。不規則的要背：go → went。'],
+    ['⑤ 現在分詞（ing）：正在做', '前面要有 be 動詞才是進行式：I [am] eating.']
+  ],
+  'g-group-parts': [
+    ['▍句子的 8 種成分', '這是大陸課本的說法，名字很多，但只要先會「主詞、動詞、受詞」三個就夠用。'],
+    ['⑤ S + V + O + C', 'C（補語）是補充說明受詞：They call him Tom. 他們叫他 Tom（Tom 在說明 him）。']
+  ],
+  'g-group-kinds': [
+    ['① 陳述句：說明一件事', '平常說的話大部分都是陳述句，最後是句號。'],
+    ['② 疑問句：問問題，分成四種', '最常用的兩種：Yes / No 問句（Do you…?）和疑問詞問句（What…?）。']
+  ],
+  'g-numbers': [
+    ['① 基數詞：幾個', 'one、two、three 是「幾個」；first、second、third 是「第幾」。日期要用第幾：May [5th]（念 fifth）。']
+  ],
+  'g-person': [
+    ['【三種人稱】', '第一人稱：說話的人（我、我們）\n第二人稱：聽的人（你、你們）\n第三人稱：其他所有人和東西（他、她、它、他們）']
+  ],
+  'g-tense': [
+    ['【最常用的 5 個】', '先把這 5 個學熟，日常生活大部分的句子都夠用了。']
+  ],
+
+  // ---------- 🧩 動詞片語：補充 ----------
+  'ph-bare': [
+    ['see sb. do sth.', 'see 後面接原形是「看到整個動作」；接 ing 是「看到正在做」：I saw him [crossing] the street.'],
+    ['have sb. do sth.', 'have 是「請人做」，通常是對方的工作：I had the waiter [bring] some water.']
+  ],
+  'ph-be': [
+    ['be good for　對', 'be good for 是「對…有好處」；be good at 是「擅長」：Milk is good for you. / She is good at math.'],
+    ['be late for', 'be late for + 事情：I was late for work. 我上班遲到了。'],
+    ['be ready for', 'be ready for + 東西；be ready to + 動作：I\'m ready to go.']
+  ],
+  'ph-up': [
+    ['turn up　出現', 'turn up 有兩個意思：「出現」（He didn\'t turn up.）和「調大聲」（Turn up the volume.），看後面有沒有東西。'],
+    ['look up　查（字典）', '查單字：look up the word；也可以 look it up（it 放中間）。'],
+    ['end up　最後（變成）', 'end up + ing：We ended up [staying] home. 我們最後待在家。'],
+    ['show up　出現', 'show up 和 turn up 都是「出現、到場」，口語很常用。']
+  ],
+  'ph-group-small': [
+    ['turn down　拒絕', '同一個片語可以有好幾個意思，看後面接什麼：turn down the music（調小聲）、turn down the job（拒絕工作）。'],
+    ['break down　故障', 'My car broke down. 我的車拋錨了。'],
+    ['take off　脫下', '脫衣服：take off your shoes；飛機起飛：The plane took off.'],
+    ['put off　延期', 'put off + ing：Don\'t put off [doing] your homework. 不要拖延寫作業。'],
+    ['depend on　依靠', '回答「看情況」：It depends.'],
+    ['hand in　繳交', '交作業、交報告：Please hand in your homework.']
+  ],
+  'ph-out': [
+    ['find out　查出', 'find 是「找到東西」，find out 是「查出、發現（答案、真相）」：I found out the truth.'],
+    ['work out　想出', 'work out 兩個意思：想出辦法（work out a plan）、去運動（I work out every day.）。'],
+  ],
+  'ph-group-give-go': [
+    ['go on　繼續', 'go on + ing：Go on [talking]. 繼續說。'],
+    ['go over　複習', '考試前常說：Let\'s go over the notes. 我們來複習筆記。']
+  ],
+  'ph-group-prep': [
+    ['wait for　等待', '等「人或東西」一定要加 for：wait for you ✓、wait you ✗'],
+    ['agree with　同意', 'agree with + 人：I agree with you.\nagree to + 提議：I agree to the plan.'],
+    ['deal with　處理', '工作上很常用：I\'ll deal with it. 我來處理。'],
+    ['at least　至少', 'at least 相反是 at most（最多）。'],
+    ['at last　終於', 'at last 是等了很久「終於」；in the end 是「最後的結果」。'],
+  ],
+  'ph-group-verb2': [
+    ['look for　尋找', 'look for 是「找的過程」；find 是「找到了」：I looked for my keys, but I didn\'t find them.'],
+    ['look after　照顧', 'look after ＝ take care of，兩個都是「照顧」。'],
+    ['get to　到達', 'get to + 地方，但 home 前面不加 to：get home ✓、get to home ✗'],
+    ['take after　（長相、個性）像', 'take after 只能用在家人之間，像爸媽或長輩。'],
+    ['take part in　參加', 'take part in 是「參加、參與活動」；join 是「加入（團體、人）」：join a club。'],
+    ['come up with　想出', '想出一個點子：come up with an idea。'],
+    ['keep in touch with　和…保持聯絡', '道別時很常說：Keep in touch! 保持聯絡！']
+  ]
+};
+for (const [k, v] of Object.entries(TEACH_MORE)) TEACH[k] = (TEACH[k] || []).concat(v);

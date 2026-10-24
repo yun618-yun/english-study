@@ -718,3 +718,14 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .trl .ex-en small { color: var(--muted); font-size: 12.5px; margin-right: 2px; }
 .trl .ex-zh { font-size: 14.5px; }
 .trl .ex-en { font-weight: 600; }
+
+/* 10/24 使用者（第二次反映）：筆記裡的中文意思不要灰色、不要太小 → 一律深色，至少 15px */
+.page .nb .zh, .page .sub, .page .nb .row .v, .page .nb .row.sent .v,
+.page .nbgrid .nb .row .v, .page .nbgrid .nb .row.multi .v + .v, .page .nb .row.multi span:last-child,
+.nb:has(img.pic) .row .v { color: var(--text) !important; font-size: 15px !important; }
+.page .nb .row .v + .v { color: var(--text) !important; font-size: 14.5px !important; }
+.page .ex-zh, .trl .ex-zh { color: var(--text); font-size: 15px; }
+.wtip { font-size: 14px; }
+.wtip.teach { font-size: 14.5px; }
+.wtip.teach > b:first-child { font-size: 13.5px; }
+.page .nbgrid .kv > span, .nb .kv > span, .trl .ex-en small { font-size: 14px; }
