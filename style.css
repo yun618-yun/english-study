@@ -701,3 +701,8 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .word-pop b { color: var(--teal); }
 .word-pop .wp-zh { font-size: 16px; margin-top: 4px; color: var(--text); }
 .word-pop .wp-x { position: absolute; top: 8px; right: 8px; border: 0; background: none; font-size: 18px; color: var(--muted); }
+/* 📊 弱點分析 */
+.weak-row { padding: 8px 0; border-bottom: 1px dashed var(--line); }
+.weak-row:last-child { border-bottom: 0; }
+.weak-row .row-btns { margin-top: 6px; }
+.weak-row .btn { padding: 8px 10px; font-size: 15px; }

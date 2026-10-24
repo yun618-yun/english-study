@@ -27,6 +27,15 @@ try { status = JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch (e) { 
 function setStatus(id, value) {
   if (value) status[id] = value; else delete status[id];
   try { localStorage.setItem(STORE_KEY, JSON.stringify(status)); } catch (e) { /* 存不了就算了 */ }
+  if (value === 'unknown') logError(id);
+}
+// 📊 弱點分析：每張卡片答錯（或標不熟）幾次（10/24）
+const ERR_KEY = 'english-study-errlog';
+let errLog = {};
+try { errLog = JSON.parse(localStorage.getItem(ERR_KEY)) || {}; } catch (e) {}
+function logError(id) {
+  errLog[id] = (errLog[id] || 0) + 1;
+  try { localStorage.setItem(ERR_KEY, JSON.stringify(errLog)); } catch (e) {}
 }
 function badge(id) {
   if (status[id] === 'known') return '<span class="badge known">已熟</span>';
@@ -797,7 +806,7 @@ function renderProgress() {
     </div>`;
   }).join('') + weekHistoryHtml() + settingsHtml() + `<button class="btn ghost" data-act="reset">清除所有標記</button>`;
   // 月曆放在總覽下面
-  document.querySelector('.sec-title').insertAdjacentHTML('beforebegin', calendarHtml() + levelSettingsHtml());
+  document.querySelector('.sec-title').insertAdjacentHTML('beforebegin', calendarHtml() + weakHtml() + levelSettingsHtml());
 }
 
 // ===== 🗓️ 學習月曆：這個月有做完複習的日子打勾 =====
@@ -954,6 +963,42 @@ function levelBanner() {
     ${canLevelUp() ? `<button class="btn" data-act="level-up">🎉 可以升到第 ${userLevel + 1} 級了！</button>` : ''}</div>`;
 }
 // 「進度」分頁：說明＋手動切換
+// 📊 弱點分析：把答錯的卡片歸到它所在的那則筆記（主題），找出錯最多的 3 個主題
+let cardTopic = null;
+function topicOf(card) {
+  if (!cardTopic) {
+    cardTopic = {};
+    const notes = ALL.filter(it => it.note);
+    ALL.filter(isCard).forEach(c => {
+      const en = firstLine(c.back), key = isEnglish(en) ? en : c.front;
+      // 同一個分類裡，內容提到這張卡片的那則筆記
+      // 先用編號對（b-in-1 → b-in-on-at、group fruit → vocab-fruit），對不到再看筆記內容有沒有提到這張卡片
+      const same = notes.filter(x => x.cat === c.cat), stem = c.group || c.id.split('-').slice(0, 2).join('-');
+      const merged = typeof MERGED_INTO === 'undefined' ? '' : MERGED_INTO[stem] || (Object.entries(MERGED_INTO).find(([k]) => k.startsWith(stem + '-')) || [])[1];
+      const n = same.find(x => x.id === stem || x.id === merged || x.id === 'vocab-' + stem || x.id.startsWith(stem + '-') || x.id.endsWith('-' + stem)) ||
+        same.find(x => x.note.includes(key) || x.note.includes(firstLine(c.front)));
+      cardTopic[c.id] = n ? { id: n.id, cat: n.cat, title: n.title } : { id: '', cat: c.cat, title: c.catName };
+    });
+  }
+  return cardTopic[card.id];
+}
+function weakHtml() {
+  const score = {};
+  ALL.filter(isCard).forEach(c => {
+    const n = (errLog[c.id] || 0) + (status[c.id] === 'unknown' && !errLog[c.id] ? 1 : 0);   // 以前標不熟、還沒有錯誤紀錄的算 1 次
+    if (!n) return;
+    const t = topicOf(c), k = t.id || 'cat:' + t.cat;
+    score[k] = score[k] || { ...t, n: 0, cards: 0 };
+    score[k].n += n; score[k].cards++;
+  });
+  const top = Object.values(score).filter(t => t.n >= 2).sort((a, b) => b.n - a.n).slice(0, 3);
+  const body = top.length ? top.map((t, i) => `<div class="weak-row">
+      <div><b>${i + 1}. ${esc(t.title.replace(/（\d+ (個|項)）$/, ''))}</b><div class="muted">${esc(CAT[t.cat] ? CAT[t.cat].name : '')}・錯了 ${t.n} 次（${t.cards} 張卡片）</div></div>
+      <div class="row-btns">${t.id ? `<button class="btn ghost" data-act="open-note" data-c="${t.cat}" data-id="${t.id}">📖 看筆記</button>` : ''}
+        <button class="btn ghost" data-act="weak-cards" data-c="${t.cat}">🃏 練這類</button></div></div>`).join('')
+    : '<p class="muted">多練幾天，這裡會告訴你最常錯的是哪一類，以及該複習哪一則筆記。</p>';
+  return `<h3 class="sec-title">📊 弱點分析：最常錯的主題</h3><div class="box">${body}</div>`;
+}
 function levelSettingsHtml() {
   const rows = [1, 2, 3].map(n => { const p = levelProgress(n); return `<button class="btn ${n === userLevel ? '' : 'ghost'}" data-act="level-set" data-v="${n}">${LEVEL_NAME[n]}<br><small>已學 ${p.learned} / ${p.total}</small></button>`; }).join('');
   return `<h3 class="sec-title">🌱 學習等級</h3><div class="box">
@@ -1820,6 +1865,7 @@ $view.addEventListener('click', e => {
     }
     case 'restore-paste': { const t = prompt('把備份文字貼在這裡：'); if (t) restoreText(t); break; }
     case 'open-note': go('notes', el.dataset.c, el.dataset.id); break;
+    case 'weak-cards': go('cards', el.dataset.c); window.scrollTo(0, 0); break;
     case 'plan-go': startPlan(el.dataset.k); window.scrollTo(0, 0); break;
     case 'plan-back': go('today'); break;
     case 'listen-go': planRun = null; startListenRound(el.dataset.mode, el.dataset.src); renderListen(); window.scrollTo(0, 0); break;

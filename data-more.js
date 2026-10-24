@@ -961,10 +961,13 @@ for (const it of NOTES.find(c => c.id === 'mistakes').items) if (it.note && !it.
 // ===================== 🧩 合併相似的格子，按鈕不要太多（10/23 使用者要的，先試時態類） =====================
 // mode 'box'：每一則變成一個【框框】，兩欄排；'section'：每一則前面加 ▍小標題，內容照原本的樣子
 // 原本的筆記如果也是卡片，卡片留著（只拿掉筆記內容），練習紀錄不會不見
+// 合併的時候記下「哪一則併進哪一則」（弱點分析要用：卡片編號還是舊的那則）
+const MERGED_INTO = {};
 function mergeNotes(catId, newId, title, ids, mode, intro) {
   const items = NOTES.find(c => c.id === catId).items;
   const src = ids.map(id => items.find(i => i.id === id && i.note)).filter(Boolean);
   if (src.length < 2) return;
+  src.forEach(it => { MERGED_INTO[it.id] = newId; });
   // 原本開頭的 {{nogrid}} 拿掉（只能放在整則最前面）；有一則是 nogrid，合併後也 nogrid
   const nogrid = src.some(it => it.note.startsWith('{{nogrid}}'));
   const clean = n => n.replace(/^\{\{(no)?grid\}\}\n*/, '');
