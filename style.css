@@ -792,3 +792,12 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .reply-why { margin-top: 8px; padding: 8px 10px; border-radius: 10px; background: #fff6dc; font-size: 15.5px; line-height: 1.6; color: var(--text); }
 .answer-box .trl .ex-en { font-size: 18px; font-weight: 700; }
 .answer-box .trl .ex-zh { font-size: 16.5px; color: var(--text); }
+/* ⭐ 我的生字本 */
+.word-pop .wp-star { display: block; margin-top: 8px; padding: 7px 12px; border-radius: 10px; border: 1px solid #f2c14e; background: #fff6dc; font-size: 15px; color: var(--text); }
+.mywords { border-color: #f2c14e; }
+.mw-row { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-top: 1px dashed var(--line); font-size: 16.5px; }
+.mw-row:first-child { border-top: 0; }
+.mw-w { font-weight: 700; color: var(--teal); }
+[data-theme="w"] .mw-w { color: #a3262a; }
+.mw-zh { flex: 1; color: var(--text); }
+.mw-x { border: 0; background: none; font-size: 16px; color: var(--muted); padding: 4px 8px; }

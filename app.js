@@ -133,7 +133,7 @@ function backBtn(text = '分類') {
 }
 function catHead() {
   if (currentTab === 'cards') {
-    const opts = [['all', '🔀 全部混在一起'], ...NOTES.map(c => [c.id, `${c.icon || '📘'} ${c.name}`])]
+    const opts = [['all', '🔀 全部混在一起'], ['mine', `⭐ 我的生字本（${myWords().length}）`], ...NOTES.map(c => [c.id, `${c.icon || '📘'} ${c.name}`])]
       .map(([id, name]) => `<option value="${esc(id)}" ${id === currentCat ? 'selected' : ''}>${esc(name)}</option>`).join('');
     return `<div class="deck-head"><span class="muted">練習範圍</span><select id="deck-cat">${opts}</select></div>`;
   }
@@ -683,6 +683,8 @@ function markOpts(options, picked, root = $view) {
 let cardQ = null;
 function renderCards() {
   if (!currentCat) return renderCatGrid('cards');
+  // ⭐ 我的生字本：練習範圍選單裡的一個選項
+  if (currentCat === 'mine') { $view.innerHTML = catHead() + myWordsBox(); const l = document.getElementById('mywords-list'); if (l) l.hidden = false; return; }
   if (currentCat === 'wrong' && deckPos >= deck.length) {
     const left = itemsInCat().filter(isCard).length;
     const back = planBack('wrong');
@@ -1440,7 +1442,8 @@ const LISTEN_SRC = {
   pic: { name: '🖼️ 看圖', items: () => ALL.filter(it => it.front && it.pic && isImageFile(it.pic) && PIC_GROUPS.includes(it.group)) },
   ee: { name: '🔤 英英', items: () => typeof EN_DEFS === 'undefined' ? [] : EN_DEFS.map(d => ({ id: 'ee-' + d.en, ...d })) },
   // 💬 怎麼回答？（10/24 使用者的朋友建議）：對方說一句，選出最自然的回答
-  reply: { name: '💬 怎麼回答', items: () => typeof REPLIES === 'undefined' ? [] : REPLIES }
+  reply: { name: '💬 怎麼回答', items: () => typeof REPLIES === 'undefined' ? [] : REPLIES },
+  mine: { name: '⭐ 生字本', items: () => myWords().filter(x => x.zh).map(x => ({ id: 'mine-' + x.w, en: x.w, zh: x.zh.split('；')[0] })) }
 };
 const PIC_GROUPS = ['color', 'staple', 'bakery', 'tableware', 'drink', 'flower', 'fruit', 'vegetable', 'meat', 'transport', 'tool', 'weather', 'place', 'home', 'job', 'clothes', 'sport', 'body'];
 // 中文意思（答完才給看）：單字庫裡有的字才有
@@ -1449,7 +1452,7 @@ const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
 function startListen() { listenMode = null; listenSrc = null; }
 function listenHome() {
   const srcBtns = mode => Object.entries(LISTEN_SRC)
-    .filter(([k]) => k !== 'pic' && k !== 'ee' && k !== 'reply')
+    .filter(([k]) => k !== 'pic' && k !== 'ee' && k !== 'reply' && k !== 'mine')
     .filter(([k]) => mode === 'listen' || mode === 'type' ? k !== 'example' : mode === 'order' ? k !== 'word' : true)
     .map(([k, s]) => `<button class="btn ghost" data-act="listen-go" data-mode="${mode}" data-src="${k}">${s.name}</button>`).join('');
   // 對話照等級分組（10/24），每一級都可以點
@@ -1716,13 +1719,38 @@ function answerStory(el) {
   }
 }
 // 點字：下面跳出小框框（中文＋🔊）
+// ⭐ 我的生字本（10/24）：點字時加入，存在手機裡；卡片分頁最上面可以看清單、練習
+const MY_WORDS_KEY = 'english-study-mywords';
+function myWords() { try { return JSON.parse(localStorage.getItem(MY_WORDS_KEY) || '[]'); } catch (e) { return []; } }
+function saveMyWords(list) { try { localStorage.setItem(MY_WORDS_KEY, JSON.stringify(list)); } catch (e) {} }
+function toggleMyWord(w, zh) {
+  const list = myWords(), i = list.findIndex(x => x.w === w);
+  if (i >= 0) list.splice(i, 1); else list.unshift({ w, zh, t: Date.now() });
+  saveMyWords(list);
+}
+function myWordsBox() {
+  const list = myWords();
+  if (!list.length) return '<div class="listen-box mywords"><h3>⭐ 我的生字本</h3><p class="muted">在筆記、例句、對話裡點英文字，按「⭐ 加入生字本」，不熟的字就會收集在這裡</p></div>';
+  const canType = list.some(x => x.zh);
+  return `<div class="listen-box mywords"><h3>⭐ 我的生字本（${list.length} 個）</h3>
+    <div class="row-btns">${canType ? '<button class="btn ghost" data-act="listen-go" data-mode="type" data-src="mine">⌨️ 看中文打英文</button>' : ''}
+      <button class="btn ghost" data-act="mywords-list">📋 看清單</button></div>
+    <div id="mywords-list" hidden>${list.map(x => `<div class="mw-row"><span class="mw-w">${esc(x.w)}</span> ${sayBtn(x.w)}<span class="mw-zh">${esc(x.zh || '')}</span><button class="mw-x" data-act="mywords-del" data-w="${esc(x.w)}" aria-label="移除">✕</button></div>`).join('')}</div></div>`;
+}
 function showWordPop(w, inStory = true) {
   document.querySelectorAll('.word-pop').forEach(p => p.remove());
   const zh = lookupWord(w, inStory);
   const pop = document.createElement('div');
   pop.className = 'word-pop';
-  pop.innerHTML = `<b>${esc(w)}</b> ${sayBtn(w)}<div class="wp-zh">${zh ? esc(zh) : '（這個字還沒有收錄，看旁邊的中文或整句翻譯試試）'}</div><button class="wp-x" aria-label="關閉">✕</button>`;
-  pop.addEventListener('click', e => { if (e.target.closest('.wp-x')) pop.remove(); else if (e.target.closest('[data-say]')) speak(e.target.closest('[data-say]').dataset.say); });
+  const key = w.toLowerCase();
+  const starBtn = () => myWords().some(x => x.w === key) ? '✅ 已在生字本（點一下移除）' : '⭐ 加入生字本';
+  pop.innerHTML = `<b>${esc(w)}</b> ${sayBtn(w)}<div class="wp-zh">${zh ? esc(zh) : '（這個字還沒有收錄，看旁邊的中文或整句翻譯試試）'}</div>
+    <button class="wp-star">${starBtn()}</button><button class="wp-x" aria-label="關閉">✕</button>`;
+  pop.addEventListener('click', e => {
+    if (e.target.closest('.wp-x')) pop.remove();
+    else if (e.target.closest('.wp-star')) { toggleMyWord(key, zh); pop.querySelector('.wp-star').textContent = starBtn(); }
+    else if (e.target.closest('[data-say]')) speak(e.target.closest('[data-say]').dataset.say);
+  });
   document.body.appendChild(pop);
   speak(w);
 }
@@ -1886,7 +1914,7 @@ function route() {
   currentTab = TABS[tab] ? tab : 'today';
   // 分類搬家、筆記合併後，舊的網址（或「回到上次那一頁」）也要能打開：找不到就回到那則筆記現在所在的分類
   const moved = item && ALL.find(it => it.id === item && it.note);
-  currentCat = CAT[cat] || (cat === 'all' && currentTab !== 'notes') ? cat : null;
+  currentCat = CAT[cat] || ((cat === 'all' || cat === 'mine') && currentTab !== 'notes') ? cat : null;
   if (moved && currentTab === 'notes' && moved.cat !== currentCat) currentCat = moved.cat;
   openItem = currentTab === 'notes' && currentCat && ALL.some(it => it.id === item && it.cat === currentCat && it.note) ? item : null;
   showTab(currentTab);
@@ -2020,6 +2048,8 @@ $view.addEventListener('click', e => {
     case 'listen-ans': answerListen(Number(el.dataset.i)); break;
     case 'ee-ans': answerEE(Number(el.dataset.i)); break;
     case 'reply-ans': answerReply(Number(el.dataset.i)); break;
+    case 'mywords-list': { const l = document.getElementById('mywords-list'); if (l) l.hidden = !l.hidden; break; }
+    case 'mywords-del': toggleMyWord(el.dataset.w); renderCards(); { const l = document.getElementById('mywords-list'); if (l) l.hidden = false; } break;
     case 'reply-zh': { const z = document.getElementById('reply-zh'); if (z) z.hidden = !z.hidden; break; }
     case 'story-start': startStory(el.dataset.id); renderListen(); window.scrollTo(0, 0); break;
     case 'st-word': showWordPop(el.dataset.w); break;
