@@ -1020,7 +1020,10 @@ mergeNotes('phrase', 'ph-group-give-go', 'give 和 go 片語（28 個）', ['ph-
 {
   const n = keys => keys.reduce((s, k) => s + PHRASES.find(p => p[0] === k)[3].split('|').length, 0);
   mergeNotes('phrase', 'ph-group-prep', `介系詞片語：for／with／about／at／in（${n(['for', 'with', 'about', 'at', 'in2'])} 個）`, ['ph-for', 'ph-with', 'ph-about', 'ph-at', 'ph-in2'], 'section');
-  mergeNotes('phrase', 'ph-group-verb2', `常用動詞片語：look／get／take／come／keep／put（${n(['look', 'get', 'take', 'come', 'keep', 'put'])} 個）`, ['ph-look', 'ph-get', 'ph-take', 'ph-come', 'ph-keep', 'ph-put'], 'section');
+  // 10/24 使用者覺得 72 個太長：拆成三則（第一則沿用 ph-group-verb2，紀錄不會掉）
+  mergeNotes('phrase', 'ph-group-verb2', `常用動詞片語 ①：look／get（${n(['look', 'get'])} 個）`, ['ph-look', 'ph-get'], 'section');
+  mergeNotes('phrase', 'ph-group-verb3', `常用動詞片語 ②：take／come（${n(['take', 'come'])} 個）`, ['ph-take', 'ph-come'], 'section');
+  mergeNotes('phrase', 'ph-group-verb4', `常用動詞片語 ③：keep／put／turn（${n(['keep', 'put'])} 個）`, ['ph-keep', 'ph-put'], 'section');
 }
 mergeNotes('core', 'cw-group-verb', '常用動詞：每天、萬用、生活（61 個）', ['cw-verb-daily', 'cw-verb-common', 'cw-verb-more'], 'section');
 mergeNotes('core', 'cw-group-adj5', '5 個重要形容詞（eager、fair、familiar、firm、foreign）', ['cw-adj-eager', 'cw-adj-fair', 'cw-adj-familiar', 'cw-adj-firm', 'cw-adj-foreign'], 'section');

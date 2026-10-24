@@ -305,9 +305,13 @@ const TEACH = {
   ],
   'ph-group-verb2': [
     ['▍look 片語（10 個）', '同一個動詞配不同的小字，意思差很多。先記最常用的：look for 找、look after 照顧、look forward to 期待。'],
-    ['▍get 片語（20 個）', 'get 的感覺：變成、到達。get up 變成起來 → 起床；get to 到達。'],
+    ['▍get 片語（20 個）', 'get 的感覺：變成、到達。get up 變成起來 → 起床；get to 到達。']
+  ],
+  'ph-group-verb3': [
     ['▍take 片語（16 個）', 'take 的感覺：拿、帶走、花（時間）。It takes ten minutes. 要花十分鐘。'],
-    ['▍come 片語（11 個）', 'come 的感覺：往說話的人這邊來。come back 回來、come in 進來。'],
+    ['▍come 片語（11 個）', 'come 的感覺：往說話的人這邊來。come back 回來、come in 進來。']
+  ],
+  'ph-group-verb4': [
     ['▍keep 片語（9 個）', 'keep 的感覺：一直維持。keep going 繼續走、keep quiet 保持安靜。'],
     ['▍put 和 turn 片語（6 個）', 'put 的感覺：放。turn 的感覺：轉。turn on 以前是轉開關，所以是打開電器。']
   ],
@@ -511,7 +515,7 @@ const TEACH_MORE = {
   ],
   'ph-out': [
     ['find out　查出', 'find 是「找到東西」，find out 是「查出、發現（答案、真相）」：I found out the truth.'],
-    ['work out　想出', 'work out 兩個意思：想出辦法（work out a plan）、去運動（I work out every day.）。'],
+    ['work out　想出', 'work out 兩個意思：想出辦法（work out a plan）、去運動（I work out every day.）。']
   ],
   'ph-group-give-go': [
     ['go on　繼續', 'go on + ing：Go on [talking]. 繼續說。'],
@@ -522,15 +526,19 @@ const TEACH_MORE = {
     ['agree with　同意', 'agree with + 人：I agree with you.\nagree to + 提議：I agree to the plan.'],
     ['deal with　處理', '工作上很常用：I\'ll deal with it. 我來處理。'],
     ['at least　至少', 'at least 相反是 at most（最多）。'],
-    ['at last　終於', 'at last 是等了很久「終於」；in the end 是「最後的結果」。'],
+    ['at last　終於', 'at last 是等了很久「終於」；in the end 是「最後的結果」。']
   ],
   'ph-group-verb2': [
     ['look for　尋找', 'look for 是「找的過程」；find 是「找到了」：I looked for my keys, but I didn\'t find them.'],
     ['look after　照顧', 'look after ＝ take care of，兩個都是「照顧」。'],
-    ['get to　到達', 'get to + 地方，但 home 前面不加 to：get home ✓、get to home ✗'],
+    ['get to　到達', 'get to + 地方，但 home 前面不加 to：get home ✓、get to home ✗']
+  ],
+  'ph-group-verb3': [
     ['take after　（長相、個性）像', 'take after 只能用在家人之間，像爸媽或長輩。'],
     ['take part in　參加', 'take part in 是「參加、參與活動」；join 是「加入（團體、人）」：join a club。'],
-    ['come up with　想出', '想出一個點子：come up with an idea。'],
+    ['come up with　想出', '想出一個點子：come up with an idea。']
+  ],
+  'ph-group-verb4': [
     ['keep in touch with　和…保持聯絡', '道別時很常說：Keep in touch! 保持聯絡！']
   ]
 };
