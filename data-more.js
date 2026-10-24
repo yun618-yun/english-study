@@ -22,7 +22,7 @@ NOTES.find(c => c.id === 'mnemonic').items.push(
     id: 'mn-tool-by',
     front: 'I go to work ___ bus.\n（我搭公車上班）',
     back: 'by\n方式（交通工具）用 by',
-    quiz: { q: 'I exercise ___ working out.（透過健身）', options: ['in', 'by', 'with', 'use'], answer: 1 }
+    quiz: { q: 'I stay healthy ___ working out.（透過健身保持健康）', options: ['in', 'by', 'with', 'use'], answer: 1 }
   },
   {
     id: 'mn-tool-use',
