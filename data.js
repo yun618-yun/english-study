@@ -540,7 +540,7 @@ const NOTES = [
       {
         id: 'b-tenses5',
         title: '⭐ 最常用的 5 個時態',
-        note: '「16 大時態」裡，日常生活最常用的只有這 5 個，先學會就夠用了。\n\n① 現在簡單式　do / does\n習慣、事實、每天都做的事\nI drink coffee every day.\n看到：every day、always、usually、often\n\n② 現在進行式　am / is / are + doing\n現在正在做的事\nI am drinking coffee now.\n看到：now、right now、Look!、Listen!\n\n③ 過去簡單式　did\n過去發生、已經結束的事\nI drank coffee yesterday.\n看到：yesterday、last week、ago、in 2020\n\n④ 未來式　will do / be going to do\n將來要做的事\nI will drink coffee tomorrow.\n看到：tomorrow、next week、soon\n\n⑤ 現在完成式　have / has + done\n過去做了，跟現在有關係；或從過去持續到現在\nI have drunk coffee already.\nI have lived here for 5 years.\n看到：already、yet、ever、never、for、since\n\n💡 其他 11 個時態可以之後再看「16 大時態」分類。\n💡 台灣課本叫「現在簡單式」，大陸叫「一般現在時」，是同一個東西。',
+        note: '「16 大時態」裡，日常生活最常用的只有這 5 個，先學會就夠用了。\n\n① 現在簡單式　do / does\n習慣、事實、每天都做的事\nI drink coffee every day.\n看到：every day、always、usually、often\n\n② 現在進行式　am / is / are + doing\n現在正在做的事\nI am drinking coffee now.\n看到：now、right now、Look!、Listen!\n\n③ 過去簡單式　did\n過去發生、已經結束的事\nI drank coffee yesterday.\n看到：yesterday、last week、ago、in 2020\n\n④ 未來式　will do / be going to do\n將來要做的事\nI will drink coffee tomorrow.\n看到：tomorrow、next week、soon\n\n⑤ 現在完成式　have / has + done\n過去做了，跟現在有關係；或從過去持續到現在\nI have already drunk my coffee.\nI have lived here for 5 years.\n看到：already、yet、ever、never、for、since\n\n💡 其他 11 個時態可以之後再看「16 大時態」分類。\n💡 台灣課本叫「現在簡單式」，大陸叫「一般現在時」，是同一個東西。',
         front: '日常最常用的 5 個時態是？',
         back: '現在簡單式、現在進行式、過去簡單式\n未來式、現在完成式',
         quiz: { q: 'I ___ here for 5 years.（住了五年，現在還住）', options: ['live', 'lived', 'have lived', 'will live'], answer: 2 }
@@ -978,10 +978,10 @@ const NOTES = [
       {
         id: 't-past-perfect',
         title: '過去完成時　had done',
-        note: '定義：過去某個時間「之前」就完成的動作（過去的過去）\n例：I had eaten pears by the end of last night.\n昨晚結束前，我就吃完梨了。',
+        note: '定義：過去某個時間「之前」就完成的動作（過去的過去）\n例：I had eaten the pears by 10 p.m. last night.\n昨晚十點前，我就吃完梨了。',
         front: '過去完成時的結構？',
-        back: 'had done\nI had eaten pears by the end of last night.',
-        quiz: { q: 'I ___ pears by the end of last night.（昨晚結束前就吃完了）', options: ['have eaten', 'had eaten', 'ate', 'was eating'], answer: 1 }
+        back: 'had done\nI had eaten the pears by 10 p.m. last night.',
+        quiz: { q: 'I ___ the pears by 10 p.m. last night.（昨晚十點前就吃完了）', options: ['have eaten', 'had eaten', 'ate', 'was eating'], answer: 1 }
       },
       {
         id: 't-present-perfect',
@@ -994,9 +994,9 @@ const NOTES = [
       {
         id: 't-future-perfect',
         title: '將來完成時　will have done',
-        note: '定義：將來某個時刻之前會完成的動作\n例：I will have eaten my pears by the end of tomorrow.\n到明天結束時，我就吃完我的梨了。',
+        note: '定義：將來某個時刻之前會完成的動作\n例：I will have eaten the pears by tomorrow night.\n到明天晚上，我就吃完梨了。',
         front: '將來完成時的結構？',
-        back: 'will have done\nI will have eaten my pears by the end of tomorrow.'
+        back: 'will have done\nI will have eaten the pears by tomorrow night.'
       },
       {
         id: 't-past-future-perfect',
@@ -1008,9 +1008,9 @@ const NOTES = [
       {
         id: 't-past-perfect-cont',
         title: '過去完成進行時　had been doing',
-        note: '定義：過去某時刻之前開始的動作，一直持續到那個時刻，可能還會繼續\n例：I had been eating pears until last night.\n在昨晚之前，我一直在吃梨。',
+        note: '定義：過去某時刻之前開始的動作，一直持續到那個時刻，可能還會繼續\n例：I had been eating pears for an hour when you called.\n你打來的時候，我已經吃梨吃了一個小時。',
         front: '過去完成進行時的結構？',
-        back: 'had been doing\nI had been eating pears until last night.'
+        back: 'had been doing\nI had been eating pears for an hour when you called.'
       },
       {
         id: 't-present-perfect-cont',
@@ -1489,7 +1489,7 @@ for (const [key, name, icon, list] of MORE_VOCAB) {
 }
 Object.assign(VOCAB_TIPS, {
   bath: { tissue: '💡 tissue 是擦臉、擤鼻涕的面紙；toilet paper 是上廁所用的衛生紙', shower: '💡 shower 也是動詞「淋浴」：I take a shower every night. 我每天晚上洗澡' },
-  chore: { 'hang out the laundry': '💡 晾衣服是 hang out the laundry；hang up the clothes 是「把衣服掛起來」（掛到衣架、衣櫃裡）', _do: '💡 家事常用 do：do the laundry、do the dishes、do housework（做家事）\n💡 問家事：Who does the dishes at your home? 你家誰洗碗？', vacuum: '💡 vacuum 當動詞是「用吸塵器吸」，吸塵器是 vacuum cleaner' },
+  chore: { 'hang out the laundry': '💡 晾衣服是 hang out the laundry；hang up the clothes 是「把衣服掛起來」（掛到衣架、衣櫃裡）', _do: '💡 家事常用 do：do the laundry、do the dishes、do housework（做家事）\n💡 問家事：Who does the dishes in your family? 你家誰洗碗？', vacuum: '💡 vacuum 當動詞是「用吸塵器吸」，吸塵器是 vacuum cleaner' },
   cook: { cook: '💡 cook 是動詞「煮」，也是名詞「廚師」；cooker 是「鍋具」，不是人！', bake: '💡 bake 用烤箱烤麵包、蛋糕；grill 是用火直接烤肉；roast 是大塊的肉放烤箱烤' },
   taste: { _taste: '💡 問味道：How does it taste? 味道怎麼樣？\n💡 回答：It tastes sweet. 吃起來甜甜的（taste 後面接形容詞）', spicy: '💡 spicy 是「辣」；hot 也可以說辣，但 hot 也有「燙」的意思', pepper: '💡 pepper 是胡椒；bell pepper 才是甜椒（在「蔬菜」那類）' },
   feel: { bored: '⚠️ bored（覺得無聊）和 boring（令人無聊）不一樣：\nI am bored. 我好無聊 ✓\nI am boring. 我是個無聊的人 ✗（意思差很多）', excited: '💡 一樣的規則：excited 我很興奮／exciting 這件事很刺激', _feel: '💡 說心情：I feel happy. 或 I am happy.\n💡 問心情：How do you feel? 你覺得怎麼樣？' },

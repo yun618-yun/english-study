@@ -1,5 +1,8 @@
 // 自動標錯的句子，人工指定每個字的標籤（用空白隔開，數量要跟英文的字數一樣；- 代表不標）
 module.exports = {
+  'He won the race.': '主詞 動詞 冠詞 受詞',
+  'He won the long jump.': '主詞 動詞 冠詞 形容詞 受詞',
+  'The shot put ball is very heavy.': '冠詞 名詞 名詞 主詞 be動詞 副詞 形容詞',
   'The author is sympathetic to the poor.': '冠詞 主詞 be動詞 形容詞 介系詞 冠詞 名詞',
   'Do you know where he is?': '助動詞 主詞 動詞 疑問詞 主詞 be動詞',
   'What a beautiful day!': '感嘆詞 冠詞 形容詞 名詞',

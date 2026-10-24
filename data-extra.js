@@ -67,7 +67,7 @@ const CORE = [
     '💡 make 和 do：make 是「做出東西」（make a cake、make money）；do 是「做事情、做工作」（do homework、do the dishes）\n💡 say 和 tell：say 後面接話（say hello）；tell 後面接人（tell me）'],
   ['verb-more', '常用動詞（生活）', '',
     'buy=買|sell=賣|pay=付錢|open=打開|close=關上|start=開始|finish=完成|stop=停止|wait=等|meet=遇見、見面|call=打電話|send=寄、送|bring=帶來|find=找到|lose=遺失|forget=忘記|remember=記得|try=嘗試|learn=學習|teach=教|suffer=遭受、忍受（痛苦）',
-    '💡 suffer from ＋ 病痛：She suffers from headaches. 她常常頭痛。\n💡 borrow 和 lend：borrow 是「借入」（I borrow a pen from you.）、lend 是「借出」（Can you lend me a pen?）'],
+    '💡 suffer from ＋ 病痛：She suffers from headaches. 她常常頭痛。\n💡 borrow 和 lend：borrow 是「借入」（Can I borrow a pen?）、lend 是「借出」（Can you lend me a pen?）'],
   ['adj-pair', '常用形容詞（相反詞）', '成對背最有效。',
     'big ↔ small=大 ↔ 小|long ↔ short=長 ↔ 短|tall ↔ short=高 ↔ 矮|hot ↔ cold=熱 ↔ 冷|new ↔ old=新 ↔ 舊|young ↔ old=年輕 ↔ 老|fast ↔ slow=快 ↔ 慢|easy ↔ difficult=簡單 ↔ 難|cheap ↔ expensive=便宜 ↔ 貴|clean ↔ dirty=乾淨 ↔ 髒|full ↔ hungry=飽 ↔ 餓|happy ↔ sad=開心 ↔ 難過|busy ↔ free=忙 ↔ 有空|early ↔ late=早 ↔ 晚|right ↔ wrong=對 ↔ 錯|near ↔ far=近 ↔ 遠|heavy ↔ light=重 ↔ 輕|good ↔ bad=好 ↔ 壞',
     '💡 short 有兩個相反詞：長短的 long ↔ short、高矮的 tall ↔ short\n💡 old 也有兩個：新舊的 new ↔ old、老少的 young ↔ old'],

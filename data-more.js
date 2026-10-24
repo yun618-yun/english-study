@@ -7,7 +7,7 @@ NOTES.find(c => c.id === 'mnemonic').items.push(
   {
     id: 'mn-tool',
     title: '「用」什麼做事：in、by、with、use',
-    note: '中文都說「用…」，英文要看是用什麼。\n\n【口訣】\n語言 → [in]\n方式 → [by]\n工具 → [with]\n主詞後面 → [use]\n\n① 語言用 in\nShe says hello [in] French. 她用法語打招呼。\n\n② 方式用 by（後面常接 V-ing 或交通工具）\nI exercise [by] working out. 我透過健身來鍛鍊身體。\nI go to work [by] bus. 我搭公車上班。\n\n③ 工具用 with\nHe hits the ball [with] a racket. 他用球拍打球。\n\n④ 放在主詞後面當動詞，用 use\nShe [uses] a pen to do her homework. 她用筆寫作業。\n\n💡 in、by、with 是介係詞；use 是動詞，所以前面要有主詞，而且要跟著主詞變化：she uses、he uses\n⚠️ 收集的筆記有錯：She say hello 少了 s，正確是 She says hello；She use a pen 也要寫成 She uses a pen',
+    note: '中文都說「用…」，英文要看是用什麼。\n\n【口訣】\n語言 → [in]\n方式 → [by]\n工具 → [with]\n主詞後面 → [use]\n\n① 語言用 in\nShe says hello [in] French. 她用法語打招呼。\n\n② 方式用 by（後面常接 V-ing 或交通工具）\nI stay healthy [by] working out. 我透過健身來保持健康體。\nI go to work [by] bus. 我搭公車上班。\n\n③ 工具用 with\nHe hits the ball [with] a racket. 他用球拍打球。\n\n④ 放在主詞後面當動詞，用 use\nShe [uses] a pen to do her homework. 她用筆寫作業。\n\n💡 in、by、with 是介係詞；use 是動詞，所以前面要有主詞，而且要跟著主詞變化：she uses、he uses\n⚠️ 收集的筆記有錯：She say hello 少了 s，正確是 She says hello；She use a pen 也要寫成 She uses a pen',
     front: 'He hits the ball ___ a racket.\n（他用球拍打球）',
     back: 'with\n工具用 with',
     quiz: { q: 'He hits the ball ___ a racket.（用球拍）', options: ['in', 'by', 'with', 'use'], answer: 2 }
