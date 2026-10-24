@@ -1618,7 +1618,8 @@ function masonry() {
     }
     // 怎麼分都差很多（框框少、一個特別長）→ 每個框框一整排、裡面的字分兩欄，才不會空一大塊
     const tot = h.reduce((s, x) => s + x, 0);
-    if (plan.gap > Math.max(300, tot * 0.35)) plan = { side: {} };   // 只有差到很誇張才變一整排（使用者比較想要兩欄）
+    // 只有 2 個框框就一律左右並排（10/24 使用者：「冠詞和名詞單複數」一長一短變整排不好看）
+    if (items.length > 2 && plan.gap > Math.max(300, tot * 0.35)) plan = { side: {} };   // 只有差到很誇張才變一整排（使用者比較想要兩欄）
     // 框框照原本的順序放回去（同一欄裡上下順序不變）
     items.forEach((el, i) => {
       const inCol = i in plan.side;
