@@ -1246,18 +1246,33 @@ const LISTEN_SRC = {
   word: { name: '📚 單字', items: () => ALL.filter(it => it.cat !== 'daily' && wordPool(it)) },
   daily: { name: '💬 生活常用句', items: () => ALL.filter(it => it.cat === 'daily' && isCard(it)) },
   example: { name: '✏️ 單字例句', items: () => typeof WORD_SENTENCES === 'undefined' ? [] :
-    Object.entries(WORD_SENTENCES).map(([k, s]) => ({ id: 'ex-' + k, ...splitSentence(s) })).filter(s => s.en) }
+    Object.entries(WORD_SENTENCES).map(([k, s]) => ({ id: 'ex-' + k, ...splitSentence(s) })).filter(s => s.en) },
+  // 🧠 不經過中文（10/24 使用者：不想一直中翻英）：看插畫打英文、看英文解釋選字
+  // 看圖：只用看圖就認得出來的類別（月份、星期、家人光看圖分不出來）
+  pic: { name: '🖼️ 看圖', items: () => ALL.filter(it => it.front && it.pic && isImageFile(it.pic) && PIC_GROUPS.includes(it.group)) },
+  ee: { name: '🔤 英英', items: () => typeof EN_DEFS === 'undefined' ? [] : EN_DEFS.map(d => ({ id: 'ee-' + d.en, ...d })) }
 };
+const PIC_GROUPS = ['color', 'staple', 'bakery', 'tableware', 'drink', 'flower', 'fruit', 'vegetable', 'meat', 'transport', 'tool', 'weather', 'place', 'home', 'job', 'clothes', 'sport', 'body'];
+// 中文意思（答完才給看）：單字庫裡有的字才有
+const zhOf = en => { const it = ALL.find(o => o.front && o.cat === 'vocab' && firstLine(o.back) === en); return it ? it.front : ''; };
 const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
 function startListen() { listenMode = null; listenSrc = null; }
 function listenHome() {
   const srcBtns = mode => Object.entries(LISTEN_SRC)
+    .filter(([k]) => k !== 'pic' && k !== 'ee')
     .filter(([k]) => mode === 'listen' || mode === 'type' ? k !== 'example' : mode === 'order' ? k !== 'word' : true)
     .map(([k, s]) => `<button class="btn ghost" data-act="listen-go" data-mode="${mode}" data-src="${k}">${s.name}</button>`).join('');
   const dlgBtns = typeof DIALOGS === 'undefined' ? '' : DIALOGS.map(d =>
     `<button class="btn ghost" data-act="dlg-start" data-id="${d.id}">${esc(d.title)}</button>`).join('');
   $view.innerHTML = `
     <p class="intro">每次 ${LISTEN_ROUND} 題。看不懂字沒關係，用耳朵聽！</p>
+    <div class="listen-box think-en">
+      <h3>🧠 不經過中文</h3><p class="muted">練習直接用英文想：看圖打出英文、看英文解釋選出單字（題目都不給中文）</p>
+      <div class="row-btns">
+        <button class="btn ghost" data-act="listen-go" data-mode="pic" data-src="pic">🖼️ 看圖打英文</button>
+        <button class="btn ghost" data-act="listen-go" data-mode="ee" data-src="ee">🔤 英英解釋</button>
+      </div>
+    </div>
     <div class="listen-box">
       <h3>💬 情境對話</h3><p class="muted">你扮演「你」：對方說完，輪到你先看中文、自己用英文說，再看答案</p>
       <div class="dlg-grid">${dlgBtns}</div>
@@ -1299,10 +1314,10 @@ function checkType2() {
   const it = lDeck[lPos], got = expandShort(inp.value);
   const ok = lQ.en.split('/').map(expandShort).includes(got);
   inp.classList.add(ok ? 'right' : 'wrong');
-  if (ok) lScore++; else if (it.cat) setStatus(it.id, 'unknown');
+  if (ok) lScore++; else if (it.cat && listenMode !== 'pic') setStatus(it.id, 'unknown');
   document.getElementById('card-after').innerHTML = `<div class="answer-box ${ok ? 'ok' : 'ng'}">
       <div class="ab-title">${ok ? '⭕ 答對了！' : '❌ 正確答案：'}</div>
-      <div class="pre">${esc(lQ.en)}</div>${ok ? '' : `<div class="muted">你打的是：${esc(inp.value)}</div>`}
+      <div class="pre">${esc(lQ.en)}${lQ.zh ? '　' + esc(lQ.zh) : ''}</div>${ok ? '' : `<div class="muted">你打的是：${esc(inp.value)}</div>`}
       <div class="say-wrap">${sayBtn(lQ.en)}</div></div>
     <div class="row-btns">${ok ? '' : '<button class="btn ghost" data-act="type2-fix">我其實答對了（只是打錯字）</button>'}
       <button class="btn" data-act="listen-next">下一題 ›</button></div>`;
@@ -1371,6 +1386,29 @@ function renderListen() {
     inp.addEventListener('keydown', e => { if (e.key === 'Enter') checkType2(); });
     setTimeout(() => inp.focus(), 50);
     return;   // 打字題一開始不念（念了就等於給答案）
+  } else if (listenMode === 'pic') {
+    // 🖼️ 看圖打英文：只給插畫，不給中文
+    lQ = { en, zh: it.front };
+    const hint = en.split(' ').map(w => w.replace(/^([A-Za-z])([A-Za-z'’-]*)/, (m, a, b) => a + b.replace(/[A-Za-z]/g, '_'))).join(' ');
+    $view.innerHTML = head + counter + `
+      <div class="word-card">${picHtml(it.pic, 'pic big')}<div class="muted">這是什麼？用英文打出來</div></div>
+      <input id="type-ans" class="type-input" type="text" placeholder="用英文打出答案" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
+      <div class="row-btns"><button class="btn ghost" data-act="type2-hint">💡 提示</button><button class="btn" data-act="type2-ok">確定</button></div>
+      <div id="type-hint" class="type-hint" hidden>開頭字母：<b>${esc(hint)}</b></div>
+      <div id="card-after"></div>`;
+    const inp = document.getElementById('type-ans');
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') checkType2(); });
+    setTimeout(() => inp.focus(), 50);
+    return;
+  } else if (listenMode === 'ee') {
+    // 🔤 英英解釋：看簡單的英文解釋，選出是哪個字
+    const others = shuffle(EN_DEFS.filter(d => d.en !== it.en)).slice(0, 3);
+    lQ = { en: it.en, options: shuffle([{ text: it.en, right: true }, ...others.map(d => ({ text: d.en, right: false }))]) };
+    $view.innerHTML = head + counter + `
+      <div class="word-card" id="card-top"><div class="ee-def">${esc(it.def)}</div><div class="muted">這是在說哪個字？</div></div>
+      <div id="card-opts">${optsHtml(lQ.options, 'ee-ans')}</div>
+      <div id="card-after"></div>`;
+    return;
   } else if (listenMode === 'order') {
     // 打亂到跟原本順序不一樣為止
     const tiles = orderTokens(en);
@@ -1397,6 +1435,19 @@ function renderListen() {
       <div class="row-btns"><button class="btn ghost" data-act="listen-next">下一句 ›</button></div>`;
   }
   setTimeout(() => speak(en), 300);   // 一出來就念
+}
+function answerEE(i) {
+  if (lQ.answered) return;
+  lQ.answered = true;
+  const it = lDeck[lPos], ok = lQ.options[i].right, zh = zhOf(it.en);
+  markOpts(lQ.options, i, document.getElementById('card-opts'));
+  if (ok) lScore++;
+  document.getElementById('card-after').innerHTML = `<div class="answer-box ${ok ? 'ok' : 'ng'}">
+      <div class="ab-title">${ok ? '⭕ 答對了！' : '❌ 答案是：' + esc(it.en)}</div>
+      <div class="pre"><b>${esc(it.en)}</b>＝${esc(it.def)}${zh ? '\n中文：' + esc(zh) : ''}</div>
+      <div class="say-wrap">${sayBtn(it.en + '. ' + it.def)}</div></div>
+    <div class="row-btns"><button class="btn" data-act="listen-next">下一題 ›</button></div>`;
+  speak(it.en);
 }
 function answerListen(i) {
   if (lQ.answered) return;
@@ -1636,6 +1687,7 @@ $view.addEventListener('click', e => {
     case 'listen-go': planRun = null; startListenRound(el.dataset.mode, el.dataset.src); renderListen(); window.scrollTo(0, 0); break;
     case 'listen-play': speak(listenEn(lDeck[lPos])); break;
     case 'listen-ans': answerListen(Number(el.dataset.i)); break;
+    case 'ee-ans': answerEE(Number(el.dataset.i)); break;
     case 'listen-next': lPos++; renderListen(); window.scrollTo(0, 0); break;
     case 'shadow-rec': shadowRec(); break;
     case 'dlg-start': startDialog(el.dataset.id); renderDialog(); window.scrollTo(0, 0); break;

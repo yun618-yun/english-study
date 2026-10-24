@@ -520,6 +520,7 @@ NOTES.find(c => c.id === 'terms').items.splice(1, 0, {
 【① 用圖片記單字】
 看到 🍎 直接想 apple，不要「蘋果 → apple」
 卡片「看英文選中文」有圖：先看圖，中文只是確認
+「聽說」分頁的「🧠 不經過中文 → 🖼️ 看圖打英文」：只給圖，直接打出英文
 
 【② 整句背，不要一個字一個字翻】
 How's it going?　最近好嗎？
@@ -539,6 +540,7 @@ Can I have ＿＿?　可以給我…嗎？
 hungry　want to eat
 tired　need to rest
 👉 慢慢就能用英文想英文
+👉 「聽說」分頁的「🔤 英英解釋」：看英文解釋選出單字
 
 【⑥ 自言自語】
 I'm cooking.　我在煮飯。

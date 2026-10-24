@@ -70,3 +70,24 @@ const WORD_SENTENCES = {};
   // 10/24 🔁 中文一樣、英文要分開用（妙招 syn1～syn3，用「類別:字」才不會影響其他卡片）
   `mm-syn1:look=Look at the board. 看黑板。|mm-syn1:see=I can see the mountain. 我看得到那座山。|mm-syn1:watch=I watch TV every night. 我每天晚上看電視。|mm-syn1:hear=Can you hear me? 你聽得到我嗎？|mm-syn1:listen=Listen to the teacher. 專心聽老師說。|mm-syn1:say=Say thank you. 說謝謝。|mm-syn1:tell=Tell me the truth. 告訴我實話。|mm-syn1:speak=Do you speak English? 你會說英文嗎？|mm-syn1:talk=I talk to my mom every day. 我每天跟媽媽聊天。|mm-syn2:bring=Bring your book tomorrow. 明天把你的書帶來。|mm-syn2:take=Take an umbrella with you. 出門帶把傘。|mm-syn2:wear=She wears glasses. 她戴眼鏡。|mm-syn2:put on=Put on your coat. 把外套穿上。|mm-syn2:job=I have a new job. 我有一份新工作。|mm-syn2:work=I have a lot of work today. 我今天有很多工作要做。|mm-syn2:trip=We took a trip to Japan. 我們去日本玩了一趟。|mm-syn2:travel=I love to travel. 我很愛旅行。|mm-syn3:big=I have a big dog. 我有一隻大狗。|mm-syn3:large=I want a large Coke. 我要一杯大杯可樂。|mm-syn3:small=This shirt is too small. 這件襯衫太小了。|mm-syn3:little=She is just a little girl. 她只是個小女孩。|mm-syn3:sleepy=I feel sleepy after lunch. 我吃完午餐好想睡。|mm-syn3:tired=I'm tired after work. 我下班後很累。|mm-syn3:hurt=My leg hurts. 我的腿好痛。|mm-syn3:pain=I have back pain. 我背痛。`
   ].forEach(s => s.split('|').forEach(p => { const i = p.indexOf('='); WORD_SENTENCES[p.slice(0, i).toLowerCase()] = p.slice(i + 1); }));
+
+// ===================== 🔤 英英解釋（10/24 使用者：練習不要一直中翻英）=====================
+// 格式：'單字=簡單的英文解釋'。「聽說」分頁的英英解釋：看解釋選出是哪個字
+const EN_DEFS = [
+  // 感覺
+  'hungry=wanting to eat|thirsty=wanting to drink|tired=needing to rest|sleepy=wanting to sleep|happy=feeling good|sad=feeling unhappy|angry=feeling mad at someone|scared=afraid of something|bored=having nothing fun to do|busy=having a lot to do',
+  // 形容詞
+  'cheap=not expensive|expensive=costing a lot of money|hot=very warm|cold=not warm at all|tall=not short|heavy=hard to lift|empty=with nothing inside|delicious=very good to eat',
+  // 人和職業
+  'doctor=a person you see when you are sick|nurse=a person who helps doctors and looks after patients|teacher=a person who helps students learn|chef=a person who cooks in a restaurant|farmer=a person who grows food on a farm|pilot=a person who flies a plane|driver=a person who drives a car, a bus, or a taxi|waiter=a person who brings food to your table|student=a person who learns at school',
+  // 地方
+  'kitchen=the room where you cook|bedroom=the room where you sleep|bathroom=the room where you take a shower|library=a place where you can borrow books|hospital=a place where sick people go to get better|airport=a place where planes take off and land|supermarket=a big store that sells food|bank=a place where you keep your money|park=a place with grass and trees where people walk and play',
+  // 東西
+  'breakfast=the first meal of the day|lunch=the meal you eat in the middle of the day|dinner=the meal you eat in the evening|umbrella=you use it when it rains|key=you use it to open a door|clock=it tells you the time|pillow=you put your head on it when you sleep|towel=you use it to dry your body|mirror=you look into it to see yourself|refrigerator=it keeps food cold|scissors=you use them to cut paper',
+  // 時間和天氣
+  'yesterday=the day before today|tomorrow=the day after today|weekend=Saturday and Sunday|winter=the coldest season of the year|summer=the hottest season of the year|rain=water that falls from the sky|snow=soft white ice that falls from the sky|moon=you can see it in the sky at night',
+  // 動物和身體
+  'dog=a pet that barks|elephant=a very big gray animal with a long nose|giraffe=an animal with a very long neck|bird=an animal with wings and feathers|eye=you see with it|ear=you hear with it|nose=you smell with it|mouth=you eat and talk with it|foot=it is at the end of your leg',
+  // 動詞
+  'borrow=to take something and give it back later|lend=to give something to someone for a short time|forget=to not remember|remember=to keep something in your mind|buy=to get something by paying money|sell=to give something to someone for money|begin=to start doing something|finish=to come to the end of something'
+].join('|').split('|').map(p => { const i = p.indexOf('='); return { en: p.slice(0, i), def: p.slice(i + 1) }; });

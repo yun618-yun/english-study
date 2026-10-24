@@ -676,3 +676,6 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .page .ex-zh { word-break: keep-all; overflow-wrap: anywhere; }   /* 配合 zhWrap 的 <wbr>：只在詞和詞之間換行 */
 .page .nb.two { grid-auto-flow: row dense; }   /* 整排的小提醒下面空出來的格子，讓下一個字補上，維持兩欄 */
 .zh-tr { word-break: keep-all; overflow-wrap: anywhere; }
+/* 🧠 不經過中文 */
+.listen-box.think-en { border: 1px solid var(--teal); }
+.ee-def { font-size: 22px; font-weight: 700; color: var(--head); line-height: 1.4; margin: 6px 0 8px; font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
