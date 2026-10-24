@@ -746,12 +746,12 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 
 /* 🎨 W 白底筆記風（10/24 使用者：跟複習筆記一樣，白底、英文深紅、中文黑色）。紅色給英文用，⚠️ 注意改橘色 */
 :root[data-theme="w"] {
-  --bg: #b8b7b4;
-  --card: #c5c4c1;   /* 使用者 10/24 指定的背景色 */
+  --bg: #cfc5b2;
+  --card: #ded5c3;   /* 使用者 10/24 指定的背景色（#C5C4C1 → #DED5C3） */
   --text: #222222;
   --head: #1f1f1f;
   --muted: #4d4d4d;
-  --line: #a9a8a5;
+  --line: #c4b9a4;
   --warn: #c2631a;
   --pink: #fdf0e3;
   --blue: #f2f2f0;
