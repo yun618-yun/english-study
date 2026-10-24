@@ -795,9 +795,9 @@ function renderProgress() {
       <div class="bar"><div class="k" style="width:${k / n * 100}%"></div><div class="u" style="width:${u / n * 100}%"></div></div>
       <div class="stat-row"><span>已熟 ${k}</span><span>不熟 ${u}</span><span>未標記 ${r.items.length - k - u}</span></div>
     </div>`;
-  }).join('') + levelSettingsHtml() + weekHistoryHtml() + settingsHtml() + `<button class="btn ghost" data-act="reset">清除所有標記</button>`;
+  }).join('') + weekHistoryHtml() + settingsHtml() + `<button class="btn ghost" data-act="reset">清除所有標記</button>`;
   // 月曆放在總覽下面
-  document.querySelector('.sec-title').insertAdjacentHTML('beforebegin', calendarHtml());
+  document.querySelector('.sec-title').insertAdjacentHTML('beforebegin', calendarHtml() + levelSettingsHtml());
 }
 
 // ===== 🗓️ 學習月曆：這個月有做完複習的日子打勾 =====
@@ -917,9 +917,10 @@ const LEVEL_1 = ['study-routine', 'study-think-en', 'g-overview', 'g-group-pos',
   'b-structure', 'b-be', 'b-subject-verb', 'b-subject', 'b-group-pronoun', 'b-pronoun', 'b-group-sentence', 'b-neg', 'b-q', 'b-imperative', 'b-contractions', 'b-group-noun', 'b-article', 'b-plural', 'b-in-on-at', 'b-in', 'b-wh', 'b-there-is', 'b-there',
   'mn-be', 'mn-time-prep', 'mn-time', 'mn-group-plural', 'mn-plural', 'mn-fe', 'mn-group-present', 'mn-present',
   'dl-greet', 'dl-intro', 'dl-group-food', 'dl-food', 'dl-drink', 'dl-shop', 'dl-group-way', 'dl-way', 'dl-taxi', 'dl-group-talk', 'dl-rescue', 'dl-react', 'dl-feel', 'nm-group-num', 'nm-num', 'nm-price', 'nm-group-time', 'nm-time', 'nm-date',
-  'cw-group-verb', 'cw-verb-daily', 'cw-verb-common', 'cw-verb-more', 'cw-adj-pair', 'cw-adj-feel', 'cw-freq', 'cw-people',
-  'vocab-g-time', 'month', 'season', 'time', 'week', 'vocab-color', 'color', 'vocab-g-food', 'staple', 'bakery', 'meal', 'vocab-g-drink', 'drink', 'vocab-fruit', 'fruit', 'vocab-vegetable', 'vegetable',
-  'vocab-family', 'family', 'vocab-body', 'body', 'vocab-animal', 'animal', 'vocab-g-home', 'home', 'room', 'bath', 'vocab-g-nature', 'nature', 'vocab-g-feel', 'feel', 'vocab-clothes', 'clothes', 'vocab-g-kitchen', 'tableware', 'mm-how'];
+  'cw-group-verb', 'cw-verb-daily', 'cw-verb-common', 'cw-adj-pair', 'cw-adj-feel', 'cw-freq',
+  'vocab-g-time', 'month', 'season', 'time', 'week', 'vocab-color', 'color', 'vocab-g-food', 'staple', 'meal', 'vocab-g-drink', 'drink', 'vocab-fruit', 'fruit', 'vocab-vegetable', 'vegetable',
+  'vocab-family', 'family', 'vocab-animal', 'animal', 'vocab-g-home', 'home', 'vocab-g-feel', 'feel', 'vocab-clothes', 'clothes', 'mm-how'];
+// 10/24 第 1 級控制在 600 多張：麵包點心、餐具、浴室、教室用品、大自然、身體、生活動詞第三組、個性外表放第 2 級
 const LEVEL_3 = ['g-group-tips', 'g-position', 'g-cloze', 'g-reading', 'g-reading-att', 'g-clauses',
   'to-do-roles', 'to-role', 'to-purpose-reason-result', 'to-reason', 'to-only', 'to-opinion', 'to-noun', 'to-wh', 'to-forms', 'to-not', 'to-plus-doing', 'to-plus', 'to-or-doing', 'to-or', 'to-object', 'used-to', 'to-group-no', 'no-to', 'to-vs-for', 'to-vs', 'for-doing', 'to-for',
   'ph-bare', 'ph-group-prep', 'ph-for', 'ph-with', 'ph-about', 'ph-at', 'ph-in2',
