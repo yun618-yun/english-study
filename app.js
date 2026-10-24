@@ -459,6 +459,7 @@ function markSeen(id) {
   if (seenToday.day !== d) seenToday = { day: d, ids: [] };
   if (!seenToday.ids.includes(id)) seenToday.ids.push(id);
   try { localStorage.setItem(SEEN_KEY, JSON.stringify(seenToday)); } catch (e) {}
+  logPractice(id);
 }
 // 📕 錯題本：每天抽 10 題；同一題在「不同的兩天」都答對 → 記住了，標成已熟、離開錯題本
 const WRONG_KEY = 'english-study-wrong', WRONG_ROUND = 10, WRONG_PASS = 2;
@@ -779,7 +780,7 @@ function renderProgress() {
       <div class="bar"><div class="k" style="width:${k / n * 100}%"></div><div class="u" style="width:${u / n * 100}%"></div></div>
       <div class="stat-row"><span>已熟 ${k}</span><span>不熟 ${u}</span><span>未標記 ${r.items.length - k - u}</span></div>
     </div>`;
-  }).join('') + settingsHtml() + `<button class="btn ghost" data-act="reset">清除所有標記</button>`;
+  }).join('') + weekHistoryHtml() + settingsHtml() + `<button class="btn ghost" data-act="reset">清除所有標記</button>`;
   // 月曆放在總覽下面
   document.querySelector('.sec-title').insertAdjacentHTML('beforebegin', calendarHtml());
 }
@@ -934,12 +935,13 @@ function backupBanner() {
 }
 const markBackup = () => { try { localStorage.setItem(BACKUP_KEY, String(Date.now())); } catch (e) {} };
 function renderToday() {
+  if (weekRun) return renderWeek();
   const s = streak();
-  const head = backupBanner() + `<div class="today-head"><span>🔥 連續 <b>${s}</b> 天</span><span>今天剩 <b>${todayQueue.length - todayPos}</b> 張</span></div>`;
+  const head = backupBanner() + weekBanner() + `<div class="today-head"><span>🔥 連續 <b>${s}</b> 天</span><span>今天剩 <b>${todayQueue.length - todayPos}</b> 張</span></div>`;
   if (todayPos >= todayQueue.length) {
     if (todayDone > 0 && !studyDays.includes(today())) { studyDays.push(today()); saveSrs(); }
     const upcoming = Object.values(srs).filter(r => r.due === today() + 1).length;
-    $view.innerHTML = backupBanner() + `<div class="today-head"><span>🔥 連續 <b>${streak()}</b> 天</span></div>
+    $view.innerHTML = backupBanner() + weekBanner() + `<div class="today-head"><span>🔥 連續 <b>${streak()}</b> 天</span></div>
       <div class="plan-step done">✅ 1. 卡片複習　<span class="muted">明天大約要複習 ${upcoming} 張</span></div>
       ${planHtml()}
       <div class="empty" style="padding-top:8px"><button class="btn ghost" data-act="more-new">還想學：再學 10 張新卡片</button></div>`;
@@ -1050,9 +1052,109 @@ function answerSrs(v) {
     if (next >= 7) setStatus(it.id, 'known');
   }
   srs[it.id] = r; saveSrs();
+  logPractice(it.id);
   todayPos++; todayDone++;
   renderToday();
   window.scrollTo(0, 0);
+}
+
+// ===== 📝 每週小考：星期日從這 7 天練過的卡片出 20 題，最後給分數（10/24 使用者要的） =====
+const WEEK_LOG_KEY = 'english-study-weeklog', WEEK_RESULT_KEY = 'english-study-weektest', WEEK_SIZE = 20, WEEK_MIN = 5;
+let weekLog = {}, weekResults = [], weekRun = null;
+try { weekLog = JSON.parse(localStorage.getItem(WEEK_LOG_KEY)) || {}; weekResults = JSON.parse(localStorage.getItem(WEEK_RESULT_KEY)) || []; } catch (e) {}
+// 每張卡片記「最後一次練習是哪一天」；超過 14 天的清掉，才不會越存越大
+function logPractice(id) {
+  const t = today();
+  weekLog[id] = t;
+  for (const k in weekLog) if (weekLog[k] < t - 14) delete weekLog[k];
+  try { localStorage.setItem(WEEK_LOG_KEY, JSON.stringify(weekLog)); } catch (e) {}
+}
+// 這 7 天練過的卡片（每週小考做好以前的紀錄，用間隔複習推回最後一次複習的日子）
+function weekPool() {
+  const t = today();
+  return ALL.filter(it => isCard(it) && (weekLog[it.id] > t - 7 || (srs[it.id] && srs[it.id].due - srs[it.id].iv > t - 7)));
+}
+const lastSunday = () => today() - new Date().getDay();
+const weekDone = () => weekResults.some(r => r.day >= lastSunday());
+// 星期日的「今日」最上面出現；這週考過了就顯示分數
+function weekBanner() {
+  if (new Date().getDay() !== 0) return '';
+  const done = weekResults.find(r => r.day >= lastSunday());
+  if (done) return `<div class="week-banner done">📝 本週小考：<b>${done.score} / ${done.total}</b> 分</div>`;
+  const n = weekPool().length;
+  if (n < WEEK_MIN) return '';
+  return `<div class="week-banner">📝 今天是星期日，來做「本週小考」！從這週練過的 ${n} 張卡片抽 ${Math.min(WEEK_SIZE, n)} 題
+    <button class="btn" data-act="week-go">開始小考</button></div>`;
+}
+function startWeek() {
+  // 不熟的優先，其他隨機
+  const pool = shuffle(weekPool()).sort((a, b) => (status[b.id] === 'unknown') - (status[a.id] === 'unknown'));
+  const qs = [];
+  for (const it of pool) {
+    if (qs.length >= WEEK_SIZE) break;
+    const q = makeQuestion(it);
+    if (q) qs.push({ ...q, it });
+  }
+  weekRun = { qs, pos: 0, score: 0, wrong: [], saved: false };
+  go('today');
+}
+function renderWeek() {
+  const w = weekRun;
+  if (w.pos >= w.qs.length) {
+    if (!w.saved) {
+      w.saved = true;
+      weekResults.push({ day: today(), score: w.score, total: w.qs.length });
+      try { localStorage.setItem(WEEK_RESULT_KEY, JSON.stringify(weekResults)); } catch (e) {}
+      w.wrong.forEach(it => setStatus(it.id, 'unknown'));   // 錯的進錯題本
+    }
+    const pct = w.qs.length ? Math.round(w.score / w.qs.length * 100) : 0;
+    const msg = pct >= 90 ? '🏆 太厲害了！這週學的幾乎都記住了' : pct >= 70 ? '👍 很不錯！錯的幾題已經放進錯題本' : '💪 沒關係，錯的題目已經放進錯題本，下週會更好';
+    $view.innerHTML = `<div class="week-result">
+        <div class="wr-title">📝 本週小考成績</div>
+        <div class="wr-score">${w.score}<small> / ${w.qs.length}</small></div>
+        <p>${msg}</p>
+      </div>
+      ${w.wrong.length ? `<h3 class="sec-title">❌ 答錯的題目（已放進錯題本）</h3>` + w.wrong.map(it => `<div class="box wr-wrong">
+        <div>${esc(it.front)}</div><b>${esc(firstLine(it.back))}</b> ${cardSay(it) ? sayBtn(cardSay(it)) : ''}</div>`).join('') : ''}
+      <button class="btn" data-act="week-end">回到今日</button>`;
+    return;
+  }
+  const q = w.qs[w.pos];
+  $view.innerHTML = `
+    <div class="counter">📝 本週小考　${w.pos + 1} / ${w.qs.length}　答對 ${w.score} 題</div>
+    ${q.pic ? `<div class="q-pic">${picHtml(q.pic, 'pic big')}</div>` : ''}
+    <div class="q">${esc(q.q)}</div>
+    ${optsHtml(q.options, 'week-ans')}
+    <div id="week-after"></div>`;
+}
+function answerWeek(i) {
+  const q = weekRun.qs[weekRun.pos];
+  if (q.answered) return;
+  q.answered = true;
+  markOpts(q.options, i);
+  const ok = q.options[i].right, say = cardSay(q.it);
+  if (ok) weekRun.score++; else weekRun.wrong.push(q.it);
+  document.getElementById('week-after').innerHTML = `
+    <div class="answer-box ${ok ? 'ok' : 'ng'}">
+      <div class="ab-title">${ok ? '⭕ 答對了！' : '❌ 答錯了'}</div>
+      <div class="pre">${esc(q.it.back)}</div>
+      ${say ? `<div class="say-wrap">${sayBtn(say)}</div>` : ''}
+    </div>
+    <button class="btn" data-act="week-next">${weekRun.pos + 1 < weekRun.qs.length ? '下一題 ›' : '看成績 ›'}</button>`;
+  if (say) speak(say);
+}
+// 「進度」分頁：歷次成績＋隨時可以考
+function weekHistoryHtml() {
+  const n = weekPool().length;
+  const list = weekResults.slice(-6).reverse().map(r => {
+    const d = new Date((r.day * 86400000) + new Date().getTimezoneOffset() * 60000);
+    return `<div class="stat-row"><span>${d.getMonth() + 1}/${d.getDate()}</span><span><b>${r.score}</b> / ${r.total} 分</span></div>`;
+  }).join('');
+  return `<h3 class="sec-title">📝 每週小考</h3><div class="box">
+    <p class="muted">每週日在「今日」出題：這 7 天練過的卡片抽 ${WEEK_SIZE} 題。這週目前練過 ${n} 張。</p>
+    ${list || '<p class="muted">還沒有考過</p>'}
+    ${n >= WEEK_MIN ? `<button class="btn ghost" data-act="week-go">${weekDone() ? '再考一次' : '現在就考'}</button>` : `<p class="muted">練到 ${WEEK_MIN} 張以上就可以考</p>`}
+  </div>`;
 }
 
 // ===== 📋 今日課表：卡片複習做完，接著照順序做這幾項（每天一次，記在 english-study-plan） =====
@@ -1488,6 +1590,10 @@ $view.addEventListener('click', e => {
     case 'today-ans': answerToday(Number(el.dataset.i)); break;
     case 'type-ok': checkTyping(); break;
     case 'type-hint': document.getElementById('type-hint').hidden = false; break;
+    case 'week-go': startWeek(); window.scrollTo(0, 0); break;
+    case 'week-ans': answerWeek(Number(el.dataset.i)); break;
+    case 'week-next': weekRun.pos++; renderWeek(); window.scrollTo(0, 0); break;
+    case 'week-end': weekRun = null; renderToday(); window.scrollTo(0, 0); break;
     case 'more-new': extraNew += 10; startToday(); renderToday(); break;
     case 'card-mark': setStatus(deck[deckPos].id, el.dataset.v); deckPos++; renderCards(); break;
     case 'card-skip': deckPos++; renderCards(); window.scrollTo(0, 0); break;

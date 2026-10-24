@@ -644,3 +644,13 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .page .nb .row .k { font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
 .page .syl { color: #8c8375; }
 .page .nb .row .v + .v { color: var(--muted) !important; font-size: 13.5px !important; font-weight: 400; }   /* 第三欄：口訣、拆法 */
+/* 📝 每週小考 */
+.week-banner { background: #e2ecea; border: 1px solid var(--teal); border-radius: 14px; padding: 10px 12px; margin-bottom: 10px; font-size: 15px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.week-banner .btn { width: auto; padding: 6px 14px; margin-left: auto; }
+.week-banner.done { border-color: var(--line); background: var(--card); }
+.week-result { text-align: center; background: var(--card); border-radius: 16px; padding: 20px 14px; margin: 10px 0 16px; box-shadow: var(--shadow); }
+.week-result .wr-title { font-weight: 800; color: var(--head); font-size: 18px; }
+.week-result .wr-score { font-size: 54px; font-weight: 800; color: var(--teal); margin: 6px 0; }
+.week-result .wr-score small { font-size: 24px; color: var(--muted); }
+.wr-wrong { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.wr-wrong b { color: var(--teal); }
