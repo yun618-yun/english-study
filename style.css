@@ -668,3 +668,11 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .ex { display: block; font-size: 13px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
 .ex { display: block; font-size: 13px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
 .ex-en, .ex-zh { display: block; } .ex-zh { word-break: keep-all; overflow-wrap: anywhere; }   /* 中文翻譯只在標點換行 */
+/* 片語例句：跟筆記例句一樣看得清楚（10/24 使用者：灰色小字看不清楚）——英文深色英文字體，中文深色中文字體 */
+.page .ex { color: var(--text); font-size: 15px; margin-top: 4px; line-height: 1.45; }
+.page .ex-en { color: #2f3640; font-size: 16px; font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+.page .ex-zh { color: var(--text); font-size: 15px; font-weight: 500; font-family: "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif; margin-top: 1px; }
+.page .ex-zh { word-break: normal; overflow-wrap: normal; text-wrap: pretty; }   /* 句號不要被擠到下一行 */
+.page .ex-zh { word-break: keep-all; overflow-wrap: anywhere; }   /* 配合 zhWrap 的 <wbr>：只在詞和詞之間換行 */
+.page .nb.two { grid-auto-flow: row dense; }   /* 整排的小提醒下面空出來的格子，讓下一個字補上，維持兩欄 */
+.zh-tr { word-break: keep-all; overflow-wrap: anywhere; }

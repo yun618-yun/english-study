@@ -144,6 +144,9 @@ function catHead() {
 //       「標籤：內容」→ 左右對齊；英文為主的句子字比較大，中文說明字比較小
 //       [方括號] 裡的字 → 青色粗體
 const MARK = /^[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]|^【/;
+// 中文只在「詞和詞之間」換行（麵包、房間不會被拆開）；標點前面不斷，句號才不會自己跑到下一行。要配合 CSS word-break: keep-all
+const zhSeg = typeof Intl !== 'undefined' && Intl.Segmenter ? new Intl.Segmenter('zh-Hant', { granularity: 'word' }) : null;
+const zhWrap = s => zhSeg ? [...zhSeg.segment(s)].map((x, i) => (i && /^[\p{L}\p{N}]/u.test(x.segment) ? '<wbr>' : '') + x.segment).join('') : s;
 const inline = s => esc(s)
   .replace(/\[([^\]]+)\]/g, '<span class="hl">$1</span>')
   .replace(/\{\{pic:([^}]+)\}\}/g, (_, p) => picHtml(p.replace(/^faded:/, ''), p.startsWith('faded:') ? 'pic faded' : 'pic'))
@@ -152,7 +155,7 @@ const inline = s => esc(s)
   // 片語的例句：中文下面一行小字；英文和中文翻譯分兩行（10/24 使用者：擠在同一行，中文會被拆成「…同一間／房間。」）
   .replace(/\{\{ex:([^}]+)\}\}/g, (_, t) => {
     const m = t.match(/^(.*[.!?])\s+([^.!?]*[一-鿿].*)$/);   // 最後一個句點後面、有中文的那段是翻譯（UN 代表聯合國 也算）
-    return m ? `<span class="ex"><span class="ex-en">${m[1]}</span><span class="ex-zh">${m[2]}</span></span>` : `<span class="ex">${t}</span>`;
+    return m ? `<span class="ex"><span class="ex-en">${m[1]}</span><span class="ex-zh">${zhWrap(m[2])}</span></span>` : `<span class="ex">${t}</span>`;
   })
   .replace(/\{\{tip:([^}]+)\}\}/g, (_, t) => {
     const warn = t.startsWith('⚠️');
@@ -702,7 +705,7 @@ function answerBlank(i) {
     <div class="answer-box ${ok ? 'ok' : 'ng'}">
       <div class="ab-title">${ok ? '⭕ 答對了！' : '❌ 正確答案：' + esc(b.options.find(o => o.right).text)}</div>
       ${grammarHtml(b)}
-      ${b.zh ? `<div class="zh-tr">譯：${esc(b.zh)}</div>` : ''}
+      ${b.zh ? `<div class="zh-tr">譯：${zhWrap(esc(b.zh))}</div>` : ''}
       <div class="say-wrap">${sayBtn(b.full)}</div>
     </div>`;
   speak(b.full);
