@@ -547,3 +547,17 @@ const TEACH_MORE = {
   ]
 };
 for (const [k, v] of Object.entries(TEACH_MORE)) TEACH[k] = (TEACH[k] || []).concat(v);
+
+// 筆記拆成好幾則以後，講解照錨點搬到對的那一則（10/24 b-group-order 拆成三則）
+(() => {
+  const all = NOTES.flatMap(c => c.items);
+  const note = id => (all.find(i => i.id === id) || {}).note || '';
+  for (const [from, to] of [['b-group-order', ['b-group-order2', 'b-group-order3']]]) {
+    const keep = [];
+    for (const e of TEACH[from] || []) {
+      const dest = to.find(id => !note(from).includes(e[0]) && note(id).includes(e[0]));
+      if (dest) (TEACH[dest] = TEACH[dest] || []).push(e); else keep.push(e);
+    }
+    TEACH[from] = keep;
+  }
+})();

@@ -1301,6 +1301,26 @@ Three times.　三次。
   );
   it.title = '🔄 位置或小字一換，意思就不一樣（17 項）';
 }
+// 10/24 使用者覺得 17 項太長：照主題拆成 3 則（第一則沿用 b-group-order，紀錄不會掉），每則重新編號
+{
+  const items = NOTES.find(c => c.id === 'basics').items;
+  const it = items.find(i => i.id === 'b-group-order');
+  const [intro, ...boxes] = it.note.replace(/^\{\{pair\}\}/, '').split(/\n\n(?=【)/);
+  const box = n => boxes.find(b => b.startsWith('【' + n));
+  const NUM = '①②③④⑤⑥⑦⑧⑨⑩';
+  const make = (nums, head) => '{{pair}}' + head + '\n\n' + nums.map((n, i) => box(n).replace(/^【./, '【' + NUM[i])).join('\n\n');
+  const parts = [
+    ['b-group-order', '🔄 字的位置一換，意思就不一樣（7 項）', '①②③⑧⑨⑩⑫', intro.replace(/^\{\{pair\}\}/, '')],
+    ['b-group-order2', '🔄 問句和回答，跟中文想的不一樣（5 項）', '⑤⑥⑦⑭⑰', '問句、回答、感嘆的說法，常常跟中文的直覺相反，要特別記。'],
+    ['b-group-order3', '🔄 差一個小字，意思差很多（5 項）', '④⑪⑬⑮⑯', '多一個 a、換成 either、用 so 還是 such…一個小字就讓意思不一樣。']
+  ];
+  const at = items.indexOf(it);
+  parts.forEach(([id, title, nums, head], k) => {
+    const note = make([...nums], head);
+    if (k === 0) { it.title = title; it.note = note; }
+    else items.splice(at + k, 0, { id, title, note });
+  });
+}
 
 // ---------- 🧩 看例句拆句子成分（10/23 使用者給的圖「秒懂英語句子成分」第 1 頁，原文簡體已改繁體） ----------
 // 截圖收在 原始素材/筆記截圖/第九批（10-23）/。第 ⑦ 句原圖有錯（play the ball、I and my dogs），已改正
