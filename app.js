@@ -1009,7 +1009,7 @@ const LEVEL_1 = ['study-routine', 'study-think-en', 'g-overview', 'g-group-pos',
 // 10/24 第 1 級控制在 600 多張：麵包點心、餐具、浴室、教室用品、大自然、身體、生活動詞第三組、個性外表放第 2 級
 const LEVEL_3 = ['g-group-tips', 'g-position', 'g-cloze', 'g-reading', 'g-reading-att', 'g-clauses',
   'to-do-roles', 'to-role', 'to-purpose-reason-result', 'to-reason', 'to-only', 'to-opinion', 'to-noun', 'to-wh', 'to-forms', 'to-not', 'to-plus-doing', 'to-plus', 'to-or-doing', 'to-or', 'to-object', 'used-to', 'to-group-no', 'no-to', 'to-vs-for', 'to-vs', 'for-doing', 'to-for',
-  'ph-bare', 'ph-group-prep', 'ph-group-prep2', 'ph-for', 'ph-with', 'ph-about', 'ph-at', 'ph-in2',
+  'ph-bare', 'ph-group-prep', 'ph-for', 'ph-with', 'ph-about', 'ph-at', 'ph-in2',
   'passive-table', 't-8-active-passive', 't-8', 't-group-perfect-cont', 't-usage', 's-group-present', 's-group-past-future', 's-simple', 's-present', 's-past',
   'mm-prefix', 'mm-prefix2', 'mm-prefix3', 'mm-suffix', 'mm-suffix2', 'mm-suffix3', 'mm-suffix4', 'mm-suffix5', 'mm-root', 'mm-root2',
   'mm-un', 'mm-re', 'mm-dis', 'mm-im', 'mm-pre', 'mm-mis', 'mm-over', 'mm-num', 'mm-sub', 'mm-inter', 'mm-tele', 'mm-er', 'mm-ist', 'mm-ful', 'mm-less', 'mm-ly', 'mm-able', 'mm-ous', 'mm-y', 'mm-al', 'mm-ive',

@@ -301,9 +301,12 @@ const TEACH = {
     ['▍with 片語（19 個）', 'with 的感覺：跟…在一起、用…。'],
     ['▍about 片語（9 個）', 'about 的感覺：關於某件事。talk about、think about、worry about。']
   ],
-  'ph-group-prep2': [
-    ['▍at 片語（24 個）', 'at 的感覺：對準一個點。look at 看著那一點、be good at 擅長那一點。'],
-    ['▍in 片語（介系詞片語）（23 個）', 'in 的感覺：在某個狀態裡面。in danger 在危險中、in a hurry 很急。']
+  // 10/24 at、in 拆成各自一則（ph-at、ph-in2）
+  'ph-at': [
+    ['at 常用在「時間點」', 'at 的感覺：對準一個點。look at 看著那一點、be good at 擅長那一點。']
+  ],
+  'ph-in2': [
+    ['這些是「in ＋ 名詞」的固定說法', 'in 的感覺：在某個狀態裡面。in danger 在危險中、in a hurry 很急。']
   ],
   'ph-group-verb2': [
     ['▍look 片語（10 個）', '同一個動詞配不同的小字，意思差很多。先記最常用的：look for 找、look after 照顧、look forward to 期待。'],
@@ -528,7 +531,7 @@ const TEACH_MORE = {
     ['agree with　同意', 'agree with + 人：I agree with you.\nagree to + 提議：I agree to the plan.'],
     ['deal with　處理', '工作上很常用：I\'ll deal with it. 我來處理。']
   ],
-  'ph-group-prep2': [
+  'ph-at': [
     ['at least　至少', 'at least 相反是 at most（最多）。'],
     ['at last　終於', 'at last 是等了很久「終於」；in the end 是「最後的結果」。']
   ],

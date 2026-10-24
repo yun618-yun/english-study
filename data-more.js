@@ -1027,7 +1027,8 @@ mergeNotes('phrase', 'ph-group-give-go', 'give 和 go 片語（28 個）', ['ph-
   const n = keys => keys.reduce((s, k) => s + PHRASES.find(p => p[0] === k)[3].split('|').length, 0);
   // 10/24 使用者覺得 86 個太長：拆成兩則（第一則沿用 ph-group-prep）
   mergeNotes('phrase', 'ph-group-prep', `介系詞片語 ①：for／with／about（${n(['for', 'with', 'about'])} 個）`, ['ph-for', 'ph-with', 'ph-about'], 'section');
-  mergeNotes('phrase', 'ph-group-prep2', `介系詞片語 ②：at／in（${n(['at', 'in2'])} 個）`, ['ph-at', 'ph-in2'], 'section');
+  // 10/24 使用者覺得 47 個也太長：at、in 不合併，各自一則（ph-at、ph-in2）
+  // mergeNotes('phrase', 'ph-group-prep2', `介系詞片語 ②：at／in（${n(['at', 'in2'])} 個）`, ['ph-at', 'ph-in2'], 'section');
   // 10/24 使用者覺得 72 個太長：拆成三則（第一則沿用 ph-group-verb2，紀錄不會掉）
   mergeNotes('phrase', 'ph-group-verb2', `常用動詞片語 ①：look／get（${n(['look', 'get'])} 個）`, ['ph-look', 'ph-get'], 'section');
   mergeNotes('phrase', 'ph-group-verb3', `常用動詞片語 ②：take／come（${n(['take', 'come'])} 個）`, ['ph-take', 'ph-come'], 'section');
