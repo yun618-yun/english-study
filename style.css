@@ -706,3 +706,13 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .weak-row:last-child { border-bottom: 0; }
 .weak-row .row-btns { margin-top: 6px; }
 .weak-row .btn { padding: 8px 10px; font-size: 15px; }
+
+/* 👩‍🏫 老師講解：筆記上面的折疊區，一欄由上往下讀 */
+.teach { margin: 0 0 12px; border-radius: 14px; background: #fff8e8; border: 2px solid #f0d38a; }
+.teach summary { padding: 12px 14px; font-weight: 700; font-size: 16px; cursor: pointer; color: #8a5a00; list-style: none; }
+.teach summary::-webkit-details-marker { display: none; }
+.teach summary::after { content: ' ▾'; }
+.teach[open] summary::after { content: ' ▴'; }
+.teach-body { padding: 0 12px 10px; }
+.teach-body .nb { background: #fff; border: 0; box-shadow: none; margin-bottom: 8px; }
+.teach-body .nb .lbl { color: var(--teal); }

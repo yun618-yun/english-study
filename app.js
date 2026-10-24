@@ -404,7 +404,10 @@ function renderNotes() {
   if (openItem) {
     const idx = items.findIndex(it => it.id === openItem);
     const it = items[idx];
+    // 👩‍🏫 老師講解（data-teach.js）：放在筆記上面，點開才看；不在 .page 裡，不會被兩欄排版和目錄抓到
+    const teach = typeof TEACH !== 'undefined' && TEACH[it.id];
     $view.innerHTML = `${backBtn(CAT[currentCat].name)}${it.note.includes('{{pic:') ? picToggleBtn() : ''}
+      ${teach ? `<details class="teach" ${catStyle(CAT[currentCat])}><summary>👩‍🏫 看不懂？點這裡看老師講解</summary><div class="teach-body">${formatBlocks(teach, true)}</div></details>` : ''}
       <article class="page" ${catStyle(CAT[currentCat])}>
         <h2>${esc(it.title)}</h2>
         ${formatNote(it.note)}
