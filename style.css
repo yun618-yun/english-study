@@ -194,6 +194,9 @@ main { padding: 0 16px 24px; max-width: 640px; margin: 0 auto; }
   background: var(--card); color: var(--text); border: 1px solid var(--line);
   border-radius: 12px; padding: 13px 14px; font-size: 17px; box-shadow: var(--shadow);
 }
+.opt.picked { border: 2px solid var(--teal); background: #dde8e6; padding: 12px 13px; }
+.opt-submit { margin: 4px 0 12px; }
+.opt-submit:disabled { opacity: .45; }
 .opt.right { background: var(--good-bg); border-color: var(--good); color: var(--good); font-weight: 700; }
 .opt.wrong { background: var(--bad-bg); border-color: var(--bad); color: var(--bad); }
 .q { font-size: 21px; font-weight: 800; color: var(--head); margin: 6px 0 16px; white-space: pre-line; }

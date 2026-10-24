@@ -546,11 +546,15 @@ function blankQuestion(it, word, others) {
 function optsHtml(options, act) {
   const grid = options.every(o => o.text.length <= 12) ? ' grid2' : '';
   return `<div class="opts${grid}">` + options.map((o, i) =>
-    `<button class="opt" data-act="${act}" data-i="${i}"><span class="letter">${'ABCD'[i]}</span><span class="otext">${esc(o.text)}</span><span class="mark"></span></button>`).join('') + '</div>';
+    `<button class="opt" data-act="${act}" data-i="${i}"><span class="letter">${'ABCD'[i]}</span><span class="otext">${esc(o.text)}</span><span class="mark"></span></button>`).join('') + '</div>' +
+    '<button class="btn opt-submit" data-act="opt-submit" disabled>先點一個選項</button>';   // 點選項只是選起來，按這顆才送出（手機怕誤觸）
 }
 // 答完：正確的打 ✓，其他打 ✗（root：只標這一題的選項）
 function markOpts(options, picked, root = $view) {
   const btns = root.querySelectorAll('.opt');
+  btns[0].parentElement.classList.add('done');
+  const sub = btns[0].parentElement.nextElementSibling;
+  if (sub && sub.classList.contains('opt-submit')) sub.remove();
   options.forEach((o, j) => {
     btns[j].classList.add(o.right ? 'right' : j === picked ? 'wrong' : 'dim');
     btns[j].querySelector('.mark').textContent = o.right ? '✓' : '✗';
@@ -1438,8 +1442,24 @@ $view.addEventListener('click', e => {
     return;
   }
 
-  const el = e.target.closest('[data-act]');
+  let el = e.target.closest('[data-act]');
   if (!el) return;
+  // 選擇題：點選項 → 先選起來＋念英文；按「送出答案」才真的作答
+  if (el.classList.contains('opt')) {
+    const text = el.querySelector('.otext').textContent;
+    if (el.dataset.act !== 'listen-ans' && isEnglish(text)) speak(text);   // 聽力題不念，不然等於洩漏答案
+    const box = el.parentElement;
+    if (!box.classList.contains('done')) {
+      box.querySelectorAll('.opt').forEach(b => b.classList.toggle('picked', b === el));
+      const sub = box.nextElementSibling;
+      if (sub && sub.classList.contains('opt-submit')) { sub.disabled = false; sub.textContent = '✅ 送出答案'; }
+      return;
+    }
+  }
+  if (el.dataset.act === 'opt-submit') {
+    el = el.previousElementSibling.querySelector('.opt.picked');
+    if (!el) return;
+  }
   switch (el.dataset.act) {
     case 'back': goUp(); break;
     case 'prev': case 'next': {
