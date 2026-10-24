@@ -777,3 +777,9 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 [data-theme="w"] .page .msec { border-left-color: #7f9981; background: rgba(127, 153, 129, .2); color: #1f1f1f; }   /* 使用者 10/24 指定 #7F9981 */
 /* 標題換成兩行時，每一行都要有螢光筆（漸層照行高重複） */
 .page .nb > .lbl, .page .nb:has(img.pic) > .lbl { line-height: 1.5; background-size: 100% 1.5em; background-repeat: repeat-y; }
+/* 圖卡的小提醒先收起來，右上角 💡 點了才打開（10/24：小提醒把卡片撐高，同一排空一大塊） */
+.nb:has(img.pic) .row { position: relative; }
+.tip-btn { position: absolute; top: 6px; right: 6px; z-index: 2; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #f2c14e; background: #fff6dc; font-size: 16px; line-height: 1; padding: 0; box-shadow: 0 1px 4px rgba(0, 0, 0, .15); }
+.row.tip-open .tip-btn { background: #f2c14e; }
+[data-pics="on"] .page .nb:has(img.pic) .row:not(.tip-open) > span .wtip { display: none; }
+[data-pics="off"] .tip-btn { display: none; }

@@ -236,7 +236,8 @@ function tableRow(t) {
   // 英文是一整句（三個字以上）：改成英文在上、中文在下，比較不擠
   const sent = parts.length === 2 && !t.includes('{{pic:') && isEnglish(parts[0]) &&
     (/[.?!]\s*(\{\{.*)?$/.test(parts[0].trim()) || englishPart(parts[0]).split(/\s+/).length >= 5);
-  return `<div class="row ${parts.length > 2 ? 'multi' : ''} ${sent ? 'sent' : ''}">${parts.map((p, i) =>
+  const tipBtn = imgRow && t.includes('{{tip:') ? '<button class="tip-btn" aria-label="看小提醒">💡</button>' : '';
+  return `<div class="row ${parts.length > 2 ? 'multi' : ''} ${sent ? 'sent' : ''}">${tipBtn}${parts.map((p, i) =>
     `<span class="${i ? 'v' : 'k'}">${inline(p)}${say(i)}</span>`).join('')}</div>${tips}`;
 }
 // 一行裡的英文部分（後面的中文翻譯不念）
@@ -1857,6 +1858,9 @@ document.querySelector('.tabs').addEventListener('click', e => {
 $view.addEventListener('click', e => {
   const say = e.target.closest('[data-say]');
   if (say) return speak(say.dataset.say);   // 放最前面：卡片上的 🔊 不要順便翻面
+  // 圖卡右上角的 💡：點了才打開小提醒（10/24：小提醒把卡片撐高，同一排會空一大塊）
+  const tipBtn = e.target.closest('.tip-btn');
+  if (tipBtn) { tipBtn.closest('.row').classList.toggle('tip-open'); return masonry(); }
 
   // 點圖卡 → 全螢幕放大，再點一下關掉
   const zoom = e.target.closest('[data-zoom]');
