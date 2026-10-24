@@ -162,7 +162,7 @@ NOTES.find(c => c.id === 'daily').items.push(...buildGroups('dl', [
 {
   const SCENES = [
     ['restaurant', '🍽️ 西餐廳', '',
-      '【餐廳和人】|restaurant=餐廳|western restaurant=西餐廳|bistro=小餐館|waiter=服務生|【點餐】|menu=菜單|dessert=甜點|sparkling water=氣泡水|【店裡的擺設】|bar counter=吧台（坐著點飲料的長桌）|bar stool=高腳椅|booth=卡座（靠牆、像沙發的座位，通常面對面坐）|wine cabinet=酒櫃|coffee maker=咖啡機|sideboard=餐具櫃（靠牆的矮櫃子，放盤子和杯子）|light fixture=燈具（裝在天花板或牆上的燈）|anchor=錨（船錨，餐廳的裝飾品）|potted plant=盆栽|【桌上的餐具】|silverware=餐具（刀、叉、湯匙）|dinner plate=主餐盤|steak knife=牛排刀|table knife=餐刀|dessert fork=甜點叉|napkin=餐巾|bread basket=麵包籃|butter dish=奶油碟|pepper mill=胡椒研磨器（轉一轉就會磨出胡椒）|sugar bowl=糖罐|coffee cup=咖啡杯|water glass=水杯|wine glass=酒杯|ice bucket=冰桶',
+      '【餐廳和人】|restaurant=餐廳|Western restaurant=西餐廳|bistro=小餐館|waiter=服務生|【點餐】|menu=菜單|dessert=甜點|sparkling water=氣泡水|【店裡的擺設】|bar counter=吧台（坐著點飲料的長桌）|bar stool=高腳椅|booth=卡座（靠牆、像沙發的座位，通常面對面坐）|wine cabinet=酒櫃|coffee maker=咖啡機|sideboard=餐具櫃（靠牆的矮櫃子，放盤子和杯子）|light fixture=燈具（裝在天花板或牆上的燈）|anchor=錨（船錨，餐廳的裝飾品）|potted plant=盆栽|【桌上的餐具】|silverware=餐具（刀、叉、湯匙）|dinner plate=主餐盤|steak knife=牛排刀|table knife=餐刀|dessert fork=甜點叉|napkin=餐巾|bread basket=麵包籃|butter dish=奶油碟|pepper mill=胡椒研磨器（轉一轉就會磨出胡椒）|sugar bowl=糖罐|coffee cup=咖啡杯|water glass=水杯|wine glass=酒杯|ice bucket=冰桶',
       '💡 這組原本的插畫上音標有錯（店名、steak knife），所以沒有放圖\n💡 bistro 是比較小、比較輕鬆的西式小餐館\n💡 dessert（甜點）重音在後面；desert（沙漠）重音在前面，拼法差一個 s\n💡 silverware 是刀叉湯匙的總稱，不一定是銀做的'],
     ['baggage', '🧳 機場：行李提領區', 'img/scene/baggage-claim.jpg',
       '【領行李】|baggage claim=行李提領處|baggage carousel=行李轉盤|conveyor belt=輸送帶|suitcase=行李箱|luggage cart=行李推車|【周圍看到的】|passenger=旅客|sign=指示牌|display screen=顯示螢幕|security camera=監視器|guardrail=護欄|floor=地板',
