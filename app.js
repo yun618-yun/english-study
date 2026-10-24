@@ -288,14 +288,17 @@ function addTeach(note, id) {
   if (!list) return note;
   const lines = note.split('\n');
   for (const [anchor, text] of list) {
-    const i = lines.findIndex(l => l.includes(anchor));
+    let i = lines.findIndex(l => l.includes(anchor));
     if (i < 0) continue;
+    // ▍小標題要自己一行才會變成標題：講解放到下面那一段的第一行後面
+    if (lines[i].trim().startsWith('▍')) { i++; while (i < lines.length - 1 && !lines[i].trim()) i++; }
     const body = text.replace(/\n/g, '¶').replace(/　/g, ' ').replace(/[{}]/g, '');
     const tip = `{{tip:👩‍🏫${body}}}`;
     // 那一行在 💡／⚠️ 提醒裡：提醒會整段搬走、變成一個小框，講解用 ⟦ ⟧ 包著一起帶走（inline 再畫出來）
-    let s = i; while (s > 0 && lines[s - 1].trim()) s--;
+    // 找這一行屬於哪一塊（跟 splitBlocks 一樣：空行、①【】、💡⚠️ 都會開新的一塊）
+    let s = i; while (s > 0 && lines[s - 1].trim() && !(MARK.test(lines[s].trim()) || /^(💡|⚠️)/.test(lines[s].trim()))) s--;
     if (/^(💡|⚠️)/.test(lines[s].trim())) lines.splice(i + 1, 0, `⟦👩‍🏫${body}⟧`);
-    else if (/　/.test(lines[i])) lines[i] += tip; else lines.splice(i + 1, 0, tip);
+    else if (/　/.test(lines[i].trim())) lines[i] += tip; else lines.splice(i + 1, 0, tip);
   }
   return lines.join('\n');
 }

@@ -119,5 +119,266 @@ const TEACH = {
     ['主要句子用未來式（will）', 'if 那半句說的是「假設這樣」，用現在式就好，未來的意思交給另一半的 will。'],
     ['If it will rain tomorrow', '雖然有 tomorrow，if 後面還是用 rains。'],
     ['We will stay at home if it rains', 'if 在前面或後面都可以，意思一樣。']
+  ],
+
+  // ===================== ⏰ 16 大時態 =====================
+  'tense-table': [
+    ['{{grid}}【一般】', '一般 ＝ 單純發生這件事，沒有強調「正在」或「已經」。'],
+    ['【進行】', '進行 ＝ 正在做。公式裡一定有 be 動詞 + ing。'],
+    ['【完成】', '完成 ＝ 在某個時間點「之前」已經做了。公式裡一定有 have + 過去分詞。'],
+    ['【完成進行】', '完成進行 ＝ 從之前一直做到某個時間點，而且還在做：have been + ing。'],
+    ['過去將來：would / should do', '過去將來 ＝ 站在過去說「之後會做」，最常出現在 I said、He told me 後面，will 變成 would。'],
+    ['💡 台灣課本的叫法', '看表的方法：上面的【一般、進行…】是「狀態」，每一行的「現在、過去…」是「時間」，兩個組合起來就是一個時態。先學有 ⭐ 的就好。']
+  ],
+  'passive-table': [
+    ['現在：am / is / are done', '被動 ＝ 東西「被」怎麼了。公式永遠是 be 動詞 + 過去分詞，時間只要改 be 動詞：is cleaned、was cleaned、will be cleaned。'],
+    ['例：The room is cleaned every day', '房間不會自己打掃，是「被」人打掃。不知道是誰做的，或是誰做的不重要，就用被動。'],
+    ['現在：am / is / are being done', 'being 是「正在」，cleaned 是「被」：正在被打掃。'],
+    ['現在：have / has been done', 'has been cleaned ＝ 已經被打掃好了。'],
+    ['【完成進行】都沒有被動語態', '這幾種太長了，連英文母語的人都幾乎不用，不用背。']
+  ],
+  't-usage': [
+    ['同一個時態，常常不只一種用法', '不用一次全記，先看每個時態的「用法一」，那是最常用的。'],
+    ['用法二：過去的習慣', '以前常常做、現在不做了，也可以說 used to：I [used to] swim in that river.'],
+    ['用法三：看到跡象', 'will 和 be going to：\n看到烏雲（有證據）→ It\'s going to rain.\n只是猜猜看 → Maybe it will rain.'],
+    ['用法二：最近一段時間一直在做', '「正在」不一定是這一秒，這陣子都在做也可以：I\'m reading a good book these days.'],
+    ['I have already finished my homework', '寫完作業是過去的事，但重點是「現在」可以看電視了，所以用現在完成式。'],
+    ['I had done my homework before my mom came back', '兩件過去的事，比較早發生的那件用 had done：寫作業比媽媽回來早。']
+  ],
+  't-8-active-passive': [
+    ['最常考的 8 個時態', '主動：誰做了什麼。被動：東西被怎麼了。同一件事，兩種說法。'],
+    ['例：This letter was written by him', '主動變被動三步驟：\n① 把東西（this letter）搬到前面\n② 動詞變成 be 動詞 + 過去分詞（wrote → was written）\n③ 做的人放到最後，前面加 by'],
+    ['公式：be 動詞（跟著時態變）', 'be 動詞負責「時間」，過去分詞負責「被」，兩個分工合作。']
+  ],
+  't-group-simple': [
+    ['定義：表示現實或普遍真理', '就是「平常都這樣」：喜好、習慣、事實。'],
+    ['例：She drinks coffee every morning', 'she 是第三人稱單數，所以 drink 要加 s。'],
+    ['例：She was tired yesterday', 'be 動詞的過去式 was / were 也算一般過去時。'],
+    ['例：I\'m going to visit my grandma', '已經計畫好的事常用 be going to；說話的當下才決定的用 will：\n（有人敲門）I\'ll get it! 我去開門！'],
+    ['定義：站在過去，預測將來要發生的動作', '最常出現在「他說、我說」後面：\nHe says he will call. → He [said] he [would] call.\n前面變成過去，will 也跟著變成 would。']
+  ],
+  't-group-cont': [
+    ['定義：動作現在正在進行', '進行式一定要有兩個部分：be 動詞 + ing，少一個都不行：\nI eating ✗、I am eat ✗、I am eating ✓'],
+    ['例：I was cooking when you called', '比較長的動作（煮飯）用進行式，中間突然插進來的短動作（電話）用過去式。'],
+    ['例：Don\'t call me at 9', '將來進行：到那個時間，我會「正在」做某件事。'],
+    ['定義：站在過去，預測將來某個時刻正在發生的動作', '這個很少用，看得懂就好。']
+  ],
+  't-group-perfect': [
+    ['定義：動作發生在過去，但對現在有影響', '重點在「現在」：I have eaten. 我吃過了（所以現在不餓）。'],
+    ['例：I have been to Japan twice', 'have been to ＝ 去過（已經回來了）\nhave gone to ＝ 去了（人還在那裡）'],
+    ['例：Have you eaten yet', 'yet 用在問句和否定句，already 用在肯定句。'],
+    ['定義：過去某個時間「之前」', '兩件過去的事，先發生的用 had done：\n我到車站（後發生）→ 火車已經開走（先發生，用 had left）。'],
+    ['例：I will have finished the report by Friday', 'by Friday ＝ 最晚星期五之前。將來完成式常常跟 by 一起出現。'],
+    ['定義：站在過去，預測將來某個時刻前', '這個很少用，看得懂就好。']
+  ],
+  't-group-perfect-cont': [
+    ['定義：動作從過去開始，持續到現在，而且還會繼續下去', '跟現在完成式很像，但更強調「一直在做、還沒停」：\nI have read the book.（讀完了）\nI have been reading the book.（一直在讀，還沒讀完）'],
+    ['例：It has been raining all day', 'for + 一段時間：for two hours\nsince + 開始的時間點：since 2020'],
+    ['定義：過去某時刻之前開始的動作', '把「現在完成進行」整個搬到過去：到公車來的那一刻，她已經等了一小時。'],
+    ['定義：動作從過去開始，持續到將來某個時刻', '這個很少用，看得懂就好。']
+  ],
+  's-group-present': [
+    ['▍一般現在時（主詞 + does）', '看到這些字，代表「常常、習慣」，動詞用現在簡單式。'],
+    ['always 總是、sometimes 有時', '這些字放在一般動詞前面、be 動詞後面：\nI [always] get up early.\nShe is [always] late.'],
+    ['▍現在進行時（主詞 + be doing）', '看到這些字，代表「現在這時候正在做」。'],
+    ['肯定句：already 已經、just 剛才', 'just、already 放在 have 和過去分詞中間：I have [just] eaten. 我剛吃過。'],
+    ['for + 一段時間、since', 'for two years：兩年（一段時間）\nsince 2020：從 2020 年開始（一個時間點）']
+  ],
+  's-group-past-future': [
+    ['3 days ago 三天前', 'ago 放在時間後面：three days ago ✓、ago three days ✗'],
+    ['last time 上次、last night 昨晚', 'last、next、this 前面不加 in / on：last night ✓、in last night ✗'],
+    ['▍過去進行時（主詞 + was / were doing）', '問自己：那個時間點，我「正在」做什麼？'],
+    ['① when、before、after + 過去時間', '兩件過去的事，先發生的用 had done：After I [had eaten], I went out.'],
+    ['in a year / week', 'in + 一段時間 ＝「…之後」：I\'ll be back [in] ten minutes. 我十分鐘後回來。'],
+    ['▍過去將來時（主詞 + would do）', '站在過去說「之後」：今天說 tomorrow，站在過去就說 the next day。']
+  ],
+
+  // ===================== ➡️ to 的用法 =====================
+  'to-group-overview': [
+    ['to 有兩種身分', '判斷方法：看 to 後面接什麼。\n接東西、地方、人（school、me）→ 介係詞 to\n接動作原形（learn、go）→ 不定詞 to'],
+    ['例：look forward to learning', '這幾個要特別背，因為 to 後面看起來應該接原形，其實要接 ing：look forward to [seeing] you。'],
+    ['去向、接收者、交流對象', '想成一支箭頭：誰 → 去哪裡、東西 → 給誰。'],
+    ['on the way to the station', '箭頭只說「往哪裡」，人還在路上也可以用 to。']
+  ],
+  'to-do-roles': [
+    ['「做某件事」可以被討論', 'to + 動詞原形，就是把一個動作包成「一件事」，然後放進句子的不同位置。'],
+    ['獨自旅行需要勇氣', '口語更常把長長的主詞搬到後面，前面用 it 代替：\n[It] takes courage [to travel alone].'],
+    ['I have two emails [to answer]', '放在名詞後面，意思是「要…的」：two emails to answer ＝ 兩封要回的信。'],
+    ['I opened the window [to let some air in]', '最常用的就是這個「為了…」：問「為什麼？」，回答 to + 動作。']
+  ],
+  'to-group-reach': [
+    ['地方、時間、數字、狀態', 'to 就是「到」：到一個地方、到一個時間、到一個數字。'],
+    ['The shop is open from 9 a.m. to 6 p.m.', 'from … to … 是一組：從…到…。'],
+    ['It\'s ten to nine', '想成「再十分鐘就到九點」，所以是 8:50。過幾分是 past：ten past nine ＝ 9:10。'],
+    ['This bag is similar to mine', '比較的對象前面用 to：similar to（跟…很像）、different from（跟…不一樣）。'],
+    ['I prefer tea to coffee', 'prefer A to B ＝ 比起 B，更喜歡 A。喜歡的放前面。']
+  ],
+  'to-purpose-reason-result': [
+    ['She called me to ask for help', '最常用的是「目的」：問「為什麼？」，to 後面就是答案。'],
+    ['I was relieved to hear the news', '心情的字（happy、sad、surprised）+ to do：因為…而開心、難過。\nI\'m happy [to see] you. 見到你很開心。'],
+    ['He returned to the office, only to find it locked', 'only to 是比較正式的寫法，看得懂就好。']
+  ],
+  'to-too-enough': [
+    ['兩個都在說「程度」', 'too 不是「也」的那個 too，在這裡是「太」，而且是「太…所以不行」的意思。'],
+    ['He is too tired to walk', 'too 本身就有「不能」：He is too tired to walk.（不用加 not）'],
+    ['She is old enough to drive', 'enough ＝ 足夠，夠了就「可以」。']
+  ],
+  'to-group-who': [
+    ['只多一個人，做動作的人就變了', '先問：要做這件事的是誰？\n自己做 → I want [to go].\n別人做 → I want [you to go].'],
+    ['I want you to leave', '中文會說「我想要你走」，英文不能說 I want you leave，中間的 to 不能少。'],
+    ['I told Ben not to leave', 'not 放在誰前面，就是否定誰。'],
+    ['It is difficult for me to lift this box', '「對我來說很難」：It is [difficult for me] to…。\n不能說 I am difficult to…（意思會變成「我這個人很難搞」）。'],
+    ['It was kind of you to lend me your notes', 'kind、nice 是在說「人」很好，所以用 of you；difficult、easy 是在說「事情」，所以用 for me。'],
+    ['I don\'t know what to write', '中文「不知道要寫什麼」，英文直接 what to write，很好用。']
+  ],
+  'to-noun': [
+    ['to do 放在名詞後面', '中文說「要讀的書」，形容的話放在前面；英文說 a book to read，放在後面。'],
+    ['a chair to sit on', '先把原本的句子說出來：sit on a chair，介係詞 on 就不會忘記。']
+  ],
+  'to-forms': [
+    ['不定詞裡，to 後面第一個動詞用原形', '這一則比較難，先記 ①、⑥ 兩個就好，其他看得懂就可以。'],
+    ['He seems to have left', 'to have done ＝ 比現在更早就已經發生了：他（之前就）已經走了。'],
+    ['She decided not to reply', 'not 放在 to 前面：決定「不」回覆。']
+  ],
+  'to-plus-doing': [
+    ['這一組的 to 是介係詞', '介係詞後面要接名詞，動作要變成名詞就加 ing，所以這些 to 後面接 doing。\n小測試：to 後面可以放 it 或名詞的，就是介係詞：I object to [it].']
+  ],
+  'to-or-doing': [
+    ['He stopped talking', 'stop + ing：停掉的就是這個動作。'],
+    ['He stopped to talk', 'stop + to：停下來，是為了去做後面的事。'],
+    ['Remember to lock the door', 'remember / forget + to：還沒做的事。\nDon\'t forget [to call] me. 別忘了打給我。'],
+    ['I remember locking the door', 'remember + ing：已經做過，現在回想起來。']
+  ],
+  'used-to': [
+    ['① used to do：過去常常做', '想成「以前是這樣，現在不是了」：I used to smoke.（我以前抽菸，現在不抽了）'],
+    ['② be used to doing：已經習慣', '多了 be 動詞（I\'m），意思就變成「習慣」，to 後面接 ing。'],
+    ['③ be used to do：被用來做', '這個就是 use（使用）的被動：被用來…。']
+  ],
+  'to-group-no': [
+    ['① can、must、should 後面直接接原形', 'can、must 本身就是小幫手，後面直接接動詞，不加 to：can to swim ✗'],
+    ['② let／make + 人 + 原形', 'let、make 都是「讓」，後面的人直接接原形：let me [go]、make him [laugh]。'],
+    ['You had better go', 'had better 雖然有 had，意思是「現在最好」，口語常縮成 You\'d better go.'],
+    ['I would rather stay', '口語常縮成 I\'d rather stay.']
+  ],
+  'to-vs-for': [
+    ['從情境理解「接收者」', '問自己：東西是「交到」他手上（to），還是「為了」他去做這件事（for）？'],
+    ['I gave a notebook to May', 'give、send、show、tell 用 to：東西傳過去。'],
+    ['I bought a notebook for May', 'buy、make、cook 用 for：為了某人做這件事。']
+  ],
+  'to-phrases': [
+    ['① have to do：需要、不得不', '口語常用 have to，比 must 更常聽到。'],
+    ['③ be about to do：馬上就要', 'be about to ＝ 下一秒就要發生，比 be going to 更近。'],
+    ['⑤ to be honest：說實話', '很好用的開頭，想說真心話、不同意見時先說 To be honest…']
+  ],
+
+  // ===================== 🧩 動詞片語 =====================
+  'ph-bare': [
+    ['這些動詞後面是「人 + 動詞原形」', '分兩種記：\n眼睛、耳朵、感覺（see、watch、hear、feel）\n叫人做事（make、have、let）\n後面都直接接原形，不加 to。'],
+    ['make sb. do sth.', 'make 是「逼、使」，有一點強迫：My boss made me [work] late.'],
+    ['let sb. do sth.', 'let 是「允許、讓」，對方想做，你同意：Let me [help] you.']
+  ],
+  'ph-be': [
+    ['後面的介係詞要一起背', '背法：整組當成一個字念熟，像 be-interested-in，不要只背 interested。'],
+    ['be interested in', '後面接動作要加 ing：I\'m interested in [learning] English.'],
+    ['be afraid of　害怕', 'be afraid of + 東西：I\'m afraid of dogs.\nbe afraid to + 動作：I\'m afraid to ask.'],
+    ['be angry with', '生「人」的氣用 with，生「事情」的氣用 about：I\'m angry about the noise.']
+  ],
+  'ph-up': [
+    ['up 常有「向上」', '先記 up 的感覺：往上，或是「做到完、做到底」。不認識的片語，用這個感覺猜猜看。'],
+    ['pick up　撿起', '東西放在中間或後面都可以：pick up the phone、pick the phone up。\n但是 it、them 一定要放中間：pick [it] up ✓、pick up it ✗'],
+    ['give up　放棄', '後面接動作要加 ing：I gave up [smoking]. 我戒菸了。'],
+    ['wake up　醒來', 'wake up 是「醒來」，get up 是「起床（離開床）」。']
+  ],
+  'ph-out': [
+    ['out 常有「向外」', 'out 的感覺：出去、拿出來、用光、弄清楚。\nfind out 找出來（答案）、run out 用光、work out 想出辦法、運動。']
+  ],
+  'ph-group-give-go': [
+    ['▍give 片語（16 個）', 'give 的感覺：給出去。give up 給出去不要了 → 放棄；give back 給回去 → 還。'],
+    ['▍go 片語（12 個）', 'go 的感覺：往某個方向走。go on 繼續走 → 繼續；go back 往回走 → 回去。']
+  ],
+  'ph-group-prep': [
+    ['▍for 片語（11 個）', 'for 的感覺：為了、朝向一個目標。wait for 等「為了」某人、look for 找「為了」某東西。'],
+    ['▍with 片語（19 個）', 'with 的感覺：跟…在一起、用…。'],
+    ['▍about 片語（9 個）', 'about 的感覺：關於某件事。talk about、think about、worry about。'],
+    ['▍at 片語（24 個）', 'at 的感覺：對準一個點。look at 看著那一點、be good at 擅長那一點。'],
+    ['▍in 片語（介系詞片語）（23 個）', 'in 的感覺：在某個狀態裡面。in danger 在危險中、in a hurry 很急。']
+  ],
+  'ph-group-verb2': [
+    ['▍look 片語（10 個）', '同一個動詞配不同的小字，意思差很多。先記最常用的：look for 找、look after 照顧、look forward to 期待。'],
+    ['▍get 片語（20 個）', 'get 的感覺：變成、到達。get up 變成起來 → 起床；get to 到達。'],
+    ['▍take 片語（16 個）', 'take 的感覺：拿、帶走、花（時間）。It takes ten minutes. 要花十分鐘。'],
+    ['▍come 片語（11 個）', 'come 的感覺：往說話的人這邊來。come back 回來、come in 進來。'],
+    ['▍keep 片語（9 個）', 'keep 的感覺：一直維持。keep going 繼續走、keep quiet 保持安靜。'],
+    ['▍put 和 turn 片語（6 個）', 'put 的感覺：放。turn 的感覺：轉。turn on 以前是轉開關，所以是打開電器。']
+  ],
+
+  // ===================== 💪 常用動詞和形容詞 =====================
+  'cw-group-verb': [
+    ['▍每天都會用的動詞（20 個）', '背動詞的方法：每個字都說一句自己今天做的事，比只背中文記得牢。'],
+    ['▍最常用的萬用動詞（20 個）', 'make、take、get、have 這幾個字，跟不同的字搭配就有不同意思，要整組記：take a shower、have lunch、make a mistake。'],
+    ['▍常用動詞（生活）（21 個）', '記得加上過去式一起背，例如 buy → bought、pay → paid。']
+  ],
+  'cw-adj-pair': [
+    ['成對背最有效', '一次記兩個，看到一個就想到另一個：hot ↔ cold、easy ↔ difficult。']
+  ],
+  'cw-adj-feel': [
+    ['bored　覺得無聊的', '想成：-ed 是「我被弄得…」，-ing 是「它讓人覺得…」。\nI\'m [bored]. 我覺得好無聊。\nThe movie is [boring]. 這部電影很無聊。'],
+    ['interested　感興趣的', 'I\'m [interested] in music.（我有興趣）\nMusic is [interesting].（音樂很有趣）']
+  ],
+  'cw-freq': [
+    ['說自己的習慣一定會用', '放的位置最重要：一般動詞前面、be 動詞後面。\nI [usually] walk to work.\nI am [never] late.'],
+    ['never　從不', 'never 本身就是否定，不用再加 not：I don\'t never… ✗、I never… ✓']
+  ],
+  'cw-people': [
+    ['介紹朋友、描述一個人', '個性用 is：She is kind.\n外表的頭髮、眼睛用 has：She has long hair.']
+  ],
+
+  // ===================== 📚 文法用語 =====================
+  'g-overview': [
+    ['英文句子就像組合積木', '為什麼要學這些名稱？因為很多規則是用詞性說的，像「介係詞後面接名詞」。知道名稱，就看得懂規則。'],
+    ['① 最重要的是這兩個', '一個句子最少要有「誰」（名詞）和「做什麼」（動詞），其他都是加上去讓意思更清楚的。'],
+    ['副詞：形容動詞', '分不清楚的時候問自己：它在形容「東西」還是「動作」？東西 → 形容詞；動作 → 副詞。']
+  ],
+  'g-pos-abbr': [
+    ['【10 種詞性】', '查字典時，單字後面的 n.、v.、adj. 就是在告訴你這個字的詞性，知道詞性就知道它可以放在句子哪裡。']
+  ],
+  'g-group-pos': [
+    ['① 怎麼認', '小測試：前面能不能放 a、the、my？可以的話，通常是名詞。'],
+    ['② 英文比較麻煩的地方', '中文「我」不管放哪裡都一樣，英文放動詞前面用 I，後面用 me。'],
+    ['② be 動詞：「是、在」', 'be 動詞沒有動作，像一個等號：She is happy. → 她 ＝ 開心的。'],
+    ['② 放在 be 動詞後面', 'be 動詞後面放形容詞，說主詞「怎麼樣」：I am [tired].'],
+    ['③ 怎麼認', '很多副詞是形容詞加 ly：quick → quickly、slow → slowly。'],
+    ['③ 中文沒有冠詞', '每次說到單數的東西，先停一下想：a？the？還是 my？'],
+    ['① 連接兩個字', 'and、but、or、so 就像膠水，把兩個字或兩個句子黏在一起。']
+  ],
+  'g-group-verb': [
+    ['① 及物動詞：後面可以直接接受詞', '「及物」就是「動作可以直接碰到東西」：like 什麼？eat 什麼？後面直接放東西。'],
+    ['② 不及物動詞：後面不能直接接受詞', '這些動詞像隔了一層，要用介係詞當橋：listen [to] music、look [at] me。'],
+    ['③ 連綴動詞（系動詞）', '連綴動詞像等號，後面放形容詞說主詞的樣子：You look [tired].（你 ＝ 累的樣子）'],
+    ['① 原形：最原本的樣子', '字典查到的就是原形。can、will、to、do 後面都用原形。'],
+    ['④ 過去分詞：用在完成式', '規則動詞的過去式和過去分詞一樣，都是加 ed；不規則的要背（看「不規則動詞表」）。']
+  ],
+  'g-group-parts': [
+    ['① 主詞：做動作的人或東西', '問「誰？」的答案就是主詞，通常在句子最前面。'],
+    ['② 受詞：接受動作的人或東西', '問「什麼？」「對誰？」的答案就是受詞，放在動詞後面。'],
+    ['③ 補語：補充說明主詞是什麼', '補語通常在 be 動詞後面：She is [a nurse].（說明她是什麼）'],
+    ['① 一句話看懂', '中國大陸的課本用「主語、謂語、賓語」，台灣叫「主詞、動詞、受詞」，是一樣的東西。'],
+    ['① S + V（主 + 動）', 'S ＝ 主詞、V ＝ 動詞、O ＝ 受詞、C ＝ 補語。5 個句型就是這幾塊的排列方式。']
+  ],
+  'g-group-kinds': [
+    ['③ 祈使句：命令、請求、勸告、禁止', '祈使句是對「你」說的，所以 you 省略了：(You) Sit down. → Sit down.\n加 please 比較客氣：Please sit down.'],
+    ['④ 感嘆句：表達強烈的感覺', '最常用的兩種：\nWhat a nice day! 天氣真好！（後面有名詞用 what）\nHow beautiful! 好漂亮！（只有形容詞用 how）'],
+    ['【從句】一個句子裡面包著另一個小句子', '這部分先認識名字就好，等基礎文法熟了再學。']
+  ],
+  'g-numbers': [
+    ['② 序數詞：第幾', '序數詞大部分是加 th：four → fourth、six → sixth。\n前三個特別：first、second、third。'],
+    ['③ 分數：分子用基數、分母用序數', '1/3 ＝ one third\n2/3 ＝ two thirds（分子大於一，分母加 s）\n1/2 ＝ a half、1/4 ＝ a quarter']
+  ],
+  'g-person': [
+    ['② 為什麼「第三人稱單數」很重要？', '因為現在式的時候，只有它的動詞要加 s：I like → He [likes]。英文初學者最常忘記這個。']
+  ],
+  'g-tense': [
+    ['① 中文 vs 英文', '中文靠「加字」（了、在、會），英文靠「改動詞的樣子」。所以說英文時，每個動詞都要想一下時間。'],
+    ['② 時態 ＝ 時間 + 狀態', '時間有 4 種（現在、過去、將來、過去將來），狀態有 4 種（一般、進行、完成、完成進行），4 × 4 ＝ 16 大時態。']
   ]
 };
