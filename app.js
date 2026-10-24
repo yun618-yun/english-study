@@ -166,6 +166,7 @@ const inline = s => esc(s)
     const m = t.match(/^(.*[.!?])\s+([^.!?]*[一-鿿].*)$/);   // 最後一個句點後面、有中文的那段是翻譯（UN 代表聯合國 也算）
     return m ? `<span class="ex"><span class="ex-en">${m[1]}</span><span class="ex-zh">${zhWrap(m[2])}</span></span>` : `<span class="ex">${t}</span>`;
   })
+  .replace(/⟪([^⟫]+)⟫/g, (_, t) => sayBtn(t.replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/\bsb\./g, 'somebody').replace(/\bsth\./g, 'something')))
   .replace(/\{\{tip:([^}]+)\}\}/g, (_, t) => {
     if (t.startsWith('👩‍🏫')) return `<span class="wtip teach"><b>👩‍🏫 老師說</b>${t.replace('👩‍🏫', '').split('¶').join('<br>')}</span>`;
     const warn = t.startsWith('⚠️');
@@ -300,7 +301,12 @@ function addTeach(note, id) {
     if (i < 0) continue;
     // ▍小標題要自己一行才會變成標題：講解放到下面那一段的第一行後面
     if (lines[i].trim().startsWith('▍')) { i++; while (i < lines.length - 1 && !lines[i].trim()) i++; }
-    const body = text.replace(/\n/g, '¶').replace(/　/g, ' ').replace(/[{}]/g, '');
+    // 講解裡兩個字以上的英文，後面加 🔊（10/24 使用者要的）：用 ⟪ ⟫ 標起來，inline 再換成按鈕
+    const body = text.replace(/\n/g, '¶').replace(/　/g, ' ').replace(/[{}]/g, '')
+      .replace(/[A-Za-z\[][A-Za-z'’\[\] .,!?-]*[A-Za-z.!?\]]/g, m => {
+        const t = m.replace(/[\[\]]/g, '').replace(/[ ,]+$/, '');
+        return /[A-Za-z]{2,}.* [A-Za-z]/.test(t) && !/^(sb|sth)\b/.test(t) ? `${m}⟪${t}⟫` : m;
+      });
     const tip = `{{tip:👩‍🏫${body}}}`;
     // 那一行在 💡／⚠️ 提醒裡：提醒會整段搬走、變成一個小框，講解用 ⟦ ⟧ 包著一起帶走（inline 再畫出來）
     // 找這一行屬於哪一塊（跟 splitBlocks 一樣：空行、①【】、💡⚠️ 都會開新的一塊）
