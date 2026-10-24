@@ -773,3 +773,7 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
   background: linear-gradient(transparent 52%, rgba(255, 214, 92, .75) 52%, rgba(255, 214, 92, .75) 94%, transparent 94%);
   -webkit-box-decoration-break: clone; box-decoration-break: clone; padding: 0 3px;
 }
+/* 10/24 使用者：小標題框（▍那一條）換顏色：筆記配色下改成深紅邊＋淡紅底，跟英文的深紅一組 */
+[data-theme="w"] .page .msec { border-left-color: #a3262a; background: rgba(163, 38, 42, .09); color: #1f1f1f; }
+/* 標題換成兩行時，每一行都要有螢光筆（漸層照行高重複） */
+.page .nb > .lbl, .page .nb:has(img.pic) > .lbl { line-height: 1.5; background-size: 100% 1.5em; background-repeat: repeat-y; }
