@@ -329,6 +329,8 @@ function splitLongBoxes(text) {
   }, []);
   return pre + text.slice(pre.length).split('\n\n').map(para => blocks(para).map(ls => {
     const p = ls.join('\n');
+    // 有插圖的單字表本來就排成圖卡格子，拆開反而左右對不齊（10/24 使用者截圖：「其他水果 ①②」）
+    if (ls.some(l => /\{\{pic:[^}]*\.(png|jpe?g|webp|gif)\}\}/i.test(l))) return p;
     const labeled = MARK.test(ls[0].trim());
     if (!labeled && (ls.length <= 8 || !ls.every(l => isEnglish(l) || /　/.test(l) || isTipLine(l)))) return p;
     const head = labeled ? ls[0] : null;

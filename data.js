@@ -1370,7 +1370,7 @@ const VOCAB_TIPS = {
     'fire engine': '💡 消防車也可以說 fire truck（美國比較常用）'
   },
   fruit: {
-    date: '💡 date 有兩個意思：「棗子」和「日期、約會」\nWhat\'s the date today? 今天幾號？',
+    date: '💡 date 有兩個意思：「椰棗」和「日期、約會」\nWhat\'s the date today? 今天幾號？',
     kiwi: '💡 奇異果完整叫 kiwifruit，平常說 kiwi 就可以（kiwi 也是紐西蘭的一種鳥）'
   },
   vegetable: {
