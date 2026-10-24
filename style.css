@@ -667,3 +667,4 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .row .k { word-break: keep-all; overflow-wrap: anywhere; text-wrap: balance; }
 .ex { display: block; font-size: 13px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
 .ex { display: block; font-size: 13px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
+.ex-en, .ex-zh { display: block; } .ex-zh { word-break: keep-all; overflow-wrap: anywhere; }   /* 中文翻譯只在標點換行 */

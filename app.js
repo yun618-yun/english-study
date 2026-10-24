@@ -149,7 +149,11 @@ const inline = s => esc(s)
   .replace(/\{\{pic:([^}]+)\}\}/g, (_, p) => picHtml(p.replace(/^faded:/, ''), p.startsWith('faded:') ? 'pic faded' : 'pic'))
   .replace(/\{\{say:([^}]+)\}\}/g, (_, t) => sayBtn(t))
   .replace(/\{\{syl:([^}]+)\}\}/g, '<span class="syl">$1</span>')   // 音節：單字下面一行灰色小字
-  .replace(/\{\{ex:([^}]+)\}\}/g, '<span class="ex">$1</span>')   // 片語的例句：中文下面一行小字
+  // 片語的例句：中文下面一行小字；英文和中文翻譯分兩行（10/24 使用者：擠在同一行，中文會被拆成「…同一間／房間。」）
+  .replace(/\{\{ex:([^}]+)\}\}/g, (_, t) => {
+    const m = t.match(/^(.*[.!?])\s+([^.!?]*[一-鿿].*)$/);   // 最後一個句點後面、有中文的那段是翻譯（UN 代表聯合國 也算）
+    return m ? `<span class="ex"><span class="ex-en">${m[1]}</span><span class="ex-zh">${m[2]}</span></span>` : `<span class="ex">${t}</span>`;
+  })
   .replace(/\{\{tip:([^}]+)\}\}/g, (_, t) => {
     const warn = t.startsWith('⚠️');
     const body = t.replace(/^(💡|⚠️)\s*/, '').split('¶').join('<br>');
