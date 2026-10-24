@@ -966,7 +966,7 @@ renderSpeedBtn();
 
 // ===== 🎨 背景配色：A 燕麥米色（預設）／D 奶茶色，記在手機裡 =====
 // 10/24 加 W 白底筆記風（跟使用者的複習筆記一樣），先當預設給使用者試；用新的記錄名稱，舊的米色設定不會蓋掉它
-const THEMES = { w: ['🎨 白底', '#f1f1ef'], a: ['🎨 米色', '#e3dac9'], d: ['🎨 奶茶', '#d8cbbb'] };
+const THEMES = { w: ['🎨 灰底', '#b8b7b4'], a: ['🎨 米色', '#e3dac9'], d: ['🎨 奶茶', '#d8cbbb'] };
 let theme = 'w';
 try { const t = localStorage.getItem('english-study-theme2'); if (THEMES[t]) theme = t; } catch (e) {}
 function applyTheme() {
