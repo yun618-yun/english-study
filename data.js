@@ -1601,6 +1601,50 @@ for (const [key, en, tip] of [
   VOCAB_TIPS[key] = VOCAB_TIPS[key] || {};
   if (!(VOCAB_TIPS[key][en] || '').includes(tip.slice(0, 8))) VOCAB_TIPS[key][en] = VOCAB_TIPS[key][en] ? VOCAB_TIPS[key][en] + '\n' + tip : tip;
 }
+// 📝 單字的中文不只一種（10/24 使用者要的）：「主要意思；其他常見意思」，只加初學者真的會遇到的
+// 卡片 id 是用英文做的，改中文不會影響練習紀錄
+for (const [key, list] of Object.entries({
+  month: 'May=可以、可能（小寫 may）',
+  season: 'spring=泉水、彈簧|fall=跌倒、掉下來',
+  color: 'orange=柳橙|silver=銀',
+  staple: '',
+  bakery: 'toast=乾杯、敬酒',
+  tableware: 'glass=玻璃|table=表格',
+  drink: 'shake=搖',
+  fruit: 'orange=橘色的|date=日期；約會',
+  meat: 'chop=剁、切|roast=烤（動詞）|turkey=土耳其（大寫 T）|fish=釣魚',
+  transport: 'train=訓練|coach=教練|express=表達|plane=刨子（工具）',
+  tool: 'saw=看到（see 的過去式）|level=程度、等級|ruler=統治者|nail=指甲|nut=堅果|file=檔案|square=正方形；廣場|brush=刷（牙）|plane=飛機|bench=長椅|spade=黑桃（撲克牌）',
+  weather: 'hot=燙的；辣的|cold=感冒|cool=很酷|dry=擦乾、弄乾|fine=很好；罰款|dull=無聊的|rain=下雨|snow=下雪|shower=淋浴|freeze=（電腦）當機；不准動',
+  place: 'bank=河岸|park=停車|court=球場|club=社團|store=儲存|shop=買東西|bar=條、棒（a bar of chocolate）',
+  family: 'single=單一的；單人的|couple=兩個、幾個（a couple of）',
+  home: 'study=讀書|floor=樓層|table=表格',
+  job: 'cook=煮|judge=判斷|model=模型|director=主管、主任|chemist=藥劑師（英式）',
+  clothes: 'suit=適合|tie=綁、打結|ring=（鈴聲）響|dress=穿衣服|heel=腳跟',
+  sport: 'race=種族|walk=走路、散步|bridge=橋|hammer=鎚子|cricket=蟋蟀|football=美式足球（美國）',
+  body: 'hand=遞給|palm=棕櫚樹|nail=釘子|temple=寺廟|calf=小牛|lid=蓋子|gum=口香糖|chest=箱子|face=面對|mole=鼴鼠',
+  animal: 'seal=封住、蓋章|bear=忍受（can\'t bear）|turkey=土耳其（大寫 T）|fish=釣魚|mouse=滑鼠',
+  nature: 'star=明星',
+  room: 'board=登（機、船）|fan=粉絲|light=輕的；點（火）|key=關鍵|lock=鎖上',
+  meal: 'jam=塞車（traffic jam）',
+  subject: 'Chinese=中國人；中國的',
+  bath: 'sink=下沉|shower=陣雨',
+  chore: 'mop=拖（地）',
+  cook: 'cook=廚師|steam=蒸氣|cut=傷口|peel=果皮',
+  taste: 'sweet=貼心的|pepper=甜椒（bell pepper）',
+  feel: 'lie=躺|cry=大叫|busy=（電話）忙線中',
+  sick: 'cold=冷的|hurt=痛（動詞）|medicine=醫學',
+  travel: 'flight=飛行|gate=大門|ticket=罰單',
+  road: 'sign=簽名|bridge=橋牌',
+  money: 'change=改變|tip=小撇步|return=回來；歸還',
+  tech: 'tablet=藥片|account=（銀行）帳戶'
+})) {
+  if (!list) continue;
+  const v = VOCAB.find(x => x[0] === key);
+  for (const [en, more] of list.split('|').map(s => s.split('='))) {
+    v[2] = v[2].split('|').map(s => { const [zh, e] = s.split('='); return e === en && !zh.includes(more) ? `${zh}；${more}=${e}` : s; }).join('|');
+  }
+}
 const picOf = (key, en) => {
   const hit = (PICS[key] || '').split('|').reverse().find(p => p.split('=')[0] === en);   // 後面的優先
   return hit ? hit.split('=')[1] : '';
