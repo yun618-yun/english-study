@@ -29,11 +29,12 @@ add('NEG', 'not never');
 add('A2', 'such');
 add('R2', 'either there');
 const CON = { "i'm": '主詞＋be動詞', "he's": '主詞＋be動詞', "it's": '主詞＋be動詞', "that's": '主詞＋be動詞', "what's": '疑問詞＋be動詞', "there's": 'There＝有＋is',
-  "don't": '助動詞＋not', "doesn't": '助動詞＋not', "can't": '助動詞＋not', "isn't": 'be動詞＋not', "aren't": 'be動詞＋not', "wasn't": 'be動詞＋not', "didn't": '助動詞＋not', "won't": '助動詞＋not', "you're": '主詞＋be動詞', "we're": '主詞＋be動詞', "they're": '主詞＋be動詞', "she's": '主詞＋be動詞', "i'll": '主詞＋助動詞', "i'd": '主詞＋助動詞', "let's": "Let's＝一起…吧" };
+  "don't": '助動詞＋not', "doesn't": '助動詞＋not', "can't": '助動詞＋not', "isn't": 'be動詞＋not', "aren't": 'be動詞＋not', "wasn't": 'be動詞＋not', "didn't": '助動詞＋not', "won't": '助動詞＋not', "you're": '主詞＋be動詞', "we're": '主詞＋be動詞', "they're": '主詞＋be動詞', "she's": '主詞＋be動詞', "i'll": '主詞＋助動詞', "i've": '主詞＋助動詞', "i'd": '主詞＋助動詞', "let's": "Let's＝一起…吧" };
 const LABEL = { NEG: '否定', A2: '形容詞', R2: '副詞', D: '冠詞', A: '形容詞', R: '副詞', T: '時間', P: '介系詞', C: '連接詞', Q: '疑問詞', AUX: '助動詞', BE: 'be動詞', PP: '所有格', QA: '形容詞', NUM: '數字', INT: '感嘆詞', PD: '指示詞' };
 add('D', 'a an the');
 add('A', 'fair firm close mean');
-add('V', 'ate types dry wrote talk');
+add('V', 'ate types dry wrote talk complains');
+add('A', 'lonely quiet');
 add('VN', 'park');
 const NOTING = W('something nothing everything anything spring thanksgiving peking lightning ring rings morning evening king sing bring thing building ceiling clothing stocking earring wedding pudding');
 const PHRASAL = W('put turn take pick wake get try give clean call');
