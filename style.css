@@ -783,3 +783,6 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .row.tip-open .tip-btn { background: #f2c14e; }
 [data-pics="on"] .page .nb:has(img.pic) .row:not(.tip-open) > span .wtip { display: none; }
 [data-pics="off"] .tip-btn { display: none; }
+/* 👆 點字查中文的小提示 */
+.tap-hint { position: relative; margin: 0 0 10px; padding: 9px 40px 9px 12px; border-radius: 12px; background: #fff6dc; border: 1px solid #f2c14e; font-size: 15px; color: var(--text); }
+.tap-hint button { position: absolute; top: 4px; right: 4px; border: 0; background: none; font-size: 16px; padding: 6px 8px; color: var(--muted); }

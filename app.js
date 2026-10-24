@@ -482,7 +482,11 @@ function renderNotes() {
   if (openItem) {
     const idx = items.findIndex(it => it.id === openItem);
     const it = items[idx];
+    // 點字查中文的小提示：前 5 次打開筆記時顯示，按 ✕ 就不再出現
+    let tapHint = 0;
+    try { tapHint = Number(localStorage.getItem('english-study-tap-hint') || 0); if (tapHint < 5) localStorage.setItem('english-study-tap-hint', tapHint + 1); } catch (e) {}
     $view.innerHTML = `${backBtn(CAT[currentCat].name)}${it.note.includes('{{pic:') ? picToggleBtn() : ''}
+      ${tapHint < 5 ? '<div class="tap-hint">👆 點筆記裡任何一個英文字，下面會跳出中文和發音<button data-act="tap-hint-x" aria-label="不再顯示">✕</button></div>' : ''}
       <article class="page" ${catStyle(CAT[currentCat])}>
         <h2>${esc(it.title)}</h2>
         ${formatNote(splitLongBoxes(addTeach(it.note, it.id)))}
@@ -1636,7 +1640,7 @@ function storyListHtml() {
 }
 // 查字：這篇的 words → 常用小字 → 單字庫（去掉 s、ed、ing 再查）
 let storyDict = null;
-function lookupWord(w) {
+function lookupWord(w, inStory = true) {
   if (!storyDict) {
     storyDict = {};
     ALL.filter(it => it.front && it.back && ['core', 'vocab'].includes(it.cat)).forEach(it => {
@@ -1646,11 +1650,19 @@ function lookupWord(w) {
   }
   w = w.toLowerCase().replace(/’/g, "'");
   const forms = [w, w.replace(/'s$/, ''), w.replace(/ies$/, 'y'), w.replace(/es$/, ''), w.replace(/s$/, ''), w.replace(/ied$/, 'y'),
-    w.replace(/ed$/, ''), w.replace(/d$/, ''), w.replace(/ing$/, ''), w.replace(/ing$/, 'e'), w.replace(/(\w)\1(ed|ing)$/, '$1')];
-  const local = story && story.words ? Object.fromEntries(story.words.split('|').map(p => p.split('='))) : {};
+    w.replace(/ed$/, ''), w.replace(/d$/, ''), w.replace(/ing$/, ''), w.replace(/ing$/, 'e'), w.replace(/(\w)\1(ed|ing)$/, '$1'),
+    // 10/24 全站點字：比較級、最高級（taller、biggest、happier）和 -ves 複數（knives、leaves）、不規則複數
+    w.replace(/(\w)\1(er|est)$/, '$1'), w.replace(/i(er|est)$/, 'y'), w.replace(/(er|est)$/, ''), w.replace(/(r|st)$/, ''), w.replace(/ves$/, 'f'), w.replace(/ves$/, 'fe'),
+    ({ mice: 'mouse', feet: 'foot', teeth: 'tooth', geese: 'goose', men: 'man', women: 'woman', children: 'child' })[w] || w];
+  const local = inStory && story && story.words ? Object.fromEntries(story.words.split('|').map(p => p.split('='))) : {};
   for (const f of forms) if (local[f]) return local[f];
   for (const f of forms) if (STORY_COMMON[f]) return STORY_COMMON[f];
   for (const f of forms) if (storyDict[f]) return storyDict[f];
+  // 不規則動詞：went、eaten、brought → 查原形（不規則動詞表）
+  if (typeof IRREGULAR !== 'undefined') {
+    const v = IRREGULAR.find(r => r[1].split(' / ').includes(w) || r[2].split(' / ').includes(w));
+    if (v) return `${v[3]}（${v[0]} 的${v[1].split(' / ').includes(w) ? '過去式' : '過去分詞'}）`;
+  }
   return '';
 }
 function startStory(id) { story = { ...STORIES.find(s => s.id === id), answered: 0 }; listenMode = 'story'; }
@@ -1686,16 +1698,36 @@ function answerStory(el) {
   }
 }
 // 點字：下面跳出小框框（中文＋🔊）
-function showWordPop(w) {
+function showWordPop(w, inStory = true) {
   document.querySelectorAll('.word-pop').forEach(p => p.remove());
-  const zh = lookupWord(w);
+  const zh = lookupWord(w, inStory);
   const pop = document.createElement('div');
   pop.className = 'word-pop';
-  pop.innerHTML = `<b>${esc(w)}</b> ${sayBtn(w)}<div class="wp-zh">${zh ? esc(zh) : '（這個字還沒有收錄，看整句的翻譯試試）'}</div><button class="wp-x" aria-label="關閉">✕</button>`;
+  pop.innerHTML = `<b>${esc(w)}</b> ${sayBtn(w)}<div class="wp-zh">${zh ? esc(zh) : '（這個字還沒有收錄，看旁邊的中文或整句翻譯試試）'}</div><button class="wp-x" aria-label="關閉">✕</button>`;
   pop.addEventListener('click', e => { if (e.target.closest('.wp-x')) pop.remove(); else if (e.target.closest('[data-say]')) speak(e.target.closest('[data-say]').dataset.say); });
   document.body.appendChild(pop);
   speak(w);
 }
+// 👆 全站點英文字看中文（10/24 使用者選的）：筆記、例句、對話裡的英文字，點一下下面跳出中文和 🔊
+// 不用把每個字包成標籤：從點的位置找出那個字（iPhone Safari 用 caretRangeFromPoint）
+function wordAtPoint(x, y) {
+  let node, off;
+  if (document.caretPositionFromPoint) { const p = document.caretPositionFromPoint(x, y); if (!p) return ''; node = p.offsetNode; off = p.offset; }
+  else if (document.caretRangeFromPoint) { const r = document.caretRangeFromPoint(x, y); if (!r) return ''; node = r.startContainer; off = r.startOffset; }
+  if (!node || node.nodeType !== 3) return '';
+  const t = node.textContent;
+  let a = off, b = off;
+  while (a > 0 && /[A-Za-z'’]/.test(t[a - 1])) a--;
+  while (b < t.length && /[A-Za-z'’]/.test(t[b])) b++;
+  return t.slice(a, b).replace(/^['’]+|['’]+$/g, '');
+}
+$view.addEventListener('click', e => {
+  if (e.target.closest('button, a, input, select, textarea, img, .opt, [data-act], [data-say], [data-zoom], .st-w')) return;
+  if (!e.target.closest('.page, .bubble, .answer-box')) return;
+  if (String(window.getSelection ? getSelection() : '').length > 1) return;   // 正在選取文字就不跳
+  const w = wordAtPoint(e.clientX, e.clientY);
+  if (/[A-Za-z]/.test(w)) showWordPop(w, false);
+});
 function answerEE(i) {
   if (lQ.answered) return;
   lQ.answered = true;
@@ -1957,6 +1989,7 @@ $view.addEventListener('click', e => {
     case 'ee-ans': answerEE(Number(el.dataset.i)); break;
     case 'story-start': startStory(el.dataset.id); renderListen(); window.scrollTo(0, 0); break;
     case 'st-word': showWordPop(el.dataset.w); break;
+    case 'tap-hint-x': try { localStorage.setItem('english-study-tap-hint', '99'); } catch (e) {} el.closest('.tap-hint').remove(); break;
     case 'st-zh': { const z = document.getElementById('st-zh-' + el.dataset.i); z.hidden = !z.hidden; break; }
     case 'st-zh-all': { const zs = [...document.querySelectorAll('.st-zh')], show = zs.some(z => z.hidden); zs.forEach(z => { z.hidden = !show; }); break; }
     case 'st-play': speak(story.lines.map(l => l.en).join(' ')); break;
