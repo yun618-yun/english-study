@@ -679,3 +679,10 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 /* 🧠 不經過中文 */
 .listen-box.think-en { border: 1px solid var(--teal); }
 .ee-def { font-size: 22px; font-weight: 700; color: var(--head); line-height: 1.4; margin: 6px 0 8px; font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+/* 🌱 等級 */
+.level-banner { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; margin-bottom: 10px; font-size: 15px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; box-shadow: var(--shadow); }
+.level-banner .level-bar { flex: 1 1 100%; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.level-banner .level-bar span { display: block; height: 100%; background: var(--teal); border-radius: 3px; }
+.level-banner .btn { flex: 1 1 100%; }
+.level-pick { display: grid; gap: 8px; }
+.level-pick .btn small { font-weight: 400; font-size: 13px; opacity: .85; }

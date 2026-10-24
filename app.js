@@ -795,7 +795,7 @@ function renderProgress() {
       <div class="bar"><div class="k" style="width:${k / n * 100}%"></div><div class="u" style="width:${u / n * 100}%"></div></div>
       <div class="stat-row"><span>已熟 ${k}</span><span>不熟 ${u}</span><span>未標記 ${r.items.length - k - u}</span></div>
     </div>`;
-  }).join('') + weekHistoryHtml() + settingsHtml() + `<button class="btn ghost" data-act="reset">清除所有標記</button>`;
+  }).join('') + levelSettingsHtml() + weekHistoryHtml() + settingsHtml() + `<button class="btn ghost" data-act="reset">清除所有標記</button>`;
   // 月曆放在總覽下面
   document.querySelector('.sec-title').insertAdjacentHTML('beforebegin', calendarHtml());
 }
@@ -910,6 +910,56 @@ document.addEventListener('click', e => {
 });
 applyPics();
 
+// ===== 🌱 等級：先練日常、簡單的，再進階、高階（10/24 使用者要的） =====
+// 「今日」的新卡片、今日文法、課表的聽力／重組／打字只出現在等級以內的；筆記、卡片分頁不受限制
+// 名單裡寫筆記 id 或卡片的組別（group）；卡片沒有組別的，id 開頭對到也算。沒列到的都是第 2 級
+const LEVEL_1 = ['study-routine', 'study-think-en', 'g-overview', 'g-group-pos', 'g-pos-abbr', 'g-pos', 'g-noun', 'g-pronoun', 'g-verb', 'g-adj', 'g-adv', 'g-article', 'g-prep', 'g-conj', 'g-person', 'g-numbers', 'g-ordinal',
+  'b-structure', 'b-be', 'b-subject-verb', 'b-subject', 'b-group-pronoun', 'b-pronoun', 'b-group-sentence', 'b-neg', 'b-q', 'b-imperative', 'b-contractions', 'b-group-noun', 'b-article', 'b-plural', 'b-in-on-at', 'b-in', 'b-wh', 'b-there-is', 'b-there',
+  'mn-be', 'mn-time-prep', 'mn-time', 'mn-group-plural', 'mn-plural', 'mn-fe', 'mn-group-present', 'mn-present',
+  'dl-greet', 'dl-intro', 'dl-group-food', 'dl-food', 'dl-drink', 'dl-shop', 'dl-group-way', 'dl-way', 'dl-taxi', 'dl-group-talk', 'dl-rescue', 'dl-react', 'dl-feel', 'nm-group-num', 'nm-num', 'nm-price', 'nm-group-time', 'nm-time', 'nm-date',
+  'cw-group-verb', 'cw-verb-daily', 'cw-verb-common', 'cw-verb-more', 'cw-adj-pair', 'cw-adj-feel', 'cw-freq', 'cw-people',
+  'vocab-g-time', 'month', 'season', 'time', 'week', 'vocab-color', 'color', 'vocab-g-food', 'staple', 'bakery', 'meal', 'vocab-g-drink', 'drink', 'vocab-fruit', 'fruit', 'vocab-vegetable', 'vegetable',
+  'vocab-family', 'family', 'vocab-body', 'body', 'vocab-animal', 'animal', 'vocab-g-home', 'home', 'room', 'bath', 'vocab-g-nature', 'nature', 'vocab-g-feel', 'feel', 'vocab-clothes', 'clothes', 'vocab-g-kitchen', 'tableware', 'mm-how'];
+const LEVEL_3 = ['g-group-tips', 'g-position', 'g-cloze', 'g-reading', 'g-reading-att', 'g-clauses',
+  'to-do-roles', 'to-role', 'to-purpose-reason-result', 'to-reason', 'to-only', 'to-opinion', 'to-noun', 'to-wh', 'to-forms', 'to-not', 'to-plus-doing', 'to-plus', 'to-or-doing', 'to-or', 'to-object', 'used-to', 'to-group-no', 'no-to', 'to-vs-for', 'to-vs', 'for-doing', 'to-for',
+  'ph-bare', 'ph-group-prep', 'ph-for', 'ph-with', 'ph-about', 'ph-at', 'ph-in2',
+  'passive-table', 't-8-active-passive', 't-8', 't-group-perfect-cont', 't-usage', 's-group-present', 's-group-past-future', 's-simple', 's-present', 's-past',
+  'mm-prefix', 'mm-prefix2', 'mm-prefix3', 'mm-suffix', 'mm-suffix2', 'mm-suffix3', 'mm-suffix4', 'mm-suffix5', 'mm-root', 'mm-root2',
+  'mm-un', 'mm-re', 'mm-dis', 'mm-im', 'mm-pre', 'mm-mis', 'mm-over', 'mm-num', 'mm-sub', 'mm-inter', 'mm-tele', 'mm-er', 'mm-ist', 'mm-ful', 'mm-less', 'mm-ly', 'mm-able', 'mm-ous', 'mm-y', 'mm-al', 'mm-ive',
+  'mm-tion', 'mm-ness', 'mm-ment', 'mm-ship', 'mm-en', 'mm-ize', 'mm-ward', 'mm-spect', 'mm-vis', 'mm-phon', 'mm-aud', 'mm-port', 'mm-dict', 'mm-struct', 'mm-form'];
+const inLevel = (list, it) => list.some(k => it.group === k || it.id === k || it.id.startsWith(k + '-'));
+const levelOf = it => inLevel(LEVEL_1, it) ? 1 : inLevel(LEVEL_3, it) ? 3 : 2;
+const LEVEL_NAME = { 1: '🌱 第 1 級：日常入門', 2: '🌿 第 2 級：進階', 3: '🌳 第 3 級：高階' };
+const LEVEL_KEY = 'english-study-level';
+let userLevel = 1;
+try { userLevel = Number(localStorage.getItem(LEVEL_KEY)) || 1; } catch (e) {}
+const setLevel = n => { userLevel = n; try { localStorage.setItem(LEVEL_KEY, String(n)); } catch (e) {} };
+// 這一級學了多少：學過＝今日複習裡出現過（srs 有紀錄）
+function levelProgress(n = userLevel) {
+  const cards = ALL.filter(it => isCard(it) && levelOf(it) === n);
+  const learned = cards.filter(it => srs[it.id]).length;
+  return { learned, total: cards.length, pct: cards.length ? learned / cards.length : 1 };
+}
+// 升級條件：這一級學過 80%，而且最近一次每週小考 80 分以上 → 出現升級按鈕（按了才升）
+function canLevelUp() {
+  if (userLevel >= 3) return false;
+  const last = weekResults[weekResults.length - 1];
+  return levelProgress().pct >= 0.8 && !!last && last.score / last.total >= 0.8;
+}
+function levelBanner() {
+  const p = levelProgress();
+  return `<div class="level-banner"><span><b>${LEVEL_NAME[userLevel]}</b>　已學 ${p.learned} / ${p.total}</span>
+    <span class="level-bar"><span style="width:${Math.round(p.pct * 100)}%"></span></span>
+    ${canLevelUp() ? `<button class="btn" data-act="level-up">🎉 可以升到第 ${userLevel + 1} 級了！</button>` : ''}</div>`;
+}
+// 「進度」分頁：說明＋手動切換
+function levelSettingsHtml() {
+  const rows = [1, 2, 3].map(n => { const p = levelProgress(n); return `<button class="btn ${n === userLevel ? '' : 'ghost'}" data-act="level-set" data-v="${n}">${LEVEL_NAME[n]}<br><small>已學 ${p.learned} / ${p.total}</small></button>`; }).join('');
+  return `<h3 class="sec-title">🌱 學習等級</h3><div class="box">
+    <p class="muted">「今日」的新卡片、今日文法、課表練習只從現在的等級出（筆記和卡片分頁不受限制，隨時都能看）。這一級學過 80%、每週小考 80 分以上，「今日」會出現升級按鈕。</p>
+    <div class="level-pick">${rows}</div></div>`;
+}
+
 // ===== 📅 每日複習（間隔複習）=====
 // 每張卡片記：下次要複習的日子 due、目前間隔 iv（天）。記得 → 間隔拉長；忘記 → 明天再來
 const SRS_KEY = 'english-study-srs', DAY_KEY = 'english-study-days';
@@ -927,7 +977,14 @@ function startToday() {
   const due = cards.filter(c => srs[c.id] && srs[c.id].due <= t).sort((a, b) => srs[a.id].due - srs[b.id].due);
   // 新卡片：以前標「不熟」的先，再照分類順序（文法用語、基礎文法…）
   const learnedToday = cards.filter(c => srs[c.id] && srs[c.id].first === t).length;
-  const fresh = cards.filter(c => !srs[c.id]).sort((a, b) => (status[b.id] === 'unknown') - (status[a.id] === 'unknown'))
+  // 新卡片只從現在的等級以內出（低等級還沒學完的先）；同一級裡生活句、單字、動詞、文法輪流出，不會一連好幾天都是文法
+  const CAT_TURN = ['daily', 'vocab', 'core', 'basics', 'phrase', 'terms', 'mnemonic', 'to', 'tenses'];
+  const turn = new Map();
+  const fresh = cards.filter(c => !srs[c.id] && levelOf(c) <= userLevel)
+    .map(c => { const k = levelOf(c) + c.cat; turn.set(k, (turn.get(k) || 0) + 1); return { c, n: turn.get(k) }; })
+    .sort((a, b) => (levelOf(a.c) - levelOf(b.c)) || ((status[b.c.id] === 'unknown') - (status[a.c.id] === 'unknown')) || (a.n - b.n) ||
+      ((CAT_TURN.indexOf(a.c.cat) + 1 || 99) - (CAT_TURN.indexOf(b.c.cat) + 1 || 99)))
+    .map(x => x.c)
     .slice(0, Math.max(0, NEW_PER_DAY + extraNew - learnedToday));
   todayQueue = [...due, ...fresh];
   todayPos = 0; todayDone = 0;
@@ -952,11 +1009,11 @@ const markBackup = () => { try { localStorage.setItem(BACKUP_KEY, String(Date.no
 function renderToday() {
   if (weekRun) return renderWeek();
   const s = streak();
-  const head = backupBanner() + weekBanner() + `<div class="today-head"><span>🔥 連續 <b>${s}</b> 天</span><span>今天剩 <b>${todayQueue.length - todayPos}</b> 張</span></div>`;
+  const head = backupBanner() + weekBanner() + levelBanner() + `<div class="today-head"><span>🔥 連續 <b>${s}</b> 天</span><span>今天剩 <b>${todayQueue.length - todayPos}</b> 張</span></div>`;
   if (todayPos >= todayQueue.length) {
     if (todayDone > 0 && !studyDays.includes(today())) { studyDays.push(today()); saveSrs(); }
     const upcoming = Object.values(srs).filter(r => r.due === today() + 1).length;
-    $view.innerHTML = backupBanner() + weekBanner() + `<div class="today-head"><span>🔥 連續 <b>${streak()}</b> 天</span></div>
+    $view.innerHTML = backupBanner() + weekBanner() + levelBanner() + `<div class="today-head"><span>🔥 連續 <b>${streak()}</b> 天</span></div>
       <div class="plan-step done">✅ 1. 卡片複習　<span class="muted">明天大約要複習 ${upcoming} 張</span></div>
       ${planHtml()}
       <div class="empty" style="padding-top:8px"><button class="btn ghost" data-act="more-new">還想學：再學 10 張新卡片</button></div>`;
@@ -1191,7 +1248,7 @@ function markRead(id) {
   readNotes.push(id);
   try { localStorage.setItem(READ_KEY, JSON.stringify(readNotes)); } catch (e) {}
 }
-const nextNote = () => ALL.find(it => it.note && (!['vocab', 'scene'].includes(it.cat) || it.pron) && !readNotes.includes(it.id));   // 發音規則搬進「單字」後還是要讀
+const nextNote = () => ALL.find(it => it.note && (!['vocab', 'scene'].includes(it.cat) || it.pron) && !readNotes.includes(it.id) && levelOf(it) <= userLevel);   // 發音規則搬進「單字」後還是要讀；只挑現在等級以內的
 const PLAN_KEY = 'english-study-plan';
 let planDone = { day: '', done: [] }, planRun = null;
 try { planDone = JSON.parse(localStorage.getItem(PLAN_KEY)) || planDone; } catch (e) {}
@@ -1297,6 +1354,7 @@ function listenHome() {
 function startListenRound(mode, src, n = LISTEN_ROUND) {
   listenMode = mode; listenSrc = src; lPos = 0; lScore = 0;
   let items = LISTEN_SRC[src].items();
+  if (planRun) items = items.filter(it => !it.cat || levelOf(it) <= userLevel);   // 今日課表：只用等級以內的
   // 句子重組：3～10 個字的句子才好排
   if (mode === 'type') items = items.filter(it => orderTokens(listenEn(it)).length <= 7);   // 太長的句子打字太累
   if (mode === 'order') items = items.filter(it => { const k = orderTokens(listenEn(it)).length; return k >= 3 && k <= 10 && !/[/()]/.test(listenEn(it)); });
@@ -1656,6 +1714,8 @@ $view.addEventListener('click', e => {
     case 'today-ans': answerToday(Number(el.dataset.i)); break;
     case 'type-ok': checkTyping(); break;
     case 'type-hint': document.getElementById('type-hint').hidden = false; break;
+    case 'level-up': setLevel(userLevel + 1); startToday(); renderToday(); window.scrollTo(0, 0); break;
+    case 'level-set': setLevel(Number(el.dataset.v)); renderProgress(); break;
     case 'week-go': startWeek(); window.scrollTo(0, 0); break;
     case 'week-ans': answerWeek(Number(el.dataset.i)); break;
     case 'week-next': weekRun.pos++; renderWeek(); window.scrollTo(0, 0); break;
