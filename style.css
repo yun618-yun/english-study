@@ -707,15 +707,9 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .weak-row .row-btns { margin-top: 6px; }
 .weak-row .btn { padding: 8px 10px; font-size: 15px; }
 
-/* 👩‍🏫 老師講解：筆記上面的折疊區，一欄由上往下讀 */
-.teach { margin: 0 0 12px; border-radius: 14px; background: #fff8e8; border: 2px solid #f0d38a; }
-.teach summary { padding: 12px 14px; font-weight: 700; font-size: 16px; cursor: pointer; color: #8a5a00; list-style: none; }
-.teach summary::-webkit-details-marker { display: none; }
-.teach summary::after { content: ' ▾'; }
-.teach[open] summary::after { content: ' ▴'; }
-.teach-body { padding: 0 12px 10px; }
-.teach-body .nb { background: #fff; border: 0; box-shadow: none; margin-bottom: 8px; }
-.teach-body .nb .lbl { color: var(--teal); }
 
 /* 🆕 有新版本的提示（正在用的時候才會出現；切回 App 時是直接自動更新） */
 .update-bar { position: fixed; top: calc(env(safe-area-inset-top) + 8px); left: 50%; transform: translateX(-50%); z-index: 999; padding: 10px 16px; border: 0; border-radius: 20px; background: var(--teal); color: #fff; font-size: 15px; font-weight: 700; box-shadow: 0 4px 12px rgba(0, 0, 0, .2); }
+/* 👩‍🏫 老師說：插在筆記那一行下面的講解（app.js addTeach） */
+.wtip.teach { color: var(--text); margin-top: 6px; background: rgba(255, 255, 255, .85); border-left-color: var(--teal); font-size: 13.5px; line-height: 1.6; }
+.wtip.teach > b:first-child { display: block; color: var(--teal); font-size: 12.5px; }

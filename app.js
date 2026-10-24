@@ -167,10 +167,12 @@ const inline = s => esc(s)
     return m ? `<span class="ex"><span class="ex-en">${m[1]}</span><span class="ex-zh">${zhWrap(m[2])}</span></span>` : `<span class="ex">${t}</span>`;
   })
   .replace(/\{\{tip:([^}]+)\}\}/g, (_, t) => {
+    if (t.startsWith('👩‍🏫')) return `<span class="wtip teach"><b>👩‍🏫 老師說</b>${t.replace('👩‍🏫', '').split('¶').join('<br>')}</span>`;
     const warn = t.startsWith('⚠️');
     const body = t.replace(/^(💡|⚠️)\s*/, '').split('¶').join('<br>');
     return `<span class="wtip ${warn ? 'warn' : ''}">${warn ? '⚠️ 注意' : '💡'} ${body}</span>`;
   })
+  .replace(/⟦👩‍🏫([^⟧]*)⟧/g, (_, t) => `<span class="wtip teach"><b>👩‍🏫 老師說</b>${t.split('¶').join('<br>')}</span>`)
   .replace(/\{\{card:([^}]+)\}\}/g, (_, p) => `<img class="card-img" src="${p}" alt="" loading="lazy" data-zoom>`)
   // 短的（括號）和「引號」不要從中間斷行（10/24 使用者：手機上「可／數）」這種斷句很怪）；只動標籤外面的字
   .split(/(<[^>]+>)/).map(t => t.startsWith('<') ? t : t.replace(/([（「][^（）「」]{1,8}[）」])/g, '<span class="nw">$1</span>')).join('');
@@ -279,6 +281,24 @@ function splitBlocks(text) {
   return blocks;
 }
 // 筆記開頭寫 {{grid}}：連續的【】小框排成兩欄（例如 12 組字母組合）
+// 👩‍🏫 老師說（data-teach.js）：把講解插在筆記對應那一行下面（10/24 使用者要的）
+// 用 {{tip:👩‍🏫…}} 的格式，表格、兩欄、提醒的排法都跟 💡 小提醒一樣
+function addTeach(note, id) {
+  const list = typeof TEACH !== 'undefined' && TEACH[id];
+  if (!list) return note;
+  const lines = note.split('\n');
+  for (const [anchor, text] of list) {
+    const i = lines.findIndex(l => l.includes(anchor));
+    if (i < 0) continue;
+    const body = text.replace(/\n/g, '¶').replace(/　/g, ' ').replace(/[{}]/g, '');
+    const tip = `{{tip:👩‍🏫${body}}}`;
+    // 那一行在 💡／⚠️ 提醒裡：提醒會整段搬走、變成一個小框，講解用 ⟦ ⟧ 包著一起帶走（inline 再畫出來）
+    let s = i; while (s > 0 && lines[s - 1].trim()) s--;
+    if (/^(💡|⚠️)/.test(lines[s].trim())) lines.splice(i + 1, 0, `⟦👩‍🏫${body}⟧`);
+    else if (/　/.test(lines[i])) lines[i] += tip; else lines.splice(i + 1, 0, tip);
+  }
+  return lines.join('\n');
+}
 function formatNote(text) {
   if (text.startsWith('{{grid}}')) {
     const parts = text.replace(/^\{\{grid\}\}\n*/, '').split('\n\n');
@@ -404,13 +424,10 @@ function renderNotes() {
   if (openItem) {
     const idx = items.findIndex(it => it.id === openItem);
     const it = items[idx];
-    // 👩‍🏫 老師講解（data-teach.js）：放在筆記上面，點開才看；不在 .page 裡，不會被兩欄排版和目錄抓到
-    const teach = typeof TEACH !== 'undefined' && TEACH[it.id];
     $view.innerHTML = `${backBtn(CAT[currentCat].name)}${it.note.includes('{{pic:') ? picToggleBtn() : ''}
-      ${teach ? `<details class="teach" ${catStyle(CAT[currentCat])}><summary>👩‍🏫 看不懂？點這裡看老師講解</summary><div class="teach-body">${formatBlocks(teach, true)}</div></details>` : ''}
       <article class="page" ${catStyle(CAT[currentCat])}>
         <h2>${esc(it.title)}</h2>
-        ${formatNote(it.note)}
+        ${formatNote(addTeach(it.note, it.id))}
       </article>
       ${statusButtons(it.id)}
       <div class="pager">
