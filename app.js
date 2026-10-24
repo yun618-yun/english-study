@@ -509,7 +509,11 @@ function wordPool(it) {
 function wordQuestion(it, pool = wordPool(it)) {
   if (!pool) return null;
   const en = firstLine(it.back);
-  const opts = [{ text: it.front, right: true }, ...pool.map(o => ({ text: o.front, right: false }))];
+  // 看英文選中文：選項旁邊放插畫／Emoji 多一個記憶點（10/24）。4 個都有圖才放，不然有圖的那個會太顯眼
+  // 選項只放主要意思（「；」後面的其他意思答完在上面的大字卡看）
+  const main = zh => zh.split('；')[0];
+  const opts = [{ text: main(it.front), right: true, pic: it.pic || it.groupIcon }, ...pool.map(o => ({ text: main(o.front), right: false, pic: o.pic || o.groupIcon }))];
+  if (!opts.every(o => o.pic)) opts.forEach(o => delete o.pic);
   return { id: it.id, word: en, say: it.say || en, options: shuffle(opts) };
 }
 
@@ -561,7 +565,7 @@ function grammarHtml(b) {
 function optsHtml(options, act) {
   const grid = options.every(o => o.text.length <= 12) ? ' grid2' : '';
   return `<div class="opts${grid}">` + options.map((o, i) =>
-    `<button class="opt" data-act="${act}" data-i="${i}"><span class="letter">${'ABCD'[i]}</span><span class="otext">${esc(o.text)}</span><span class="mark"></span></button>`).join('') + '</div>' +
+    `<button class="opt" data-act="${act}" data-i="${i}"><span class="letter">${'ABCD'[i]}</span>${o.pic ? picHtml(o.pic, 'opic') : ''}<span class="otext">${esc(o.text)}</span><span class="mark"></span></button>`).join('') + '</div>' +
     '<button class="btn opt-submit" data-act="opt-submit" disabled>先點一個選項</button>';   // 點選項只是選起來，按這顆才送出（手機怕誤觸）
 }
 // 答完：正確的打 ✓，其他打 ✗（root：只標這一題的選項）
@@ -654,6 +658,7 @@ function answerCard(i) {
   // 單字卡：上面的大字卡直接變成「英文 🔊 ＋ 綠色（答錯紅色）中文」，像 suffer 那張圖
   document.getElementById('card-top').innerHTML = cardQ.isWord
     ? `<div class="word-card done ${ok ? 'ok' : 'ng'}">
+        ${it.pic ? picHtml(it.pic, 'pic big') : ''}
         <div class="big-word">${esc(firstLine(it.back))}</div>${sayBtn(say || firstLine(it.back))}
         <div class="big-zh">${esc(it.front)}</div>
         ${it.back.includes('\n') ? `<div class="muted pre">${esc(it.back.split('\n').slice(1).join('\n'))}</div>` : ''}
