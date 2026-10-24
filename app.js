@@ -329,6 +329,8 @@ function formatNote(text) {
   }
   // 筆記開頭寫 {{nogrid}}：框框都一整排，不自動並排（情境單字的英文比較長，並排會擠）
   // 筆記開頭寫 {{pair}}：每個框框都兩欄並排（就算是三欄的表格；框框裡會改成上下排）
+  // 筆記開頭寫 {{wide}}：框框一整排、不左右並排（一列字很長的表，例如不規則動詞；10/24 使用者同意例外）
+  if (text.startsWith('{{wide}}')) return '<div class="wide-note">' + formatBlocks(text.replace(/^\{\{wide\}\}\n*/, ''), true) + '</div>';
   if (text.startsWith('{{pair}}')) return formatBlocks(text.replace(/^\{\{pair\}\}\n*/, ''), false, true);
   // {{nogrid}}：以前用來不讓框框並排；10/23 使用者要全部兩欄，現在當成一般筆記
   if (text.startsWith('{{nogrid}}')) return formatBlocks(text.replace(/^\{\{nogrid\}\}\n*/, ''));

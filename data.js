@@ -10,6 +10,18 @@
 // 不規則動詞：「原形=過去式=過去分詞=中文」，用 | 隔開
 const IRREGULAR = 'be=was / were=been=是|have=had=had=有|do=did=done=做|go=went=gone=去|come=came=come=來|get=got=got / gotten=得到|make=made=made=製作|take=took=taken=拿|give=gave=given=給|see=saw=seen=看見|know=knew=known=知道|think=thought=thought=想|say=said=said=說|tell=told=told=告訴|eat=ate=eaten=吃|drink=drank=drunk=喝|buy=bought=bought=買|bring=brought=brought=帶來|teach=taught=taught=教|find=found=found=找到|feel=felt=felt=感覺|leave=left=left=離開|meet=met=met=遇見|pay=paid=paid=付錢|sleep=slept=slept=睡覺|send=sent=sent=寄|spend=spent=spent=花（時間、錢）|sit=sat=sat=坐|stand=stood=stood=站|write=wrote=written=寫|read=read=read=讀（過去式念 red）|speak=spoke=spoken=說（語言）|break=broke=broken=打破|choose=chose=chosen=選擇|drive=drove=driven=開車|ride=rode=ridden=騎|swim=swam=swum=游泳|begin=began=begun=開始|run=ran=run=跑|become=became=become=變成|put=put=put=放|cut=cut=cut=切|let=let=let=讓|hit=hit=hit=打|cost=cost=cost=花費（價錢）|lose=lost=lost=遺失、輸|win=won=won=贏|forget=forgot=forgotten=忘記|wear=wore=worn=穿|grow=grew=grown=長大、種植'
   .split('|').map(s => s.split('='));
+// 不規則動詞照規律分組（筆記用；卡片還是一個字一張）。10/24 使用者：50 個一整條超級長
+const IRR_GROUPS = [
+  ['三個都一樣', 'put cut let hit cost read'],
+  ['後兩個一樣：-ought／-aught', 'think buy bring teach'],
+  ['後兩個一樣：變成 t 結尾', 'feel leave meet sleep send spend lose'],
+  ['後兩個一樣：其他①', 'have make say tell pay'],
+  ['後兩個一樣：其他②', 'find sit stand win get'],
+  ['三個都不一樣：最後加 n①', 'take give see know eat grow'],
+  ['三個都不一樣：最後加 n②', 'write ride drive speak break choose'],
+  ['i → a → u、第一和第三一樣', 'drink swim begin run come become'],
+  ['最特別的，一定要背', 'be do go forget wear']
+];
 
 const NOTES = [
   // ===================== 📖 文法用語（名詞解釋：動詞、代名詞是什麼） =====================
@@ -542,9 +554,13 @@ const NOTES = [
       {
         id: 'b-irregular',
         title: '不規則動詞表（50 個最常用）',
-        note: '大部分動詞的過去式加 ed 就好（play → played），但下面這些常用動詞是不規則的，要背。\n\n過去式：用在過去簡單式（I went）\n過去分詞：用在完成式、被動語態（I have gone、It was broken）\n\n原形　過去式　過去分詞　中文\n' +
-          IRREGULAR.map(v => v.join('　')).join('\n') +
-          '\n\n💡 背的小技巧：三個都一樣（put、cut、let、hit、cost）最好背，先背這組。'
+        note: '{{wide}}大部分動詞的過去式加 ed 就好（play → played），但下面這些常用動詞是不規則的，要背。\n\n過去式：用在過去簡單式（I went）\n過去分詞：用在完成式、被動語態（I have gone、It was broken）\n\n' +
+          // 照規律分成 9 小框，一列寫成「原形 → 過去式 → 過去分詞　中文」
+          IRR_GROUPS.map(([title, list]) => {
+            const vs = list.split(' ').map(b => IRREGULAR.find(v => v[0] === b));
+            return `【${title}（${vs.length} 個）】\n` + vs.map(([b, p, pp, zh]) => `${b} → ${p} → ${pp}　${zh}`).join('\n');
+          }).join('\n\n') +
+          '\n\n💡 背的順序：先背「三個都一樣」，再背「後兩個一樣」，最後背「三個都不一樣」。'
       },
       ...IRREGULAR.map(([base, past, pp, zh]) => ({
         id: 'irr-' + base, group: 'irregular', say: `${base}, ${past}, ${pp}`,

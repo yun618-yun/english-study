@@ -740,3 +740,6 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .page .nbgrid .nb:has(.pic) .row .k, [data-pics="off"] .page .nbgrid:has(img.pic) .nb:has(img.pic) .row .k { font-size: 17px; }
 .wtip { font-size: 15px; }
 .wtip.teach { font-size: 15.5px; }
+/* {{wide}} 的筆記（不規則動詞表）：一列一行，中文放右邊 */
+.wide-note .nb .row.sent { flex-direction: row; align-items: baseline; justify-content: space-between; gap: 10px; padding: 6px 0; }
+.wide-note .nb .row.sent .v { text-align: right; flex: none; max-width: 40%; }

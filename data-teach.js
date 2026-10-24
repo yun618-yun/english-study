@@ -91,9 +91,9 @@ const TEACH = {
     ['過去做了，跟現在有關係', 'I [have lost] my key. 鑰匙弄丟了（現在還進不了家門）\nI [lost] my key yesterday. 只是說昨天發生的事\n有說清楚過去的時間，就用過去式，不能用完成式。']
   ],
   'b-irregular': [
-    ['下面這些常用動詞是不規則的', '一組一組背比較快：\n三個一樣：cut cut cut、put put put\n後兩個一樣：buy bought bought、make made made\n三個不一樣：go went gone、eat ate eaten'],
+    ['下面這些常用動詞是不規則的', '下面已經照「變化的規律」分好組了：同一框的字，變的方式一樣。一次背一框，不要 50 個一起背。'],
     ['過去分詞：用在完成式', '先把第二個（過去式）背熟，日常說話最常用；第三個等學到完成式再加強。'],
-    ['go　went　gone', '背的方法：背成一句話。I go to work. → I [went] to work yesterday.\n每天挑 5 個，說「今天做的事」和「昨天做的事」。']
+    ['go → went → gone', '背的方法：背成一句話。I go to work. → I [went] to work yesterday.\n每天挑 5 個，說「今天做的事」和「昨天做的事」。']
   ],
   'b-modal': [
     ['助動詞放在動詞前面', '加上你的「態度」：\nI swim. 我游泳（事實）\nI [can] swim. 我會游泳\nI [should] swim. 我應該去游泳\nI [must] swim. 我一定要游泳\nI [may] swim. 我可能會去游泳'],
