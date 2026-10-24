@@ -1852,19 +1852,21 @@ PHRASES.push(
     '💡 put up、put on、put off、put down、put out 在 up、on、off、down、out 那幾組\n\n💡 turn on（打開）↔ turn off（關掉）；turn left、turn right 在單字的「馬路」那類']
 );
 
-// 片語太多（12 個以上）分成 2～4 個小框，兩欄並排（10/24 使用者：「動詞 + up」一整條太長）
+// 片語太多（12 個以上）分成每框 4～7 個的小框，兩框一排（10/24 使用者：「{」太長，選了「分成更多小框」）
 // 格式：小標題=片語,片語|小標題=*（* ＝ 其他沒列到的）
 const PH_PARTS = {
-  up: '往上、起來=get up,wake up,sit up,stay up,stand up,grow up,go up,put up,hold up,send up,speed up,build up|做完、用光、弄碎=use up,end up,burn up,cut up,tear up,fill up,clean up,clear up,mix up,divide up,lay up|出現、開始、想出=show up,turn up,come up,take up,set up,open up,make up,bring up,think up,look up,pick up|其他常用=*',
-  out: '出去、拿出來=go out,get out,come out,take out,hand out,give out,send out,let out,bring out,pick out,set out,keep out of|找出、想出、說出=find out,figure out,work out,point out,make out,try out,turn out,speak out|用完、沒了=run out,run out of,sell out,wear out,die out,put out,leave out,clean out|其他常用=*',
-  off: '關掉、脫下、掉下來=turn off,switch off,take off,get off,come off,fall off,cut off,knock off,keep off,ring off|出發、延期、其他=*',
-  be: '心情、感覺=be interested in,be surprised at,be afraid of,be afraid to do,be glad to do,be angry with,be mad at,be pleased with,be satisfied with|其他常用=*',
-  get: '移動、到達=get on,get in,get into,get out of,get to,get home,get back,get down,get behind,get about|其他常用=*',
-  at: 'at + 時間、地點=at once,at least,at most,at last,at home,at noon,at times,at school,at present,at work,at all,at table,at the age of,at the end of,at the moment,at the same time|動詞 + at=*',
-  in2: '時間、狀態=in all,in short,in a hurry,in the end,in the future,in time,in fact,in a minute,in surprise,in general,in danger,in good health|地點、方式=*',
-  with: '跟人一起=agree with,play with,share with,fight with,argue with,quarrel with,fall in love with,catch up with,be popular with|其他常用=*',
-  give: 'give + 小字=give up,give back,give away,give out,give in,give off,give way to,give oneself up,give over|give + 名詞=*',
-  take: 'take + 小字=take after,take place,take care,take care of,take away,take part in,take pride in,take an interest in,take it easy|take + 名詞（日常）=*'
+  up: '起床、熬夜=get up,wake up,sit up,stay up,stand up|往上、變大=grow up,go up,put up,hold up,send up,build up|速度、心情=speed up,hurry up,keep up,cheer up,dress up|用完、結束=use up,end up,burn up,fill up,give up|弄碎、整理=cut up,tear up,divide up,mix up,clean up,clear up|出現、打電話=show up,turn up,come up,ring up,call up|開始、建立=take up,set up,make up,bring up,open up,lay up|想出、查、撿=*',
+  out: '出去=go out,get out,come out,set out,keep out of|拿出來、發出=take out,hand out,give out,send out,let out,bring out|找出、想出=find out,figure out,work out,point out,make out,pick out|試、說、結果=try out,turn out,speak out,carry out,help sb. out,hold out|用完、沒了=run out,run out of,sell out,wear out,die out|其他常用=*',
+  off: '關掉、切斷=turn off,switch off,cut off,ring off,break off|脫下、掉下來=take off,get off,come off,fall off,knock off|出發、離開=set off,start off,see off,be off,run off|其他常用=*',
+  be: '害怕、高興、興趣=be afraid of,be afraid to do,be glad to do,be surprised at,be interested in|生氣、滿意=be angry with,be mad at,be pleased with,be satisfied with|有名、嚴格=be famous for,be famous as,be strict with,be strict in|其他常用=*',
+  down: '坐下、冷靜=sit down,slow down,calm down,settle down|寫下、放下=put down,write down,take down,pass down|拆、燒、拒絕=*',
+  get: '上下車、進出=get on,get in,get into,get out of,get down|到達、回來=get to,get home,get back,get about,get through|人際、生活=get together,get married,get along with,get used to,get ready for|其他常用=*',
+  go: '繼續、經過=go on,go ahead,go over,go through,go by|上下、出錯=go up,go down,go wrong|追求、反對=*',
+  at: '時間=at once,at noon,at present,at the moment,at the same time,at times|數量、終於=at least,at most,at last,at all,at the end of,at the age of|地點=at home,at school,at work,at table,arrive at|動詞 + at=*',
+  in2: '時間=in the end,in the future,in time,in a minute,in a hurry|說話常用=in fact,in short,in general,in all,in surprise,in common|地點、狀態=in class,in bed,in hospital,in danger,in good health,in public|方式、其他=*',
+  with: '跟人一起=agree with,play with,share with,fall in love with,be popular with|吵架、追趕=fight with,argue with,quarrel with,catch up with|處理、幫忙=deal with,do with,help sb. with sth.,provide sb. with sth.,be busy with|其他常用=*',
+  give: '最常用=give up,give back,give away,give out,give in|比較少用=give off,give way to,give oneself up,give over,give chase,give ear to|give + 名詞=*',
+  take: 'take + 小字=take after,take place,take away,take part in,take care,take care of|日常生活=take a rest,take a shower,take a photo,take a vacation,take it easy|其他常用=*'
 };
 const phRows = (key, words) => {
   const row = ([en, zh, ex]) => `${en}　${zh}` + (ex ? `{{ex:${ex}}}` : '');
