@@ -30,7 +30,7 @@ html, body { margin: 0; overflow-x: hidden; }
 body {
   background-color: var(--bg);
   color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
   font-size: 17px;
   line-height: 1.6;
   padding-top: env(safe-area-inset-top);
@@ -641,7 +641,7 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .top-btns .speed-btn { padding: 5px 8px; font-size: 13px; }
 /* 中文翻譯：深色、大一點，跟英文用不同字體區分（10/23 使用者：淺灰色小字在格子背景上看不清楚） */
 .page .nb .row .v { color: var(--text) !important; font-size: 15px !important; font-weight: 500; font-family: "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif; }
-.page .nb .row .k { font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+.page .nb .row .k { font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif; }
 .page .syl { color: #8c8375; }
 .page .nb .row .v + .v { color: var(--muted) !important; font-size: 13.5px !important; font-weight: 400; }   /* 第三欄：口訣、拆法 */
 /* 📝 每週小考 */
@@ -670,7 +670,7 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .ex-en, .ex-zh { display: block; } .ex-zh { word-break: keep-all; overflow-wrap: anywhere; }   /* 中文翻譯只在標點換行 */
 /* 片語例句：跟筆記例句一樣看得清楚（10/24 使用者：灰色小字看不清楚）——英文深色英文字體，中文深色中文字體 */
 .page .ex { color: var(--text); font-size: 15px; margin-top: 4px; line-height: 1.45; }
-.page .ex-en { color: #2f3640; font-size: 16px; font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+.page .ex-en { color: #2f3640; font-size: 16px; font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif; }
 .page .ex-zh { color: var(--text); font-size: 15px; font-weight: 500; font-family: "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif; margin-top: 1px; }
 .page .ex-zh { word-break: normal; overflow-wrap: normal; text-wrap: pretty; }   /* 句號不要被擠到下一行 */
 .page .ex-zh { word-break: keep-all; overflow-wrap: anywhere; }   /* 配合 zhWrap 的 <wbr>：只在詞和詞之間換行 */
@@ -678,7 +678,7 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .zh-tr { word-break: keep-all; overflow-wrap: anywhere; }
 /* 🧠 不經過中文 */
 .listen-box.think-en { border: 1px solid var(--teal); }
-.ee-def { font-size: 22px; font-weight: 700; color: var(--head); line-height: 1.4; margin: 6px 0 8px; font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+.ee-def { font-size: 22px; font-weight: 700; color: var(--head); line-height: 1.4; margin: 6px 0 8px; font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif; }
 /* 🌱 等級 */
 .level-banner { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; margin-bottom: 10px; font-size: 15px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; box-shadow: var(--shadow); }
 .level-banner .level-bar { flex: 1 1 100%; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
@@ -691,7 +691,7 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .story { background: var(--card); border-radius: 14px; padding: 12px 14px; margin: 10px 0 14px; box-shadow: var(--shadow); }
 .st-line { padding: 8px 0; border-bottom: 1px dashed var(--line); }
 .st-line:last-child { border-bottom: 0; }
-.st-en { font-size: 18px; line-height: 1.7; color: #2f3640; font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+.st-en { font-size: 18px; line-height: 1.7; color: #2f3640; font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif; }
 .st-w { cursor: pointer; border-radius: 4px; }
 .st-w:active, .st-w:hover { background: var(--marker); }
 .st-zh-btn { border: 1px solid var(--line); background: var(--bg); color: var(--muted); border-radius: 8px; font-size: 13px; padding: 1px 7px; margin-left: 4px; vertical-align: middle; }
@@ -729,3 +729,14 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .wtip.teach { font-size: 14.5px; }
 .wtip.teach > b:first-child { font-size: 13.5px; }
 .page .nbgrid .kv > span, .nb .kv > span, .trl .ex-en small { font-size: 14px; }
+
+/* 10/24 使用者：中文不要細明體（英文字型裡的中文會退回細明體，已經在每個英文字型後面補上正黑體）；中英文再大一點 */
+.page .nb .row .v, .page .nbgrid .nb .row .v, .page .nb .zh, .page .sub, .page .nb .row.sent .v,
+.page .nbgrid .nb .row.multi .v + .v, .nb:has(img.pic) .row .v { font-size: 16.5px !important; }
+.page .nb .row .v + .v { font-size: 15.5px !important; }
+.page .ex-zh, .trl .ex-zh { font-size: 16.5px; }
+.page .ex-en { font-size: 17.5px; }
+.page .nb .row .k { font-size: 18.5px; }
+.page .nbgrid .nb:has(.pic) .row .k, [data-pics="off"] .page .nbgrid:has(img.pic) .nb:has(img.pic) .row .k { font-size: 17px; }
+.wtip { font-size: 15px; }
+.wtip.teach { font-size: 15.5px; }
