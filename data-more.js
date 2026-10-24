@@ -1341,9 +1341,34 @@ at home　狀語：在家裡（地點，介係詞＋名詞）
     ['match', '🔥', "We watched a football match.　比賽|Light a match.　火柴|Who won the match?　比賽|Don't play with matches.　火柴|Your shoes match your bag.　搭配、相配|This color doesn't match.　不搭配"],
     ['bank', '🏦', 'I need to go to the bank.　銀行|We sat on the river bank.　河岸'],
     ['interest', '📈', 'I have an interest in music.　興趣|The bank pays interest.　利息'],
-    ['miss', '💭', 'I miss you.　想念|I missed the bus.　錯過']
+    ['miss', '💭', 'I miss you.　想念|I missed the bus.　錯過'],
+    // 10/24 第二批
+    ['can', '🥫', 'I can swim.　會、能夠|I bought a can of Coke.　罐子、罐頭'],
+    ['well', '🪣', 'She sings very well.　很好地|They get water from a well.　井|Well, let me think.　嗯……（說話前停一下）'],
+    ['may', '🙋', 'May I come in?　可以……嗎（客氣地問）|My birthday is in May.　五月（大寫 M）|It may rain tomorrow.　可能'],
+    ['train', '🚆', 'I take the train to work.　火車|I train at the gym every day.　訓練、練習'],
+    ['ring', '💍', 'She has a diamond ring.　戒指|The phone is ringing.　（鈴聲）響'],
+    ['play', '🎭', "Let's play basketball.　打（球）、玩|We watched a play at the theater.　舞台劇|She plays the piano.　彈、演奏（樂器）"],
+    ['spring', '🌸', 'Flowers bloom in spring.　春天|Beitou is famous for its hot springs.　泉水（hot spring 溫泉）'],
+    ['fall', '🍂', "The leaves turn red in fall.　秋天（美式）|Be careful! Don't fall.　跌倒、掉下來"],
+    ['sign', '🪧', 'Look at the sign.　標誌、告示牌|Please sign here.　簽名'],
+    ['order', '🧾', 'Can I take your order?　點餐|Put the words in order.　順序'],
+    ['bill', '💵', 'Can I have the bill, please?　帳單|I only have a 1000-dollar bill.　紙鈔（美式）'],
+    ['bat', '🦇', 'A bat flies at night.　蝙蝠|He hits the ball with a bat.　球棒'],
+    ['letter', '✉️', 'I wrote a letter to my friend.　信|A is the first letter of the alphabet.　字母'],
+    ['fly', '🪰', 'Birds can fly.　飛|There is a fly on the table.　蒼蠅']
   ];
-  const boxes = MULTI.map(([w, icon, rows]) => `【${icon} ${w}】\n` + rows.split('|').join('\n'));
+  const box = ([w, icon, rows]) => `【${icon} ${w}】\n` + rows.split('|').join('\n');
+  // 分 3 段（使用者不喜歡全部長長一條）
+  const GROUPS = [
+    ['看起來很簡單的小字', 'can,well,may,kind,mean,fine,right,left,last,close,cold,miss'],
+    ['一個是東西、一個是動作', 'book,watch,park,run,change,train,ring,play,sign,order,fly,match'],
+    ['完全不同的兩種東西', 'date,light,present,bank,interest,spring,fall,bill,bat,letter']
+  ];
+  const listed = GROUPS.flatMap(g => g[1].split(','));
+  const lost = MULTI.filter(m => !listed.includes(m[0]));
+  if (lost.length) GROUPS[GROUPS.length - 1][1] += ',' + lost.map(m => m[0]).join(',');   // 之後新增的字沒分到段，先放最後一段
+  const sections = GROUPS.map(([t, ws]) => `▍${t}\n\n` + ws.split(',').map(w => box(MULTI.find(m => m[0] === w))).join('\n\n'));
   const vocab = NOTES.find(c => c.id === 'vocab').items;
   const at = vocab.findIndex(i => i.id === 'mm-confuse') + 1;
   const C = (w, rows) => {
@@ -1356,7 +1381,7 @@ at home　狀語：在家裡（地點，介係詞＋名詞）
   };
   vocab.splice(at, 0, {
     id: 'mm-multi', title: `🔀 一字多義：一個字兩種意思（${MULTI.length} 個）`,
-    note: '{{pair}}同一個英文字，放在不同句子裡意思完全不同。只背一個意思，看到句子就會卡住。\n\n' + boxes.join('\n\n') +
+    note: '{{pair}}同一個英文字，放在不同句子裡意思完全不同。只背一個意思，看到句子就會卡住。\n\n' + sections.join('\n\n') +
       '\n\n💡 看到認識的字卻看不懂句子時，想想看：這個字是不是還有別的意思？' +
       '\n\n💡 match 記法：比賽是兩邊「配成一對」來比；火柴要「配上」火柴盒才點得起來；衣服顏色「配」在一起就是搭配' +
       '\n\n💡 sleepy（想睡的）和 tired（累的）不一樣：熬夜後眼睛睜不開是 sleepy；運動完全身沒力是 tired'

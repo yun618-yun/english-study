@@ -1587,7 +1587,13 @@ for (const [key, en, tip] of [
   ['place', 'bank', '🔀 另一個意思：河岸 the river bank 河岸'],
   ['tableware', 'glass', '🔀 glass 也是「玻璃」；加 es 的 glasses 是「眼鏡」'],
   ['place', 'park', '🔀 park 也是動詞「停車」（詳細在「背單字妙招 → 一字多義」）'],
-  ['tech', 'mouse', '🔀 mouse 也是動物「老鼠」']
+  ['tech', 'mouse', '🔀 mouse 也是動物「老鼠」'],
+  ['month', 'May', '🔀 小寫 may 是「可以、可能」：May I come in? 我可以進來嗎？'],
+  ['transport', 'train', '🔀 另一個意思：訓練 I train at the gym every day. 我每天在健身房訓練'],
+  ['clothes', 'ring', '🔀 另一個意思：（鈴聲）響 The phone is ringing. 電話在響'],
+  ['season', 'spring', '🔀 另一個意思：泉水 hot spring 溫泉'],
+  ['season', 'fall', "🔀 另一個意思：跌倒、掉下來 Be careful! Don't fall. 小心！別跌倒"],
+  ['road', 'sign', '🔀 另一個意思：簽名 Please sign here. 請在這裡簽名']
 ]) {
   VOCAB_TIPS[key] = VOCAB_TIPS[key] || {};
   if (!(VOCAB_TIPS[key][en] || '').includes(tip.slice(0, 8))) VOCAB_TIPS[key][en] = VOCAB_TIPS[key][en] ? VOCAB_TIPS[key][en] + '\n' + tip : tip;
