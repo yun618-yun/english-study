@@ -658,3 +658,10 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .opt .opic { flex: none; width: 40px; height: 40px; border-radius: 8px; object-fit: cover; display: inline-flex; align-items: center; justify-content: center; font-size: 26px; line-height: 1; }
 .word-card.done .pic.big { display: block; margin: 0 auto 6px; }
 [data-pics="off"] .opt .opic { display: none; }
+/* 10/24 手機斷行：標題平均斷行、內文不要最後一行只剩一個字、短括號不拆開；①開頭的標題換行時第二行對齊字 */
+.page h2, .cat-head h2, .lbl, .msec, .q, .sec-title, .blank-title, .ntile .nmain { text-wrap: balance; }
+.page, .answer-box, .opt .otext, .zh-tr, .wtip { text-wrap: pretty; }
+.nw { white-space: nowrap; }
+.lbl.hang { padding-left: 1.15em; text-indent: -1.15em; }
+.page h2, .cat-head h2, .lbl, .msec, .sec-title, .blank-title { word-break: keep-all; overflow-wrap: anywhere; }   /* 標題只在標點、空白換行，不從詞的中間斷 */
+.row .k { word-break: keep-all; overflow-wrap: anywhere; text-wrap: balance; }

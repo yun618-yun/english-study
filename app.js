@@ -154,7 +154,9 @@ const inline = s => esc(s)
     const body = t.replace(/^(💡|⚠️)\s*/, '').split('¶').join('<br>');
     return `<span class="wtip ${warn ? 'warn' : ''}">${warn ? '⚠️ 注意' : '💡'} ${body}</span>`;
   })
-  .replace(/\{\{card:([^}]+)\}\}/g, (_, p) => `<img class="card-img" src="${p}" alt="" loading="lazy" data-zoom>`);
+  .replace(/\{\{card:([^}]+)\}\}/g, (_, p) => `<img class="card-img" src="${p}" alt="" loading="lazy" data-zoom>`)
+  // 短的（括號）和「引號」不要從中間斷行（10/24 使用者：手機上「可／數）」這種斷句很怪）；只動標籤外面的字
+  .split(/(<[^>]+>)/).map(t => t.startsWith('<') ? t : t.replace(/([（「][^（）「」]{1,8}[）」])/g, '<span class="nw">$1</span>')).join('');
 
 // ===== 圖片：Emoji 或圖片檔（img/xxx.png） =====
 const isImageFile = p => /\.(png|jpe?g|webp|gif|svg)$/i.test(p);
@@ -360,7 +362,7 @@ function renderBlock(ls, i, blocks) {
       const label = first.replace(/^【(.*)】$/, '$1');
       // 口訣：每一句都用一樣大小的字（不要因為英文開頭就變大）
       if (label === '口訣') return `<div class="nb"><div class="lbl">口訣</div>${ls.slice(1).map(l => `<div class="poem">${inline(l.trim())}</div>`).join('')}</div>`;
-      return `<div class="nb${twoCol(ls.slice(1))}"><div class="lbl">${inline(label)}</div>${ls.slice(1).map(line).join('')}</div>`;
+      return `<div class="nb${twoCol(ls.slice(1))}"><div class="lbl${/^[①-⑳]/.test(label) ? ' hang' : ''}">${inline(label)}</div>${ls.slice(1).map(line).join('')}</div>`;
     }
     // 一行一個的清單（單字表、發音規則）→ 左右兩欄
     const isTip = l => l.trim().startsWith('{{tip:');
