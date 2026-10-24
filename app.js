@@ -1281,7 +1281,8 @@ function startPlan(k) {
   if (k === 'dialog') {
     if (typeof DIALOGS === 'undefined') { finishPlan(k); return renderToday(); }
     go('listen');
-    startDialog(DIALOGS[today() % DIALOGS.length].id);   // 每天換一個
+    const ds = DIALOGS.filter(d => d.level <= userLevel);   // 只挑等級以內的，每天換一個
+    startDialog(ds[today() % ds.length].id);
     return renderDialog();
   }
   if (k === 'wrong') {
@@ -1320,8 +1321,9 @@ function listenHome() {
     .filter(([k]) => k !== 'pic' && k !== 'ee')
     .filter(([k]) => mode === 'listen' || mode === 'type' ? k !== 'example' : mode === 'order' ? k !== 'word' : true)
     .map(([k, s]) => `<button class="btn ghost" data-act="listen-go" data-mode="${mode}" data-src="${k}">${s.name}</button>`).join('');
-  const dlgBtns = typeof DIALOGS === 'undefined' ? '' : DIALOGS.map(d =>
-    `<button class="btn ghost" data-act="dlg-start" data-id="${d.id}">${esc(d.title)}</button>`).join('');
+  // 對話照等級分組（10/24），每一級都可以點
+  const dlgBtns = typeof DIALOGS === 'undefined' ? '' : [1, 2, 3].map(n => `<div class="dlg-level">${LEVEL_NAME[n]}</div><div class="dlg-grid">` +
+    DIALOGS.filter(d => d.level === n).map(d => `<button class="btn ghost" data-act="dlg-start" data-id="${d.id}">${esc(d.title)}</button>`).join('') + '</div>').join('');
   $view.innerHTML = `
     <p class="intro">每次 ${LISTEN_ROUND} 題。看不懂字沒關係，用耳朵聽！</p>
     <div class="listen-box think-en">
@@ -1333,7 +1335,7 @@ function listenHome() {
     </div>
     <div class="listen-box">
       <h3>💬 情境對話</h3><p class="muted">你扮演「你」：對方說完，輪到你先看中文、自己用英文說，再看答案</p>
-      <div class="dlg-grid">${dlgBtns}</div>
+      ${dlgBtns}
     </div>
     <div class="listen-box">
       <h3>🎧 聽力</h3><p class="muted">只播聲音、不給字，選出中文意思。答錯會放進錯題本</p>

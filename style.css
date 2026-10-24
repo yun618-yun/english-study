@@ -686,3 +686,4 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .level-banner .btn { flex: 1 1 100%; }
 .level-pick { display: grid; gap: 8px; }
 .level-pick .btn small { font-weight: 400; font-size: 13px; opacity: .85; }
+.dlg-level { font-weight: 700; color: var(--teal); margin: 12px 0 6px; font-size: 15px; }
