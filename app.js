@@ -524,7 +524,7 @@ function findSentence(it, word) {
   // 同一個字在不同類意思不同（例如 plane 飛機／刨刀），可以用「類別:字」另外寫
   const own = typeof WORD_SENTENCES !== 'undefined' && (WORD_SENTENCES[`${it.group}:${word.toLowerCase()}`] || WORD_SENTENCES[word.toLowerCase()]);
   if (typeof own === 'string') return splitSentence(own);   // 一定要是字串（避免拿到 constructor 這種內建的東西）
-  if (!sentenceLines) sentenceLines = ALL.flatMap(o => [o.back || '', o.note || ''].join('\n').split('\n').map(splitSentence).filter(Boolean).map(s => ({ ...s, cat: o.cat, id: o.id })));
+  if (!sentenceLines) sentenceLines = ALL.flatMap(o => [o.back || '', o.note || ''].join('\n').split('\n').filter(l => !/✗|=|\bsb\b|\bsth\b/.test(l)).map(splitSentence).filter(Boolean).map(s => ({ ...s, cat: o.cat, id: o.id })));
   const re = wordRe(word);
   const hits = sentenceLines.filter(s => re.test(s.en) && s.en.toLowerCase() !== word.toLowerCase() + '.');
   return hits.find(s => s.id === it.id) || hits.find(s => s.cat === it.cat) || hits[0] || null;
@@ -539,7 +539,21 @@ function blankQuestion(it, word, others) {
   const fix = w => (cap ? w[0].toUpperCase() + w.slice(1) : w);
   const q = s.en.slice(0, m.index + m[1].length) + '______' + s.en.slice(m.index + m[0].length);
   const opts = [{ text: hit, right: true }, ...others.map(w => ({ text: fix(w), right: false }))];
-  return { q, zh: s.zh, full: s.en, options: shuffle(opts) };
+  return { q, zh: s.zh, full: s.en, hitAt: m.index + m[1].length, hitLen: hit.length, options: shuffle(opts) };
+}
+// 答完的句子：英文每個字下面小小的標詞性（data-grammar.js），考的那個字用藍綠色
+function grammarHtml(b) {
+  const codes = typeof GRAMMAR_TAGS !== 'undefined' && GRAMMAR_TAGS[b.full];
+  let pos = 0;
+  const words = b.full.split(' ').map((w, i) => {
+    const start = pos;
+    pos += w.length + 1;
+    const hit = start < b.hitAt + b.hitLen && b.hitAt < start + w.length;
+    const c = codes && codes[i];
+    const tag = c && c !== '.' ? GRAMMAR_LABELS[c.charCodeAt(0) - 65] : '';
+    return `<span class="gw${hit ? ' hit' : ''}"><span class="gw-en">${esc(w)}</span><span class="gw-tag">${esc(tag) || '&nbsp;'}</span></span>`;
+  });
+  return `<div class="gram">${words.join('')}</div>`;
 }
 
 // A／B／C／D 選項：字都很短就排成 2×2，長的一排一個
@@ -674,7 +688,8 @@ function answerBlank(i) {
   document.getElementById('blank-after').innerHTML = `
     <div class="answer-box ${ok ? 'ok' : 'ng'}">
       <div class="ab-title">${ok ? '⭕ 答對了！' : '❌ 正確答案：' + esc(b.options.find(o => o.right).text)}</div>
-      <div class="pre">${esc(b.full)}${b.zh ? '\n' + esc(b.zh) : ''}</div>
+      ${grammarHtml(b)}
+      ${b.zh ? `<div class="zh-tr">譯：${esc(b.zh)}</div>` : ''}
       <div class="say-wrap">${sayBtn(b.full)}</div>
     </div>`;
   speak(b.full);

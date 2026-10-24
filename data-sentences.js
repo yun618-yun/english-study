@@ -5,7 +5,7 @@
 const WORD_SENTENCES = {};
 [
   // 📅 月份、季節、時間
-  'January=January is the first month of the year. 一月是一年的第一個月。|February=February is the shortest month. 二月是最短的月份。|March=Spring starts in March. 春天從三月開始。|April=It often rains in April. 四月常常下雨。|June=School ends in June. 學校六月結束。|August=August is very hot in Taiwan. 台灣的八月很熱。|September=School starts in September. 學校九月開學。|October=Halloween is in October. 萬聖節在十月。|November=Thanksgiving is in November. 感恩節在十一月。|December=Christmas is in December. 聖誕節在十二月。',
+  'January=January is the first month of the year. 一月是一年的第一個月。|February=February is the shortest month. 二月是最短的月份。|March=Spring starts in March. 春天從三月開始。|April=It often rains in April. 四月常常下雨。|month:may=My birthday is in May. 我的生日在五月。|June=School ends in June. 學校六月結束。|August=August is very hot in Taiwan. 台灣的八月很熱。|September=School starts in September. 學校九月開學。|October=Halloween is in October. 萬聖節在十月。|November=Thanksgiving is in November. 感恩節在十一月。|December=Christmas is in December. 聖誕節在十二月。',
   'spring=Flowers bloom in spring. 春天花會開。|fall=The leaves turn red in fall. 秋天葉子會變紅。|autumn=I like the cool weather in autumn. 我喜歡秋天涼爽的天氣。|winter=It is cold in winter. 冬天很冷。',
   'noon=We eat lunch at noon. 我們中午吃午餐。|afternoon=I take a nap in the afternoon. 我下午會睡午覺。|evening=I watch TV in the evening. 我傍晚看電視。|a.m.=I get up at 7 a.m. 我早上七點起床。|p.m.=The meeting is at 3 p.m. 會議在下午三點。',
   // 🎨 顏色
