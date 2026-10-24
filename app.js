@@ -1924,6 +1924,23 @@ route();
 // 離線也能用（只有放到網路上 https 時才會啟用）
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
   navigator.serviceWorker.register('sw.js');
+  // 自動更新（10/24 使用者要的）：iPhone 主畫面的 App 切回來時不會重新載入，
+  // 所以回到 App 時去看 sw.js 的 VERSION，跟打開時不一樣就重新載入（頁面會回到剛剛那一頁）。
+  // 正在用的時候有新版，不打斷，只在上面出現「點一下更新」。
+  const swVersion = () => fetch('sw.js', { cache: 'no-store' }).then(r => r.text()).then(t => (t.match(/VERSION = '([^']+)'/) || [])[1]).catch(() => null);
+  let loadedVersion = null;
+  swVersion().then(v => { loadedVersion = v; });
+  const checkUpdate = async auto => {
+    const v = await swVersion();
+    if (!v || !loadedVersion || v === loadedVersion) return;
+    if (auto) return location.reload();
+    if (document.querySelector('.update-bar')) return;
+    const bar = Object.assign(document.createElement('button'), { className: 'update-bar', textContent: '🆕 網站有新版本，點一下更新' });
+    bar.onclick = () => location.reload();
+    document.body.appendChild(bar);
+  };
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') checkUpdate(true); });
+  setInterval(() => { if (document.visibilityState === 'visible') checkUpdate(false); }, 10 * 60 * 1000);
 }
 
 // 框框標題太長換成兩行時，把框框上面的空間和大括號往下移，才不會疊到內容
