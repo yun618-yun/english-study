@@ -604,7 +604,13 @@ It's cold today.　今天好冷。
         note: '{{grid}}' + gs.map(g => {
           const [intro, rows, tip] = g.note.split('\n\n');
           // 小提醒改成 👉 開頭，才會留在自己那一組的框框裡（💡 開頭的會被搬到別的地方）
-          return `【${g.title.replace(/（\d+ 個）$/, '')}】\n${intro}\n${rows}` + (tip ? '\n' + tip.replace(/^💡 ?/gm, '👉 ').replace(/^⚠️ ?/gm, '👉 ⚠️ ') : '');
+          // 10/24 使用者：一框太多字「{」太長 → 超過 7 個字就平均分成每框最多 6 個（①②…）
+          const name = g.title.replace(/（\d+ 個）$/, ''), ls = rows.split('\n');
+          const k = ls.length > 7 ? Math.ceil(ls.length / 6) : 1, size = Math.ceil(ls.length / k);
+          const tipText = tip ? '\n' + tip.replace(/^💡 ?/gm, '👉 ').replace(/^⚠️ ?/gm, '👉 ⚠️ ') : '';
+          return Array.from({ length: k }, (_, i) =>
+            `【${name}${k > 1 ? ' ' + '①②③④⑤'[i] : ''}】\n` + (i === 0 ? intro + '\n' : '') + ls.slice(i * size, (i + 1) * size).join('\n') + (i === k - 1 ? tipText : '')
+          ).join('\n\n');
         }).join('\n\n')
       };
     }), ...cards];
@@ -759,7 +765,7 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
         ['sound2', '🎵 諧音④：老師編的口訣', '這組是老師自己編的，越好笑越好記。',
           'hurry=匆忙=哈利 → 哈利快點，要遲到了！|lazy=懶惰的=累死 → 懶人一動就喊累死|honey=蜂蜜、親愛的=哈尼 → 甜得像蜂蜜的哈尼|money=錢=媽你 → 媽，你可以給我錢嗎？|tease=取笑、捉弄=踢死 → 再取笑我就踢死你|sigh=嘆氣=賽 → 今天好賽，嘆一口氣|doubt=懷疑=到底 → 到底是不是真的？好懷疑|mood=心情=木的 → 心情不好，整個人木木的|shy=害羞的=帥 → 長太帥被大家看，好害羞|admire=欽佩、欣賞=愛的媽 → 最欣賞愛我的媽媽',
           '⚠️ 諧音只用來記「意思」！真正的發音一定要按 🔊 聽\n💡 doubt 的 b 不發音，念 /daʊt/'],
-        ['link2', '💭 聯想和拆字②', '把長的字拆成認識的短字，意思和拼字一起記住。',
+        ['link2', '💭 拆成認識的短字', '把長的字拆成認識的短字，意思和拼字一起記住。',
           'hear=聽=h ＋ ear（耳朵）→ 用耳朵聽|heart=心=藏著 ear（耳朵）→ 用心聽|together=一起=to ＋ get ＋ her → 去找她一起|airport=機場=air（空中）＋ port（港口）→ 空中的港口|passport=護照=pass（通過）＋ port（港口）→ 通過港口要用的|popcorn=爆米花=pop（砰！）＋ corn（玉米）→ 砰一聲爆開的玉米|rainbow=彩虹=rain（雨）＋ bow（弓）→ 下完雨出現的弓|strawberry=草莓=straw（稻草）＋ berry（莓果）|dessert=甜點=有兩個 s → 甜點想吃兩份|knowledge=知識=know（知道）＋ ledge → 知道的東西就是知識',
           '⚠️ dessert（甜點，兩個 s）和 desert（沙漠，一個 s）很容易搞混：沙漠很乾，只有一個 s\n💡 knowledge 的 k 不發音，念 /ˈnɑːlɪdʒ/'],
         ['family', '👨‍👩‍👧 一家人一起背', '同一個字的「家人」一起記，名詞、動詞、形容詞一次學會。',
@@ -774,7 +780,7 @@ help 幫助 → helpful 有幫助的 → helpless 無助的 → helper 幫手
         ['sound3', '🎵 諧音⑤：生活小字口訣', '老師編的第二組，都是生活中很常用的字。',
           'busy=忙的=逼死 → 忙到快被逼死|cheap=便宜的=氣噗 → 賣這麼便宜，老闆氣噗噗|tip=小費=貼 → 貼一點小費給服務生|sour=酸的=餿 → 餿掉的東西是酸的|bite=咬=拜 → 拜託不要咬我|cry=哭=快 → 快哭了|cough=咳嗽=咳夫 → 一直咳|lie=說謊=賴 → 說謊又賴皮|sweat=汗=水的 → 流汗流得都是水',
           '⚠️ 諧音只用來記「意思」！真正的發音一定要按 🔊 聽\n💡 cough 的 gh 念 /f/，跟 laugh（笑）一樣'],
-        ['homo2', '👯 發音一樣的字②', '再一組念起來一樣的字，寫作文最容易寫錯。',
+        ['homo2', '👯 再一組發音一樣的字', '再一組念起來一樣的字，寫作文最容易寫錯。',
           'hear=聽=裡面有 ear（耳朵）|here=這裡=跟 there、where 一家人，都是地點|their=他們的=有 i，像「人」→ 屬於人的|there=那裡=裡面藏著 here（這裡）→ 也是地點|son=兒子=o 跟 boy 的 o 一樣|sun=太陽=跟 sunny（晴天）一起記|buy=買=有 u → you buy 你買|by=搭、透過=最短的那個：by bus 搭公車|eight=八=gh 不發音|ate=吃了=eat 的過去式：I ate lunch.',
           '💡 there、their、they\'re 三個都念 /ðer/：There is a cat. 那裡有貓／their cat 他們的貓／They\'re happy. 他們很開心'],
         // 10/24 使用者：中文很像、英文要分開用的字
