@@ -410,7 +410,8 @@ function renderBlock(ls, i, blocks) {
       const label = first.replace(/^【(.*)】$/, '$1');
       // 口訣：每一句都用一樣大小的字（不要因為英文開頭就變大）
       if (label === '口訣') return `<div class="nb"><div class="lbl">口訣</div>${ls.slice(1).map(l => `<div class="poem">${inline(l.trim())}</div>`).join('')}</div>`;
-      return `<div class="nb${twoCol(ls.slice(1))}"><div class="lbl${/^[①-⑳]/.test(label) ? ' hang' : ''}">${inline(label)}</div>${ls.slice(1).map(line).join('')}</div>`;
+      // 分段的小框（標題有「（N 個）」）：不在框框裡分兩欄，讓框框跟框框左右並排（10/24 使用者：要四宮格）
+      return `<div class="nb${/（\d+ 個）$/.test(label) ? '' : twoCol(ls.slice(1))}"><div class="lbl${/^[①-⑳]/.test(label) ? ' hang' : ''}">${inline(label)}</div>${ls.slice(1).map(line).join('')}</div>`;
     }
     // 一行一個的清單（單字表、發音規則）→ 左右兩欄
     const isTip = l => l.trim().startsWith('{{tip:');

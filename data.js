@@ -1852,6 +1852,31 @@ PHRASES.push(
     '💡 put up、put on、put off、put down、put out 在 up、on、off、down、out 那幾組\n\n💡 turn on（打開）↔ turn off（關掉）；turn left、turn right 在單字的「馬路」那類']
 );
 
+// 片語太多（12 個以上）分成 2～4 個小框，兩欄並排（10/24 使用者：「動詞 + up」一整條太長）
+// 格式：小標題=片語,片語|小標題=*（* ＝ 其他沒列到的）
+const PH_PARTS = {
+  up: '往上、起來=get up,wake up,sit up,stay up,stand up,grow up,go up,put up,hold up,send up,speed up,build up|做完、用光、弄碎=use up,end up,burn up,cut up,tear up,fill up,clean up,clear up,mix up,divide up,lay up|出現、開始、想出=show up,turn up,come up,take up,set up,open up,make up,bring up,think up,look up,pick up|其他常用=*',
+  out: '出去、拿出來=go out,get out,come out,take out,hand out,give out,send out,let out,bring out,pick out,set out,keep out of|找出、想出、說出=find out,figure out,work out,point out,make out,try out,turn out,speak out|用完、沒了=run out,run out of,sell out,wear out,die out,put out,leave out,clean out|其他常用=*',
+  off: '關掉、脫下、掉下來=turn off,switch off,take off,get off,come off,fall off,cut off,knock off,keep off,ring off|出發、延期、其他=*',
+  be: '心情、感覺=be interested in,be surprised at,be afraid of,be afraid to do,be glad to do,be angry with,be mad at,be pleased with,be satisfied with|其他常用=*',
+  get: '移動、到達=get on,get in,get into,get out of,get to,get home,get back,get down,get behind,get about|其他常用=*',
+  at: 'at + 時間、地點=at once,at least,at most,at last,at home,at noon,at times,at school,at present,at work,at all,at table,at the age of,at the end of,at the moment,at the same time|動詞 + at=*',
+  in2: '時間、狀態=in all,in short,in a hurry,in the end,in the future,in time,in fact,in a minute,in surprise,in general,in danger,in good health|地點、方式=*',
+  with: '跟人一起=agree with,play with,share with,fight with,argue with,quarrel with,fall in love with,catch up with,be popular with|其他常用=*',
+  give: 'give + 小字=give up,give back,give away,give out,give in,give off,give way to,give oneself up,give over|give + 名詞=*',
+  take: 'take + 小字=take after,take place,take care,take care of,take away,take part in,take pride in,take an interest in,take it easy|take + 名詞（日常）=*'
+};
+const phRows = (key, words) => {
+  const row = ([en, zh, ex]) => `${en}　${zh}` + (ex ? `{{ex:${ex}}}` : '');
+  if (!PH_PARTS[key]) return words.map(row).join('\n');
+  const parts = PH_PARTS[key].split('|').map(p => p.split('='));
+  const listed = new Set(parts.flatMap(([, l]) => l === '*' ? [] : l.split(',')));
+  return parts.map(([title, l]) => {
+    const ws = l === '*' ? words.filter(w => !listed.has(w[0])) : l.split(',').map(en => words.find(w => w[0] === en)).filter(Boolean);
+    return `【${title}（${ws.length} 個）】\n` + ws.map(row).join('\n');
+  }).join('\n\n');
+};
+
 NOTES.splice(NOTES.findIndex(c => c.id === 'tenses'), 0, {   // 放在「16 大時態」前面
   id: 'phrase',
   name: '動詞片語',
@@ -1861,7 +1886,7 @@ NOTES.splice(NOTES.findIndex(c => c.id === 'tenses'), 0, {   // 放在「16 大�
     return [
       {
         id: 'ph-' + key, title: `${name}（${words.length} 個）`,
-        note: (intro ? intro + '\n\n' : '') + words.map(([en, zh, ex]) => `${en}　${zh}` + (ex ? `{{ex:${ex}}}` : '')).join('\n') + (tip ? '\n\n' + tip : '')
+        note: (intro ? intro + '\n\n' : '') + phRows(key, words) + (tip ? '\n\n' + tip : '')
       },
       ...words.map(([en, zh, ex]) => ({
         id: 'ph-' + key + '-' + en.toLowerCase().replace(/[^a-z]+/g, '-').replace(/-$/, ''),
