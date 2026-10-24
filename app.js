@@ -316,6 +316,39 @@ function addTeach(note, id) {
   }
   return lines.join('\n');
 }
+// 一框太多（超過 8 個）就平均分成每框最多 7 個，「{」才不會太長（10/24 使用者：「全部跑一遍」）
+// 提醒、講解（👉 💡 ⚠️ {{tip}} ⟦⟧ 開頭的行）跟著上一個字走；第二框以後標題加 ②③…，① 開頭的標題改加（續）
+function splitLongBoxes(text) {
+  if (text.startsWith('{{wide}}')) return text;
+  const pre = (text.match(/^\{\{\w+\}\}/) || [''])[0];
+  const isTipLine = l => /^(👉|💡|⚠️|\{\{tip:|⟦)/.test(l.trim());
+  // 跟 splitBlocks 一樣：空行、①【】、💡⚠️ 開頭都算新的一塊
+  const blocks = p => p.split('\n').reduce((a, l) => {
+    if (a.length && !(MARK.test(l.trim()) || /^(💡|⚠️)/.test(l.trim()))) a[a.length - 1].push(l); else a.push([l]);
+    return a;
+  }, []);
+  return pre + text.slice(pre.length).split('\n\n').map(para => blocks(para).map(ls => {
+    const p = ls.join('\n');
+    const labeled = MARK.test(ls[0].trim());
+    if (!labeled && (ls.length <= 8 || !ls.every(l => isEnglish(l) || /　/.test(l) || isTipLine(l)))) return p;
+    const head = labeled ? ls[0] : null;
+    const items = [];
+    for (const l of labeled ? ls.slice(1) : ls) {
+      if (isTipLine(l) && items.length) items[items.length - 1].push(l); else items.push([l]);
+    }
+    if (items.length <= 8) return p;
+    const k = Math.ceil(items.length / 7), size = Math.ceil(items.length / k);
+    return Array.from({ length: k }, (_, i) => {
+      const part = items.slice(i * size, (i + 1) * size);
+      let h = head;
+      if (head && i > 0) {
+        const m = head.trim().match(/^【(.*?)(（\d+ 個）)?】$/);
+        h = m ? `【${m[1]} ${'①②③④⑤⑥'[i]}${m[2] ? `（${part.length} 個）` : ''}】` : head + '（續）';
+      } else if (head) h = head.replace(/（\d+ 個）】$/, `（${part.length} 個）】`).replace(/^(【[^（】]*?)(（\d+ 個）)?】$/, (s, a, c) => /^[①-⑮]/.test(head.trim()) ? s : `${a} ①${c || ''}】`);
+      return [h, ...part.flat()].filter(x => x != null).join('\n');
+    }).join('\n\n');
+  }).join('\n')).join('\n\n');
+}
 function formatNote(text) {
   if (text.startsWith('{{grid}}')) {
     const parts = text.replace(/^\{\{grid\}\}\n*/, '').split('\n\n');
@@ -339,6 +372,8 @@ function formatNote(text) {
 // 短的框框（每行都不長、行數不多）自動兩個一排；長句子的框框維持一整排
 // 很長的單字表（8 行以上、每行都是「短英文　中文」）→ 框框裡排成兩欄，不用一直往下滑（10/23 使用者要的）
 const twoCol = ls => {
+  // 10/24：框框最多 7 個以後，兩欄（英文　中文）的表不在框裡分兩欄，讓框框左右並排；三、四欄的大表才整排
+  if (ls.every(l => l.replace(/\{\{[^}]*\}\}/g, '').trim().split('　').length <= 2)) return '';
   // 框框裡前面有一兩行說明（例如例句）也可以：只看有「　」的表格列，說明行最多 3 行
   const rows = ls.filter(l => !l.trim().startsWith('{{tip:') && !l.trim().startsWith('👉') && (l.includes('　') || ls.filter(x => !x.includes('　')).length > 3));
   // 放寬（10/23 使用者要每個區塊都兩欄）：短句子（英文 60 字、中文 30 字內）、三四欄的表格（每欄 24 字內）也可以
@@ -447,7 +482,7 @@ function renderNotes() {
     $view.innerHTML = `${backBtn(CAT[currentCat].name)}${it.note.includes('{{pic:') ? picToggleBtn() : ''}
       <article class="page" ${catStyle(CAT[currentCat])}>
         <h2>${esc(it.title)}</h2>
-        ${formatNote(addTeach(it.note, it.id))}
+        ${formatNote(splitLongBoxes(addTeach(it.note, it.id)))}
       </article>
       ${statusButtons(it.id)}
       <div class="pager">
@@ -2081,7 +2116,13 @@ function buildToc() {
   // 有 ▍小標題就用小標題；沒有的話，框框多（5 個以上）就用框框的標題
   let marks = [...page.querySelectorAll('h3.msec')];
   if (marks.length < 2) { marks = [...page.querySelectorAll('.nb > .lbl')]; if (marks.length < 5) return; }
-  const name = el => el.textContent.replace(/（\d+ 個）/, '').replace(/^[①-⑳]\s*/, '').trim();
+  const name = el => el.textContent.replace(/（\d+ 個）/, '').replace(/^[①-⑳]\s*/, '').replace(/\s*[①-⑥]$|（續）$/, '').trim();
+  // 一組拆成好幾框（①②③）的只留一個按鈕；照筆記原本的順序排（兩欄排版會把框框的順序打亂）
+  const src = ((openItem && ALL.find(it => it.id === openItem)) || {}).note || '';
+  const pos = m => { const i = src.indexOf(name(m)); return i < 0 ? 1e9 : i; };
+  const seen = new Set();
+  marks = marks.filter(m => !seen.has(name(m)) && seen.add(name(m))).map((m, i) => [m, i]).sort((a, b) => pos(a[0]) - pos(b[0]) || a[1] - b[1]).map(x => x[0]);
+  if (marks.length < 2) return;
   const nav = document.createElement('nav');
   nav.className = 'toc';
   nav.innerHTML = '<span class="toc-t">📑 跳到：</span>' + marks.map((m, i) => `<button data-toc="${i}">${esc(name(m).slice(0, 18))}</button>`).join('');

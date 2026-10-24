@@ -727,7 +727,7 @@ label.btn { display: inline-flex; align-items: center; justify-content: center; 
 .page .ex-zh, .trl .ex-zh { color: var(--text); font-size: 15px; }
 .wtip { font-size: 14px; }
 .wtip.teach { font-size: 14.5px; }
-.wtip.teach > b:first-child { font-size: 13.5px; }
+.wtip.teach > b:first-child { font-size: 14.5px; }
 .page .nbgrid .kv > span, .nb .kv > span, .trl .ex-en small { font-size: 14px; }
 
 /* 10/24 使用者：中文不要細明體（英文字型裡的中文會退回細明體，已經在每個英文字型後面補上正黑體）；中英文再大一點 */
